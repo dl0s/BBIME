@@ -1,0 +1,86 @@
+{
+  "assessmentDate": "2026-10-01",
+  "timezone": "Asia/Shanghai",
+  "sourceVersion": "0.1.0.10",
+  "report": "research/MULTI_APP_EMBEDDING_FEASIBILITY.md",
+  "decision": "ARCHITECTURALLY_FEASIBLE_RELEASE_BLOCKED_BY_HOST_REGRESSION",
+  "savedDeviceEvidence": {
+    "latestSavedInstalledVersion": "0.1.0.9",
+    "latestSavedConfirmedRuntimeVersion": "0.1.0.8",
+    "sourceVersionDeviceInstallationVerified": false,
+    "crossApplicationRuntimeTestPerformed": false
+  },
+  "executedChecks": [
+    {
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/Test-ModuleContracts.ps1",
+      "status": "PASS",
+      "contractCount": 12,
+      "scope": "SOURCE_CONTRACTS_ONLY"
+    },
+    {
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/Test-Decoder.ps1",
+      "dictionaryBuild": "PASS",
+      "compilation": "PASS_WITH_UPSTREAM_WARNINGS",
+      "regression": "FAIL",
+      "failure": "Assertion failed: 0 != handles[0]",
+      "sourceLocation": "vendor/libgooglepinyin-0.1.2/src/matrixsearch.cpp:1444"
+    },
+    {
+      "command": "build/host/decoder_test.exe with BBIME_TRACE_FUZZ=1 and a new synthetic user dictionary",
+      "status": "FAIL",
+      "seed": 910,
+      "lastPrintedIteration": 1793,
+      "mode": "full",
+      "input": "nmecy'grgfxchsznrtnglcmmlz'jifycbiazx",
+      "exitCode": 3,
+      "sameAssertion": true
+    },
+    {
+      "command": "build/host/decoder_test.exe build/host/dict_pinyin.dat NEW_SYNTHETIC_USER_DICT INPUT full",
+      "status": "FAIL",
+      "freshProcess": true,
+      "freshSyntheticUserDictionary": true,
+      "input": "nmecy'grgfxchsznrtnglcmmlz'jifycbiazx",
+      "inputAsciiLength": 37,
+      "exitCode": 3,
+      "sameAssertion": true,
+      "platform": "WINDOWS_X86_64_HOST_ONLY",
+      "armDeviceReproduced": false
+    },
+    {
+      "command": "build/host/decoder_test.exe build/host/dict_pinyin.dat NEW_SYNTHETIC_USER_DICT nihk natural",
+      "status": "PASS",
+      "accepted": true,
+      "candidateCount": 40,
+      "exitCode": 0,
+      "scope": "ONE_BASIC_QUERY_ONLY"
+    }
+  ],
+  "sourceAndArtifactSha256": {
+    "src/backend.cpp": "205374B3A2706CEE30879BA1D586641C6F200FCF19D27F2FD4C7482C64ABAAE6",
+    "src/decoder.cpp": "D52449B190F7D488157C7BF164B18982E8BF97E335A1E2C7953287F1DAAF96BF",
+    "src/modulesettings.cpp": "1F183D5A82E00BC5F9A814022F71BA7F72B302C958BF2A0DBA225586DB957E53",
+    "tests/decoder_test.cpp": "FEEB1F13892BE84C4FB140C43613D0F731D83D9F80251866A935B0235C9598CD",
+    "build/host/decoder_test.exe": "14F124B42869AE757F9A1C6CA1A8CCA68D905DC82060A8A31408271FB8A7DE9C",
+    "assets/dict_pinyin.dat": "179311C55AB9B912A07EF040E5A95AF97E704E2248B7B97735F17A3E05D13B67"
+  },
+  "packagedArmDictionaryBytes": 1068442,
+  "actionsNotPerformed": [
+    "BUSINESS_SOURCE_MODIFICATION",
+    "ARM_DEVICE_FAILURE_REPRODUCTION",
+    "DEVICE_LOGIN",
+    "BAR_DEPLOYMENT",
+    "SYSTEM_INPUT_OR_PERMISSION_CHANGE",
+    "USER_DOCUMENT_OR_REAL_USER_DICTIONARY_READ",
+    "TWO_APP_INPUT_INTEGRATION",
+    "TWO_APP_SHARED_PERMISSION_VALIDATION"
+  ],
+  "releaseGates": [
+    "RESOLVE_REPRODUCIBLE_ENGINE_ASSERTION",
+    "PASS_COMPLETE_HOST_AND_ARM_REGRESSIONS",
+    "SEPARATE_EDITOR_ADAPTER_AND_FIELD_SESSIONS",
+    "PROVE_SHORTCUT_AND_SENSITIVE_FIELD_ISOLATION",
+    "VALIDATE_TWO_REAL_HOST_APPS",
+    "VALIDATE_WEBVIEW_ADAPTER_SEPARATELY_IF_INCLUDED"
+  ]
+}

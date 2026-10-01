@@ -1,0 +1,93 @@
+﻿{
+    "auditDate":  "2026-10-01",
+    "timezone":  "Asia/Shanghai",
+    "officialOfflineSdkDocs":  [
+                                   {
+                                       "id":  "S1",
+                                       "archive":  "C:\\bbndk\\plugins\\com.qnx.doc.inputmethods_4.0.0.20150226\\doc.zip",
+                                       "sha256":  "56F24C6501381B63A1852A10D4F0F42BFFB81655FD3D57D6C7DA2387FB954110",
+                                       "pages":  [
+                                                     {
+                                                         "entry":  "topic/index.html",
+                                                         "title":  "Input methods"
+                                                     },
+                                                     {
+                                                         "entry":  "topic/physical_keyboard.html",
+                                                         "title":  "Keyboard input"
+                                                     },
+                                                     {
+                                                         "entry":  "topic/keyboard_overview.html",
+                                                         "title":  "Tutorial: Create the Keyboard application"
+                                                     }
+                                                 ],
+                                       "hasPublicInjectEventPage":  false
+                                   },
+                                   {
+                                       "id":  "S2",
+                                       "archive":  "C:\\bbndk\\plugins\\com.qnx.doc.bps.lib_ref_4.0.0.20150224\\doc.zip",
+                                       "sha256":  "2C5344A987AF81437A68656D50EC6D33E2B1D0A7850AB11D2BD694576CCA22FF",
+                                       "pages":  [
+                                                     {
+                                                         "entry":  "topic/virtualkeyboard_layout_t.html",
+                                                         "title":  "virtualkeyboard_layout_t"
+                                                     },
+                                                     {
+                                                         "entry":  "topic/virtualkeyboard_change_options.html",
+                                                         "title":  "virtualkeyboard_change_options()"
+                                                     },
+                                                     {
+                                                         "entry":  "topic/virtualkeyboard_request_events.html",
+                                                         "title":  "virtualkeyboard_request_events()"
+                                                     }
+                                                 ],
+                                       "hasPublicInjectEventPage":  false
+                                   },
+                                   {
+                                       "id":  "S3",
+                                       "archive":  "C:\\bbndk\\plugins\\com.qnx.doc.screen.lib_ref_4.0.0.20150224\\doc.zip",
+                                       "sha256":  "88A843790EA194498799C7AB3E5845E193897ABDF5CFDAD2D8CEE4B1ADC55737",
+                                       "pages":  [
+                                                     {
+                                                         "entry":  "topic/group__screen__contexts_1Screen_Context_Types.html",
+                                                         "title":  "Screen context types"
+                                                     },
+                                                     {
+                                                         "entry":  "topic/screen_get_event.html",
+                                                         "title":  "screen_get_event()"
+                                                     },
+                                                     {
+                                                         "entry":  "topic/screen_create_session_type.html",
+                                                         "title":  "screen_create_session_type()"
+                                                     },
+                                                     {
+                                                         "entry":  "topic/manual/cscreen_sessions.html",
+                                                         "title":  "Sessions (screen.h)"
+                                                     }
+                                                 ],
+                                       "hasPublicInjectEventPage":  false
+                                   }
+                               ],
+    "officialSdkHeaders":  [
+                               {
+                                   "path":  "C:\\Users\\dove1\\Documents\\BBarmin\\sdk\\target_10_3_1_995\\qnx6\\usr\\include\\screen\\screen.h",
+                                   "sha256":  "FC9E20716E4DEC90D44709459D2B9C4BA02107CB69CDC17B0D059812A66EEF89"
+                               },
+                               {
+                                   "path":  "C:\\Users\\dove1\\Documents\\BBarmin\\sdk\\target_10_3_1_995\\qnx6\\usr\\include\\bb\\cascades\\resources\\textfieldinputmode.h",
+                                   "sha256":  "4CDC9C4085885770A5B9A24532BA5D0D22B11C84C93FE2E80D00C5DF0686FEE9"
+                               },
+                               {
+                                   "path":  "C:\\Users\\dove1\\Documents\\BBarmin\\sdk\\target_10_3_1_995\\qnx6\\usr\\include\\bb\\cascades\\controls\\texteditor.h",
+                                   "sha256":  "CEFCBFC5B58A0E661AE894F368BB81B9844EA5C814F66E50D1DD67FD4339B783"
+                               },
+                               {
+                                   "path":  "C:\\Users\\dove1\\Documents\\BBarmin\\sdk\\target_10_3_1_995\\qnx6\\usr\\include\\bb\\cascades\\controls\\input\\textinputproperties.h",
+                                   "sha256":  "B7BE9C95BFD44E40D26BB10778AA5EF9C26C610F6D540D38FA8995D4369887D3"
+                               },
+                               {
+                                   "path":  "C:\\Users\\dove1\\Documents\\BBarmin\\sdk\\target_10_3_1_995\\qnx6\\usr\\include\\bb\\cascades\\controls\\inputrouteproperties.h",
+                                   "sha256":  "A93765E8BCD1BCA9533DFAD791F72BE25946BAB16A8D5D0133CD3E48E3DA0D1E"
+                               }
+                           ],
+    "onlineVerification":  "Web search returned no usable results; legacy developer URL resolved to general BlackBerry Developers page, not the requested API reference."
+}

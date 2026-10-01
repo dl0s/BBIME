@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+    <id>top.blaccat.BBIME</id>
+    <name>BBIME</name>
+    <versionNumber>0.1.0</versionNumber>
+    <buildId>11</buildId>
+    <description>Natural double-pinyin native typing test for Q10</description>
+    <author>Local Developer</author>
+    <permission system="false">access_shared</permission>
+    <invoke-target id="top.blaccat.BBIME.open">
+        <invoke-target-type>application</invoke-target-type>
+        <filter>
+            <action>bb.action.OPEN</action>
+            <mime-type>application/x-bbime-test</mime-type>
+        </filter>
+    </invoke-target>
+    <icon><image>icon.png</image></icon>
+    <env var="CASCADES_THEME" value="dark"/>
+    <asset path="assets/icon.png">icon.png</asset>
+    <asset path="build/bbime" entry="true" type="Qnx/Elf">bbime</asset>
+    <asset path="assets/main.qml">assets/main.qml</asset>
+    <asset path="assets/CandidateStrip.qml">assets/CandidateStrip.qml</asset>
+    <asset path="assets/NativeModulePage.qml">assets/NativeModulePage.qml</asset>
+    <asset path="assets/NativeSymbolPanel.qml">assets/NativeSymbolPanel.qml</asset>
+    <asset path="assets/dict_pinyin.dat">assets/dict_pinyin.dat</asset>
+    <asset path="assets/copy.png">assets/copy.png</asset>
+    <asset path="assets/clear.png">assets/clear.png</asset>
+    <asset path="assets/diagnostics.png">assets/diagnostics.png</asset>
+    <asset path="assets/tools.png">assets/tools.png</asset>
+    <asset path="assets/cancel.png">assets/cancel.png</asset>
+    <asset path="vendor/libgooglepinyin-0.1.2/LICENSE">assets/licenses/Apache-2.0.txt</asset>
+    <asset path="vendor/libgooglepinyin-0.1.2/COPYRIGHT">assets/licenses/libgooglepinyin-copyright.txt</asset>
+    <asset path="vendor/libgooglepinyin-0.1.2/BBIME-MODIFICATIONS.md">assets/licenses/BBIME-MODIFICATIONS.md</asset>
+    <initialWindow><systemChrome>none</systemChrome></initialWindow>
+</qnx>

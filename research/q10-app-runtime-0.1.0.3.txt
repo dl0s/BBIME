@@ -1,0 +1,20 @@
+﻿291303622 grep BBIME
+BBIME: starting native test 0.1.0.2
+BBIME: scene installed
+BBIME: SELFTEST=PASS KEYS=PASS synthetic_decoder_p95_ms=2.014
+BBIME: READY mapped_syllables=413
+libpng warning: iCCP: known incorrect sRGB profile
+BBIME: SELFTEST=PASS KEYS=PASS synthetic_decoder_p95_ms=4.029
+ServerContext::onFontSizeChanged
+[General]
+mapped_syllables=413
+pointer_bytes=4
+selftest=PASS
+synthetic_decoder_max_ms=16.114992
+synthetic_decoder_p50_ms=1.007187
+synthetic_decoder_p95_ms=4.028748
+synthetic_key_selftest=PASS
+synthetic_samples=40
+typing_decoder_p95_ms=3.021561
+typing_samples=19
+version=0.1.0.2

@@ -1,0 +1,10 @@
+﻿{
+    "observedDate":  "2026-10-01",
+    "version":  "0.1.0.1",
+    "installedSha256":  "c2fd8a1471675f5b26740919ba4ef945a8b7b3cab11bbd79eebfbd239e068f69",
+    "exitCode":  2,
+    "failure":  "asset:///main.qml:139:9: Connections is not a type",
+    "rootCause":  "Missing QtQuick 1.0 import for QML Connections",
+    "fixVersion":  "0.1.0.2",
+    "verification":  "DEVICE_RELAUNCH_PASS_0.1.0.2"
+}

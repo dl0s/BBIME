@@ -1,0 +1,74 @@
+﻿336847062 grep BBIME
+BBIME: starting native test 0.1.0.3
+BBIME: scene installed
+BBIME: SELFTEST=PASS KEYS=PASS synthetic_decoder_p95_ms=3.022
+BBIME: READY mapped_syllables=413
+libpng warning: iCCP: known incorrect sRGB profile
+BBIME: SELFTEST=PASS KEYS=PASS synthetic_decoder_p95_ms=6.043
+ServerContext::onFontSizeChanged
+[General]
+mapped_syllables=413
+pointer_bytes=4
+selftest=PASS
+synthetic_decoder_max_ms=8.057496
+synthetic_decoder_p50_ms=1.007187
+synthetic_decoder_p95_ms=6.043122
+synthetic_key_selftest=PASS
+synthetic_samples=40
+typing_decoder_p95_ms=1.007187
+typing_samples=17
+version=0.1.0.3
+[General]
+decoder_p95_ms=2.014374
+decoder_samples=56
+physical_left_shift_presses=3
+physical_right_shift_presses=4
+standalone_shift_candidate_moves=7
+typing_active=false
+window_samples=56
+[General]
+available_height=612
+nonoverlapping_rows_fit=false
+typing_active=false
+
+[composition]
+height=@Variant(\0\0\0\x87\x42\x88\0\0)
+width=@Variant(\0\0\0\x87\x41\x10\0\0)
+x=@Variant(\0\0\0\x87\x41\x80\0\0)
+y=@Variant(\0\0\0\x87\x43\xaf\0\0)
+
+[editor]
+height=@Variant(\0\0\0\x87\x43O\0\0)
+width="@Variant(\0\0\0\x87\x44,\0\0)"
+x=@Variant(\0\0\0\x87\x41\x80\0\0)
+y=@Variant(\0\0\0\x87\x43\xf\0\0)
+
+[first]
+height=@Variant(\0\0\0\x87\x42\x90\0\0)
+width="@Variant(\0\0\0\x87\x44,\0\0)"
+x=@Variant(\0\0\0\x87\x41\x80\0\0)
+y=@Variant(\0\0\0\x87\x43\xd1\0\0)
+
+[footer]
+height=@Variant(\0\0\0\x87\x42\x18\0\0)
+width=@Variant(\0\0\0\x87\x43G\0\0)
+x=@Variant(\0\0\0\x87\x41\x80\0\0)
+y=@Variant(\0\0\0\x87\x44\r\x80\0)
+
+[header]
+height=@Variant(\0\0\0\x87\x42\x80\0\0)
+width="@Variant(\0\0\0\x87\x44,\0\0)"
+x=@Variant(\0\0\0\x87\x41\x80\0\0)
+y=@Variant(\0\0\0\x87\x41\0\0\0)
+
+[modes]
+height=@Variant(\0\0\0\x87\0\0\0\0)
+width=@Variant(\0\0\0\x87\0\0\0\0)
+x=@Variant(\0\0\0\x87\0\0\0\0)
+y=@Variant(\0\0\0\x87\0\0\0\0)
+
+[second]
+height=@Variant(\0\0\0\x87\x42\x90\0\0)
+width="@Variant(\0\0\0\x87\x44,\0\0)"
+x=@Variant(\0\0\0\x87\x41\x80\0\0)
+y=@Variant(\0\0\0\x87\x43\xf7\0\0)

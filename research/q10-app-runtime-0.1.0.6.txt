@@ -1,0 +1,76 @@
+﻿Read-only app-private evidence: 2026-10-01T12:09:44.7698662+08:00
+[logs/log] BBIME: starting native test 0.1.0.6
+BBIME: scene installed
+BBIME: INPUT_EXTENSIONS STRIP=PASS ALT=PASS SYMBOLS=PASS GRID=PASS CURSOR=FAIL NATIVE=PASS GATE=PASS
+BBIME: SELFTEST=PASS KEYS=FAIL synthetic_decoder_p95_ms=2.014
+libpng warning: iCCP: known incorrect sRGB profile
+ServerContext::onFontSizeChanged
+[data/startup-diagnostics.ini] [General]
+ime_enabled=true
+input_mode=natural
+mapped_syllables=413
+pointer_bytes=4
+selftest=PASS
+synthetic_decoder_max_ms=4.028748
+synthetic_decoder_p50_ms=1.007187
+synthetic_decoder_p95_ms=2.014374
+synthetic_key_selftest=FAIL
+synthetic_samples=40
+typing_decoder_p95_ms=0
+typing_samples=0
+version=0.1.0.6
+[data/typing-diagnostics.ini] [General]
+decoder_p95_ms=0
+decoder_samples=0
+ime_enabled=true
+input_mode=natural
+physical_alt_presses=2
+physical_left_shift_presses=0
+physical_right_shift_presses=0
+physical_sym_presses=1
+standalone_shift_candidate_moves=0
+standalone_shift_cursor_moves=0
+window_samples=0
+[data/ui-layout.ini] [General]
+action_bar_policy=manual_ime_gate
+action_bar_visible=false
+available_height=720
+ime_enabled=true
+nonoverlapping_rows_fit=false
+
+[candidates]
+height=@Variant(\0\0\0\x87\x42\x90\0\0)
+width="@Variant(\0\0\0\x87\x44,\0\0)"
+x=@Variant(\0\0\0\x87\x41\x80\0\0)
+y=@Variant(\0\0\0\x87\x44\x16\x80\0)
+
+[composition]
+height=@Variant(\0\0\0\x87\x42\x88\0\0)
+width=@Variant(\0\0\0\x87\x41\x10\0\0)
+x=@Variant(\0\0\0\x87\x41\x80\0\0)
+y=@Variant(\0\0\0\x87\x44\x5\x80\0)
+
+[editor]
+height=@Variant(\0\0\0\x87\x43\xc3\x80\0)
+width="@Variant(\0\0\0\x87\x44,\0\0)"
+x=@Variant(\0\0\0\x87\x41\x80\0\0)
+y=@Variant(\0\0\0\x87\x43\xf\0\0)
+
+[footer]
+height=@Variant(\0\0\0\x87\x42\x18\0\0)
+width="@Variant(\0\0\0\x87\x44,\0\0)"
+x=@Variant(\0\0\0\x87\x41\x80\0\0)
+y=@Variant(\0\0\0\x87\x44(\x80\0)
+
+[header]
+height=@Variant(\0\0\0\x87\x42\x80\0\0)
+width="@Variant(\0\0\0\x87\x44,\0\0)"
+x=@Variant(\0\0\0\x87\x41\x80\0\0)
+y=@Variant(\0\0\0\x87\x41\0\0\0)
+
+[modes]
+height=@Variant(\0\0\0\x87\0\0\0\0)
+width=@Variant(\0\0\0\x87\0\0\0\0)
+x=@Variant(\0\0\0\x87\0\0\0\0)
+y=@Variant(\0\0\0\x87\0\0\0\0)
+[processes] 387674352 grep BBIME

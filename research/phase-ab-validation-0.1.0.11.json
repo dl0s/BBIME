@@ -1,0 +1,78 @@
+﻿{
+    "timestamp":  "2026-10-01T15:34:42.9910990+08:00",
+    "sourceVersion":  "0.1.0.11",
+    "status":  "LOCAL_PASS_DEVICE_AND_HOST_INTEGRATION_GATES_REMAIN",
+    "checks":  [
+                   {
+                       "name":  "host-regression",
+                       "status":  "PASS",
+                       "exitCode":  0,
+                       "log":  "C:\\Users\\dove1\\Documents\\BBIME\\build\\host-regression-validation.log"
+                   },
+                   {
+                       "name":  "module-contracts",
+                       "status":  "PASS",
+                       "exitCode":  0,
+                       "log":  "C:\\Users\\dove1\\Documents\\BBIME\\build\\module-contracts-validation.log"
+                   },
+                   {
+                       "name":  "arm-build",
+                       "status":  "PASS",
+                       "exitCode":  0,
+                       "log":  "C:\\Users\\dove1\\Documents\\BBIME\\build\\arm-build-validation.log"
+                   },
+                   {
+                       "name":  "qml-syntax",
+                       "status":  "PASS",
+                       "log":  "C:\\Users\\dove1\\Documents\\BBIME\\build\\qml-validation.log",
+                       "scope":  "SYNTAX_ONLY_NOT_RUNTIME_TYPE_OR_LAYOUT_VALIDATION"
+                   }
+               ],
+    "device":  "NOT_RUN",
+    "releaseReady":  false,
+    "remainingGates":  [
+                           "ARM_SYNTHETIC_CORE_RUNTIME",
+                           "Q10_NATIVE_UI_FOCUS_KEYS_AND_SYMBOLS",
+                           "TWO_ORDINARY_HOST_APPS",
+                           "SHARED_PERMISSION_FAILURES_IF_ENABLED",
+                           "LIFECYCLE_AND_STORAGE_STRESS"
+                       ],
+    "sourceAndArtifactSha256":  {
+                                    "src/decoder.h":  "CF3877AF20907ECC86F72772F95F5D519CDF4CCFF3A811ECB224C36D0B5BF502",
+                                    "src/decoder.cpp":  "D52449B190F7D488157C7BF164B18982E8BF97E335A1E2C7953287F1DAAF96BF",
+                                    "src/inputmodule.h":  "5FBB92FA16C80EF100A99C7E72428D333DBD394CFC370F2DDADF46FDB9E8C5D2",
+                                    "src/inputmodule.cpp":  "B3236CC5E19EE0C9FAA437C5A0A70B803CC53A2341B082B80139E2B6CA546772",
+                                    "src/nativeadapter.h":  "2A10B001C70C6924D75B3D5EDB08E29081067485F92ACBA5842D077AFC814AFF",
+                                    "src/nativeadapter.cpp":  "FD1CAC3DDC0904551F07C11FD0079695385493CAB99BA9E389018ACB85CE9E3E",
+                                    "src/nativecontroller.h":  "588808095F2F18B3801C05A4200615A685953BF44838E8CAD9B66A146ED72298",
+                                    "src/nativecontroller.cpp":  "5A858BE7A9B224454C27E068CCC97AA37D99A9847843220F12CC4B9E0B8346F0",
+                                    "src/textpositions.h":  "A74D9F86954F976642C20CFF52475ED0B02DD4B6069264A7E26078EA21E9964D",
+                                    "src/moduleprofile.h":  "B2CA34758A936FC3948496752E29D9FA96CC7D07DC61078178A1522DBADACCA0",
+                                    "src/symbols.h":  "3CAC5E753D337E2B1D676401567C2FC9AF9A27D8F846CC5027C58D82B8C56A5C",
+                                    "tests/decoder_test.cpp":  "2EDEF189F21DF820B0A08005853D3BFFEE947691361CCD0ADB36B506259A608D",
+                                    "tests/inputmodule_test.cpp":  "AA0A2B8D60D0EE0E85D3EFAF3D0626BE707BC67C9C0C5002FE555F87F386EED9",
+                                    "assets/NativeModulePage.qml":  "A1032A13E8802FA8104210D02A3F4B6B5B00AA57F352C60346E2F5FD0742C536",
+                                    "assets/CandidateStrip.qml":  "28A136989593AAE826979F0474801805B7D7587EF7E07E246AE091CBE8D9A632",
+                                    "assets/NativeSymbolPanel.qml":  "BC3FB49269AB82C479FABA4BF7A49659649AAC7DB2E9E027DC382E38DF35C3A6",
+                                    "vendor/libgooglepinyin-0.1.2/src/matrixsearch.cpp":  "399AC7D1CEA4C54DF737DE8FA0C7304CD774B3B0F6E194562415DF6925E8B316",
+                                    "vendor/libgooglepinyin-0.1.2/src/dicttrie.cpp":  "3AD11F269CB379619556F0A24DE56358BDC2C3D95F10E593C796132311DE39D6",
+                                    "src/backend.cpp":  "883BAA9F79D027504635F64E76F2F5A1152BDED0382BC8106CA8A846D226306A",
+                                    "src/main.cpp":  "56C3B17D9783397DAA1D552EB283C134497C04C4FE934E6C7846B9EE1CE99F2F",
+                                    "src/backend.h":  "0DB08543DDF93817EA4638205C27942194027728DD829699569B7AB112B8B1CC",
+                                    "assets/main.qml":  "0ADE61D5BA8174E6D6A90C20166D25DA9192F706405F9B217E82F4FAC4008FD4",
+                                    "bar-descriptor.xml":  "2F12AE0677C2D31E4D2CB169F8EC811FFF6191FCE0B759F18C7B9F489A50951E",
+                                    "module/BBIME-Sources.ps1":  "2BEA574CF89E88C6CAB3F901A9998D6D0567435297F63E3DE69B762BB9D3403A",
+                                    "tools/Test-Decoder.ps1":  "03B21BC4671C8BFF61AD451753820C3120D727B6E1D26C0840FD20F74B0AEBFD",
+                                    "tools/Test-ModuleContracts.ps1":  "7DEE8830B4BBD3976751D8378C9B5443854F523C5BF8A978E1D6B4DF44A55190",
+                                    "tools/Test-PhaseAB.ps1":  "E06F53BCDB4942C05804B99CB5B8512F037722180E6E019684929B3E58DD42B3",
+                                    "tools/Test-Q10Module.ps1":  "0D5A89D8288AA657507FEF17D13DAE830576861CE59AA64A23F87F209227A24D",
+                                    "build/BBIME.bar":  "C54BA8A9E8BC47B563FDCE2E4D6CEBEEC3BF3405ADBA1F0DEC2549BDE16A2241",
+                                    "build/host/decoder_test.exe":  "BE53C85F90446E3D014DB49E0DAE2712414EFCF3319DB7DD2408CDFE4527664F",
+                                    "build/host/inputmodule_test.exe":  "AF6AA6BA8BA4D9520CEEB0C865ABE4E3B7FAA75D6398FC94B3050040367E2155",
+                                    "build/arm/decoder_test":  "E1395C066F73FF8EC36B69A76813F32A3ACE532157BA61E52182E622AF674291",
+                                    "build/arm/inputmodule_test":  "8D0D285CE58D1B1E943C74D678BF68BD05E8EDB1AA2B532362E0A82CDD73C624",
+                                    "assets/dict_pinyin.dat":  "179311C55AB9B912A07EF040E5A95AF97E704E2248B7B97735F17A3E05D13B67"
+                                },
+    "priorDeviceEvidence":  "C:\\Users\\dove1\\Documents\\BBIME\\research\\native-module-arm-validation-0.1.0.11.json",
+    "priorDeviceStatus":  "EXECUTION_DENIED"
+}

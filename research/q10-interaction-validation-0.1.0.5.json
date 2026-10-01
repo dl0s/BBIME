@@ -1,0 +1,21 @@
+﻿{
+    "timestamp":  "2026-10-01T11:48:30.5979855+08:00",
+    "version":  "0.1.0.5",
+    "status":  "NEW_VERSION_DEVICE_VALIDATION_PENDING",
+    "build":  "PASS",
+    "qmlSyntax":  "PASS",
+    "decoderHostRegression":  "PASS",
+    "uiSourceContract":  "PASS",
+    "installation":  "PASS",
+    "barHashReadback":  "PASS",
+    "sha256":  "da40c78818290e9c9fff0d2c070ee8231b50b797bd5ba58e402cbc42ac60a8f1",
+    "observedRuntimeVersion":  "0.1.0.4",
+    "actionBarPolicy":  "PERMANENTLY_HIDDEN",
+    "candidateStrip":  "SINGLE_HORIZONTAL_NATIVE_LIST_NO_NUMBER_PREFIX",
+    "symbolLayout":  "Q10_QWERTY_10_COLUMN_3_ROW_WITH_FUNCTION_KEY_SPACES",
+    "layoutFits":  null,
+    "physicalShiftValidation":  "CANDIDATE_EVENTS_OBSERVED_IN_0.1.0.4_NEW_CURSOR_BEHAVIOR_PENDING",
+    "physicalSymValidation":  "REAL_EVENTS_OBSERVED_IN_0.1.0.4_NEW_GRID_LAYOUT_PENDING",
+    "touchScrollValidation":  "PENDING",
+    "nativeFineCursorOverlay":  "NOT_IMPLEMENTED_NO_PUBLIC_TEXTAREA_ENTRY_FOUND"
+}

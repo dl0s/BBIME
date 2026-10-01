@@ -1,0 +1,24 @@
+﻿{
+    "timestamp":  "2026-10-01T15:09:15.9730317+08:00",
+    "sourceVersion":  "0.1.0.11",
+    "scope":  "ARM32_SYNTHETIC_CORE_ONLY_SSH_ROOT_NOT_APP_PERMISSIONS_OR_UI",
+    "scratchDirectory":  "/tmp/bbime-validation/599f9f9850bc4c1b9d39ab026a969aaf",
+    "status":  "EXECUTION_DENIED",
+    "checks":  [
+                   {
+                       "name":  "decoder_test",
+                       "status":  "NOT_RUN_EXECUTION_DENIED",
+                       "exitCode":  1,
+                       "output":  [
+                                      "sh: /tmp/bbime-validation/599f9f9850bc4c1b9d39ab026a969aaf/decoder_test: Operation not permitted"
+                                  ]
+                   }
+               ],
+    "artifactSha256":  {
+                           "build/arm/decoder_test":  "E1395C066F73FF8EC36B69A76813F32A3ACE532157BA61E52182E622AF674291",
+                           "build/arm/inputmodule_test":  "8D0D285CE58D1B1E943C74D678BF68BD05E8EDB1AA2B532362E0A82CDD73C624",
+                           "assets/dict_pinyin.dat":  "179311C55AB9B912A07EF040E5A95AF97E704E2248B7B97735F17A3E05D13B67"
+                       },
+    "inputData":  "SYNTHETIC_ONLY_NO_REAL_DOCUMENT_OR_USER_DICTIONARY",
+    "error":  "Q10 refuses standalone test execution; packaged app validation is required."
+}

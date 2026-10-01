@@ -1,0 +1,11 @@
+﻿{
+    "timestamp":  "2026-10-01T12:08:21.7912150+08:00",
+    "device":  "192.168.1.61",
+    "package":  "top.blaccat.BBIME",
+    "version":  "0.1.0.6",
+    "sha256":  "535c0cabb53e9d429379aa863ddccd9913892824448956bfa12809e9c4e5f77d",
+    "hashReadback":  "PASS",
+    "installation":  "PASS",
+    "dname":  "top.blaccat.BBIME.testDev_accat_BBIMEae951e04",
+    "job":  "@job.BBIME-535c0cabb53e.bar\naction::install\nactual_app_id::testDev_accat_BBIMEae951e04\nactual_app_name::BBIME\nactual_app_version::0.1.0.6\nactual_app_version_id::testMC4xLjAuNiAgICAgICAgICA\nactual_author::Local Developer\nactual_author_id::testTG9jYWwgRGV2ZWxvcGVyICA\nactual_dname::top.blaccat.BBIME.testDev_accat_BBIMEae951e04\nactual_extras::\nactual_fingerprint::None\nactual_gid::904\nactual_id::testDev_accat_BBIMEae951e04\nactual_name::top.blaccat.BBIME\nactual_type::application\nactual_version::0.1.0.6\nactual_version_id::testMC4xLjAuNiAgICAgICAgICA\nattempt::1\nextras::\npackage_location::/tmp/q10deploy/BBIME-535c0cabb53e.bar\nprogress::100\nresult::success"
+}
