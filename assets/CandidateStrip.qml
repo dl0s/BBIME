@@ -6,13 +6,19 @@ ListView {
     property variant ime
     property real viewportWidth: 688
     property int highlightedIndex: ime ? ime.selectedIndex : -1
+    property int pendingIndex: -1
+    property variant pendingTicket: null
     focusPolicy: FocusPolicy.None
+    visible: ime && ime.enabled
     enabled: ime && ime.enabled
     dataModel: ime ? ime.candidateModel : null
     preferredHeight: 72
     minHeight: 72
     maxHeight: 72
+    topMargin: 0
+    bottomMargin: 0
     horizontalAlignment: HorizontalAlignment.Fill
+    verticalAlignment: VerticalAlignment.Bottom
     layout: StackListLayout {
         orientation: LayoutOrientation.LeftToRight
         headerMode: ListHeaderMode.None
@@ -22,8 +28,23 @@ ListView {
             type: ""
             Container {
                 id: item
+                property int candidateIndex: ListItem.indexPath.length ? ListItem.indexPath[0] : -1
                 property bool highlighted: ListItemData.index === ListItem.view.highlightedIndex
                 focusPolicy: FocusPolicy.None
+                onTouch: {
+                    if (event.isDown()) {
+                        ListItem.view.pendingIndex = candidateIndex;
+                        ListItem.view.pendingTicket = {
+                            session: ListItemData.session,
+                            revision: ListItemData.revision,
+                            document: ListItemData.document,
+                            index: ListItemData.index
+                        };
+                    } else if (event.isCancel()) {
+                        ListItem.view.pendingIndex = -1;
+                        ListItem.view.pendingTicket = null;
+                    }
+                }
                 preferredWidth: Math.min(ListItem.view.viewportWidth, Math.max(88, ListItemData.text.length * 40 + 32))
                 preferredHeight: 72
                 minHeight: 72
@@ -49,7 +70,16 @@ ListView {
         }
     ]
     onTriggered: {
-        var candidate = dataModel.data(indexPath);
+        var touchedIndex = pendingIndex;
+        var candidate = pendingTicket;
+        pendingIndex = -1;
+        pendingTicket = null;
+        if (touchedIndex >= 0) {
+            if (touchedIndex === indexPath[0] && candidate)
+                ime.chooseCandidate(candidate.session, candidate.revision, candidate.document, candidate.index);
+            return;
+        }
+        candidate = dataModel.data(indexPath);
         if (candidate)
             ime.chooseCandidate(candidate.session, candidate.revision, candidate.document, candidate.index);
     }

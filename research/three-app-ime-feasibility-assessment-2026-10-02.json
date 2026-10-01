@@ -1,0 +1,446 @@
+{
+  "timestamp": "2026-10-02T00:03:31.559745+08:00",
+  "reportDate": "2026-10-02",
+  "evidenceCutoff": "2026-10-01T23:56:17+08:00",
+  "status": "REPAIR_PAUSED_AT_USER_REQUEST_ASSESSMENT_ONLY",
+  "goalAssessment": "IMPLEMENTABLE_WITH_UNRESOLVED_NATIVE_SYM_GATE",
+  "releaseReady": false,
+  "hostSourceApplication": {
+    "status": "APPLIED",
+    "backupRoot": "C:\\Users\\dove\\Documents\\BBIME\\build\\rectification\\backups\\4f1c8f943d4e44fba65777ba1f145cbc",
+    "fileCount": 74,
+    "apps": [
+      "BBnote",
+      "IntroOP",
+      "BBFile"
+    ],
+    "planSha256": "759B0611927CBAC0EEBF9F8AEF654D2FDF1F262EA65CD57C761183BF6D80CD9C"
+  },
+  "hostSourceVerification": {
+    "path": "C:\\Users\\dove\\Documents\\BBIME\\build\\rectification\\post-apply-verification.json",
+    "sha256": "c56c1f50dd4d8df539ae4080492fa365ea52f2eb73641219d6be57ac9a1593db",
+    "bytes": 13136
+  },
+  "additionalDiagnosticApplication": {
+    "status": "APPLIED",
+    "backupRoot": "C:\\Users\\dove\\Documents\\BBIME\\build\\rectification\\backups\\d4c9338aab3a460da262df55dd43b111",
+    "fileCount": 1,
+    "apps": [
+      "IntroOP"
+    ],
+    "planSha256": "FCB088269E72379275BDADC6AC0F93247F2FD188866C1E184F44F2CFB3A3A483"
+  },
+  "nativeDeviceDiagnostic": {
+    "timestamp": "2026-10-01T23:38:56.3358729+08:00",
+    "version": "0.1.0.22",
+    "barSha256": "16ADA4C9D4796E3DA27DA44CC9C733AC6CFB7304245265255557CE5F06193F66",
+    "identity": "top.blaccat.IntroOPImeDiagnostics.testDev_Diagnostics4ece1a5b",
+    "status": "FAIL",
+    "scope": "REAL_CASCADES_SCENE_AND_DIALOG_WITH_SYNTHETIC_KEYEVENTS",
+    "physicalKeys": "NOT_RUN",
+    "touchAndFirstFrame": "NOT_RUN",
+    "clinicalStorageAttached": false
+  },
+  "nativeDiagnosticLog": {
+    "path": "C:\\Users\\dove\\Documents\\BBIME\\build\\rectification\\introop-ime-device\\native-diagnostic-first-failure.txt",
+    "sha256": "af07933ea0d5fd3bc65ec9517e790c80b16ff730f1000f57cd2d6744afa68a5c",
+    "bytes": 601
+  },
+  "introopFormalInstallation": {
+    "uninstallPerformed": false,
+    "version": "0.1.0.22",
+    "existingDataFound": true,
+    "sha256": "416D558E208CBEC0470333A2CE88475E7DCF8D2DBD2F5A626B6045887DFA2651",
+    "remoteBar": "/tmp/q10deploy/IntroOP-0.1.0.22-416d558e208c.bar",
+    "result": "success"
+  },
+  "introopFormalStartupVerification": "NOT_COMPLETED",
+  "latestInstrumentedBuildExitCode": 0,
+  "latestInstrumentedDiagnosticInstallation": "NOT_RUN",
+  "latestInstrumentedDiagnosticRuntime": "NOT_RUN",
+  "commitsTagsAndPushThisTask": "NOT_PERFORMED",
+  "base": {
+    "sourceVersion": "0.1.0.13",
+    "parentHead": "b3ec5e02132f24f560d929889c62918a89b9cbc0",
+    "worktreeHasTaskChanges": true
+  },
+  "hosts": [
+    {
+      "name": "BBnote",
+      "sourceVersion": "1.0.0.9",
+      "head": "2871cccd9d70c0159412a808025a1f9c2129c6be",
+      "sourceFilesApplied": 24,
+      "newVersionDeployment": "NOT_RUN",
+      "evidence": {
+        "path": "C:\\Users\\dove\\Documents\\BBnote\\docs\\ime\\rectification-2026-10-01.json",
+        "sha256": "82dcb6e84f8508df46e65bb28460f15074e3b575a28ca0b7f0d57eb9e0a763ef",
+        "bytes": 21261
+      }
+    },
+    {
+      "name": "IntroOP",
+      "sourceVersion": "0.1.0.22",
+      "head": "d95133150bddfbca4aec97bf5cc49dd37d09df45",
+      "sourceFilesApplied": 26,
+      "newVersionDeployment": "INSTALLED_STARTUP_AND_FUNCTIONAL_ACCEPTANCE_PENDING"
+    },
+    {
+      "name": "BBFile",
+      "sourceVersion": "1.0.0.19",
+      "head": "15d3050d2be07ade7041c79af465d18231acbff5",
+      "sourceFilesApplied": 24,
+      "newVersionDeployment": "NOT_RUN",
+      "evidence": {
+        "path": "C:\\Users\\dove\\Documents\\BBFile\\docs\\IME_VALIDATION_2026-10-01_1.0.0.19.json",
+        "sha256": "ce20c5688b07492ad537f511830ed41dbc19af15f071b1d554267f679933a134",
+        "bytes": 12794
+      }
+    }
+  ],
+  "localPackages": {
+    "BBIME": {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\build\\BBIME.bar",
+      "sha256": "f5c17e59221b4a3f3c3d23dc058dafec73b08a0bce1890b0536974438dcbf92c",
+      "bytes": 2454105
+    },
+    "BBnote": {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\build\\rectification\\BBnote\\build\\BBnote.bar",
+      "sha256": "a0cdb1436d69a77a0478bba24cbe23545c8306b291d5344908a6cde6b075701d",
+      "bytes": 4245359
+    },
+    "BBFile": {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\build\\rectification\\BBFile\\build\\BBFile-1.0.0.19-release.bar",
+      "sha256": "d8fa134114653c8c349ed976462677af62eb25d643585ab3c13b1e8208cb19e9",
+      "bytes": 3314959
+    },
+    "IntroOP": {
+      "path": "C:\\Users\\dove\\Documents\\IntroOP\\bb10-native\\build\\GarminSyncBB10.bar",
+      "sha256": "84a6385c2d056e99ad366bf7040fea568bced0de15849d4e9cbe9de9f5873d93",
+      "bytes": 3389512
+    },
+    "IntroOPLatestDiagnostic": {
+      "path": "C:\\Users\\dove\\Documents\\IntroOP\\bb10-native\\build\\IntroOPImeDiagnostics.bar",
+      "sha256": "b574c78a082204d2c030ce486f328b6ed60d2f6288731f76ab57a5a46f036032",
+      "bytes": 845811
+    }
+  },
+  "knownRisks": [
+    {
+      "name": "NativeSymLease",
+      "evidence": "Q10_SYNTHETIC_KEYEVENT_ASSERTION_FAILED",
+      "cause": "UNDETERMINED"
+    },
+    {
+      "name": "UnconditionalAdapterInvalidation",
+      "evidence": "SOURCE_CONFIRMED_PATH",
+      "causedObservedFailure": "NOT_ESTABLISHED"
+    },
+    {
+      "name": "HandleSymbolKeyClosingGate",
+      "evidence": "SOURCE_CONFIRMED_GAP",
+      "repairApplied": false,
+      "causedObservedOpeningFailure": "NOT_ESTABLISHED"
+    }
+  ],
+  "remainingAcceptance": [
+    "ALL_HOST_FIELDS_FOCUS_AND_SCOPE",
+    "PHYSICAL_LEFT_RIGHT_SHIFT_ALT_SYM",
+    "Q10_TOUCH_AND_FIRST_FRAME_TOGGLE",
+    "Q10_BBNOTE_CANDIDATE_LAYOUT",
+    "SYM_REPEAT_LIFECYCLE_AND_STALE_TICKETS",
+    "Q10_END_TO_END_INPUT_LATENCY"
+  ],
+  "nextActionRequires": [
+    "USER_EXPLICIT_RESUME",
+    "ATTRIBUTABLE_SYM_STATE_TRACE_BEFORE_BEHAVIOR_CHANGE"
+  ],
+  "report": {
+    "path": "C:\\Users\\dove\\Documents\\BBIME\\research\\THREE_APP_IME_FEASIBILITY_ASSESSMENT_2026-10-02.md",
+    "sha256": "052b2e30a635311f3ad5ebc8248234880cc6131f63fcedc6618c18bebc530bc8",
+    "bytes": 20350
+  },
+  "implementationAndTimeEstimate": {
+    "assessmentType": "CONDITIONAL_ENGINEERING_ESTIMATE_NOT_DEADLINE_OR_PASS_RATE",
+    "stageDefinitions": {
+      "L0": "NOT_IMPLEMENTED",
+      "L1": "IMPLEMENTED_EFFECT_NOT_VERIFIED",
+      "L2": "LOCAL_FUNCTIONAL_VALIDATION_AND_BUILD_PASSED",
+      "L3": "LISTED_DEVICE_SCENARIOS_PARTIALLY_VERIFIED",
+      "L4": "ALL_APPLICABLE_HOST_AND_DEVICE_ACCEPTANCE_PASSED"
+    },
+    "completedAtL4": [],
+    "hourBasis": "ADDITIONAL_EFFECTIVE_ENGINEERING_HOURS_AFTER_EXPLICIT_RESUME",
+    "effectiveHoursPerDay": 8,
+    "individualFeatureHoursAreAdditive": false,
+    "deviceAndUserWaitingExcluded": true,
+    "phases": [
+      {
+        "id": "A",
+        "scope": "ATTRIBUTABLE_SYM_DIAGNOSTICS",
+        "hours": [
+          6,
+          12
+        ]
+      },
+      {
+        "id": "B",
+        "scope": "SHARED_BASE_REPAIR_AND_NATIVE_REGRESSION",
+        "hours": [
+          10,
+          24
+        ]
+      },
+      {
+        "id": "C",
+        "scope": "HOST_SYNC_AND_WEBVIEW_ADJUSTMENTS",
+        "hours": [
+          8,
+          16
+        ]
+      },
+      {
+        "id": "D",
+        "scope": "THREE_APP_DEVICE_ACCEPTANCE_AND_PERFORMANCE",
+        "hours": [
+          12,
+          20
+        ]
+      },
+      {
+        "id": "E",
+        "scope": "FORMAL_PACKAGE_VERSION_AND_EVIDENCE_CLOSEOUT",
+        "hours": [
+          4,
+          8
+        ]
+      }
+    ],
+    "baselineHours": [
+      40,
+      80
+    ],
+    "baselineEffectiveWorkDays": [
+      5,
+      10
+    ],
+    "assumptions": [
+      "Q10_AVAILABLE_FOR_REPEATABLE_TESTING",
+      "EXISTING_LOCAL_TESTS_AND_DIAGNOSTICS_REUSABLE",
+      "SYM_CAUSE_WITHIN_CURRENT_STATE_COORDINATION_OR_ADAPTER",
+      "NO_MAJOR_WEBVIEW_PLATFORM_REWORK",
+      "ONE_DEVICE_ACCEPTANCE_SERIALIZED"
+    ],
+    "expandedScope": {
+      "scenario": "DIALOG_REPLACEMENT_OR_MAJOR_WEBVIEW_REWORK",
+      "additionalHours": [
+        24,
+        40
+      ],
+      "totalHours": [
+        64,
+        120
+      ],
+      "totalEffectiveWorkDays": [
+        8,
+        15
+      ],
+      "status": "PROVISIONAL_BUDGET_REQUIRES_FEASIBILITY_REASSESSMENT_NOT_HARD_UPPER_BOUND"
+    },
+    "unboundedScenario": "UNSTABLE_REPRODUCTION_UNATTRIBUTABLE_FAILURE_OR_EXTERNAL_SDK_OS_LIMIT",
+    "attributionBudgetCheckpointHours": 12,
+    "nextReassessmentGate": "END_OF_PHASE_A_BEFORE_BEHAVIOR_REPAIR",
+    "calendarDeliveryDate": null,
+    "features": [
+      {
+        "id": "native_sym",
+        "apps": [
+          "BBnote_NATIVE_FIELDS",
+          "IntroOP",
+          "BBFile"
+        ],
+        "stageByApp": {
+          "BBnote": "L2_NOT_DEVICE_ACCEPTED",
+          "IntroOP": "L2_DEVICE_FAILURE_BLOCKER",
+          "BBFile": "L2_NOT_DEVICE_ACCEPTED"
+        },
+        "hours": [
+          16,
+          36
+        ]
+      },
+      {
+        "id": "bbnote_dom_sym",
+        "apps": [
+          "BBnote"
+        ],
+        "stageByApp": {
+          "BBnote": "L2"
+        },
+        "hours": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "focus_auto_mode",
+        "apps": [
+          "BBnote",
+          "IntroOP",
+          "BBFile"
+        ],
+        "stageByApp": {
+          "BBnote": "L2",
+          "IntroOP": "L3_BASIC_NATIVE_FOCUS_ONLY",
+          "BBFile": "L2"
+        },
+        "hours": [
+          6,
+          12
+        ]
+      },
+      {
+        "id": "bare_modifier_filter",
+        "apps": [
+          "BBnote",
+          "IntroOP",
+          "BBFile"
+        ],
+        "stageByApp": {
+          "BBnote": "L2",
+          "IntroOP": "L3_SYNTHETIC_EVENTS_ONLY",
+          "BBFile": "L2"
+        },
+        "hours": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "bbnote_shift",
+        "apps": [
+          "BBnote"
+        ],
+        "stageByApp": {
+          "BBnote": "L2"
+        },
+        "hours": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "native_shift",
+        "apps": [
+          "IntroOP",
+          "BBFile"
+        ],
+        "stageByApp": {
+          "IntroOP": "L3_SYNTHETIC_LEFT_SHIFT_ONLY",
+          "BBFile": "L2"
+        },
+        "hours": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "toggle_first_frame_and_touch",
+        "apps": [
+          "BBnote",
+          "IntroOP",
+          "BBFile"
+        ],
+        "stageByApp": {
+          "BBnote": "L2",
+          "IntroOP": "L2",
+          "BBFile": "L2"
+        },
+        "hours": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "bbnote_candidate_size_and_overlap",
+        "apps": [
+          "BBnote"
+        ],
+        "stageByApp": {
+          "BBnote": "L2"
+        },
+        "hours": [
+          6,
+          12
+        ]
+      },
+      {
+        "id": "native_candidate_size_and_position",
+        "apps": [
+          "IntroOP",
+          "BBFile"
+        ],
+        "stageByApp": {
+          "IntroOP": "L2",
+          "BBFile": "L2"
+        },
+        "hours": [
+          2,
+          4
+        ]
+      },
+      {
+        "id": "input_latency_and_stability",
+        "apps": [
+          "BBnote",
+          "IntroOP",
+          "BBFile"
+        ],
+        "stageByApp": {
+          "BBnote": "L1_EFFECT_UNMEASURED",
+          "IntroOP": "L1_EFFECT_UNMEASURED",
+          "BBFile": "L1_EFFECT_UNMEASURED"
+        },
+        "hours": [
+          6,
+          12
+        ]
+      },
+      {
+        "id": "save_navigation_stale_input",
+        "apps": [
+          "BBnote",
+          "IntroOP",
+          "BBFile"
+        ],
+        "stageByApp": {
+          "BBnote": "L2",
+          "IntroOP": "L2",
+          "BBFile": "L2"
+        },
+        "hours": [
+          4,
+          8
+        ]
+      },
+      {
+        "id": "base_sync_and_release_closeout",
+        "apps": [
+          "BBnote",
+          "IntroOP",
+          "BBFile"
+        ],
+        "stageByApp": {
+          "BBnote": "L2_DELIVERY_PENDING",
+          "IntroOP": "L2_DELIVERY_PENDING",
+          "BBFile": "L2_DELIVERY_PENDING"
+        },
+        "hours": [
+          4,
+          8
+        ]
+      }
+    ]
+  },
+  "reportUpdateTimestamp": "2026-10-02T00:13:11.284109+08:00",
+  "reportUpdateScope": "REPORT_ONLY_NO_NEW_RUNTIME_VALIDATION_OR_REPAIR"
+}

@@ -1,0 +1,19 @@
+﻿{
+    "timestamp":  "2026-10-02T00:53:38.7102472+08:00",
+    "device":  "192.168.1.61",
+    "package":  "top.blaccat.BBIME",
+    "version":  "0.1.0.14",
+    "sha256":  "38e054f9c758819a81fc79b33f178d7b55abafef60a918ffece8570a4a2e014a",
+    "hashReadback":  "PASS",
+    "installation":  "PASS",
+    "runningApplicationGuard":  "PASS_NOT_RUNNING",
+    "uninstallPerformed":  false,
+    "privateDataBackups":  [
+                               {
+                                   "path":  "C:\\Users\\dove\\Documents\\BBIME\\build\\bbime-device-0.1.0.14\\top.blaccat.BBIME.testDev_accat_BBIMEae951e04-data-before-update.tar",
+                                   "sha256":  "7DC3690A761233EB9811FA775F402E5C56F889DD1BE467216A1DB9CF86E267C9"
+                               }
+                           ],
+    "dname":  "top.blaccat.BBIME.testDev_accat_BBIMEae951e04",
+    "job":  "@job.BBIME-38e054f9c758.bar\naction::install\nactual_app_id::testDev_accat_BBIMEae951e04\nactual_app_name::BBIME\nactual_app_version::0.1.0.14\nactual_app_version_id::testMC4xLjAuMTQgICAgICAgICA\nactual_author::Local Developer\nactual_author_id::testTG9jYWwgRGV2ZWxvcGVyICA\nactual_dname::top.blaccat.BBIME.testDev_accat_BBIMEae951e04\nactual_extras::\nactual_fingerprint::None\nactual_gid::904\nactual_id::testDev_accat_BBIMEae951e04\nactual_name::top.blaccat.BBIME\nactual_type::application\nactual_version::0.1.0.14\nactual_version_id::testMC4xLjAuMTQgICAgICAgICA\nattempt::1\nextras::\npackage_location::/tmp/q10deploy/BBIME-38e054f9c758.bar\nprogress::100\nresult::success"
+}

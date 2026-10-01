@@ -43,7 +43,7 @@ try {
     }
     & $qcc @flags -o build/bbime src/main.cpp src/backend.cpp @BBIMECoreSources @BBIMENativeSources `
         @mocSources @objects `
-        -lbbcascades -lbbsystem -lQtCore -lQtDeclarative -lQtGui -lm
+        -lbbcascades -lbbsystem -lbb -lQtCore -lQtDeclarative -lQtGui -lm
     if ($LASTEXITCODE -ne 0) { throw 'BBIME ARM link failed' }
     $readelf = Join-Path $env:QNX_HOST 'usr\bin\ntoarm-readelf.exe'
     $dynamic = (& $readelf -d build/bbime) -join "`n"

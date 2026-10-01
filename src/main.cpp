@@ -7,7 +7,7 @@
 #include <cstdio>
 
 int main(int argc, char **argv) {
-    std::fprintf(stderr, "BBIME: starting native test 0.1.0.12\n");
+    std::fprintf(stderr, "BBIME: starting native test 0.1.0.15\n");
     bb::cascades::Application app(argc, argv);
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
     Backend backend;

@@ -3,7 +3,7 @@
     <id>top.blaccat.BBIME</id>
     <name>BBIME</name>
     <versionNumber>0.1.0</versionNumber>
-    <buildId>12</buildId>
+    <buildId>15</buildId>
     <description>Natural double-pinyin native typing test for Q10</description>
     <author>Local Developer</author>
     <permission system="false">access_shared</permission>
@@ -21,7 +21,6 @@
     <asset path="assets/main.qml">assets/main.qml</asset>
     <asset path="assets/CandidateStrip.qml">assets/CandidateStrip.qml</asset>
     <asset path="assets/NativeModulePage.qml">assets/NativeModulePage.qml</asset>
-    <asset path="assets/NativeSymbolPanel.qml">assets/NativeSymbolPanel.qml</asset>
     <asset path="assets/ImeToggle.qml">assets/ImeToggle.qml</asset>
     <asset path="assets/ime-menu.png">assets/ime-menu.png</asset>
     <asset path="assets/dict_pinyin.dat">assets/dict_pinyin.dat</asset>

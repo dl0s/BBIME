@@ -1,0 +1,95 @@
+﻿{
+    "timestamp":  "2026-10-01T22:48:12.6439453+08:00",
+    "sourceVersion":  "0.1.0.13",
+    "sdkRoot":  "C:\\bbdevtools",
+    "packagingJavaBin":  "C:\\bbndk\\features\\com.qnx.tools.jre.win32.x86_64_1.7.0.51\\jre\\bin",
+    "qmlVerifierScript":  "C:\\Users\\dove\\Documents\\BBIME\\tools\\Test-Qml.ps1",
+    "status":  "LOCAL_PASS_DEVICE_AND_HOST_INTEGRATION_GATES_REMAIN",
+    "checks":  [
+                   {
+                       "name":  "host-regression",
+                       "status":  "PASS",
+                       "exitCode":  0,
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\host-regression-validation.log"
+                   },
+                   {
+                       "name":  "module-contracts",
+                       "status":  "PASS",
+                       "exitCode":  0,
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\module-contracts-validation.log"
+                   },
+                   {
+                       "name":  "native-ui-state",
+                       "status":  "PASS",
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\native-ui-state-validation.log",
+                       "scope":  "PRODUCTION_QML_HANDLERS_NOT_SDK_RENDERING_OR_PHYSICAL_GESTURES"
+                   },
+                   {
+                       "name":  "arm-build",
+                       "status":  "PASS",
+                       "exitCode":  0,
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\arm-build-validation.log"
+                   },
+                   {
+                       "name":  "qml-syntax",
+                       "status":  "PASS",
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\qml-validation.log",
+                       "scope":  "SYNTAX_ONLY_NOT_RUNTIME_TYPE_OR_LAYOUT_VALIDATION"
+                   }
+               ],
+    "device":  "NOT_RUN",
+    "releaseReady":  false,
+    "remainingGates":  [
+                           "ARM_SYNTHETIC_CORE_RUNTIME",
+                           "Q10_NATIVE_UI_FOCUS_KEYS_AND_SYMBOLS",
+                           "TWO_ORDINARY_HOST_APPS",
+                           "SHARED_PERMISSION_FAILURES_IF_ENABLED",
+                           "LIFECYCLE_AND_STORAGE_STRESS"
+                       ],
+    "sourceAndArtifactSha256":  {
+                                    "src/decoder.h":  "1DF4513A3E614EADD5BEEBF3F5CF595E4E64FE596C28D14DBE7C73AA401175B4",
+                                    "src/decoder.cpp":  "BC507A99A509B2F48087D1922FEA940BD53DCB0B64A20CD3D0C5591E1EA87732",
+                                    "src/inputmodule.h":  "82F388B8973776893CEF91B68D444BB1010BE67715A8F8013231FB2E421A733E",
+                                    "src/inputmodule.cpp":  "FAE2C99E9D036A4AB4030BCC9346C4A737ED285EFC9EA327BB9D26658082E3D3",
+                                    "src/nativeadapter.h":  "7825238CD05D971CDED7AB0FA481255636B19B8CA06911D4FB2AFA44B00C44C4",
+                                    "src/nativeadapter.cpp":  "818A0512CF77A43C6FEA47575D3E217D11A3E1A085CAF18C8EE8DA862D872D42",
+                                    "src/nativecontroller.h":  "FC2EDB14B2B87D21AFB18B9E104CECB278A598027224A83510C9E21FDFF2084C",
+                                    "src/nativecontroller.cpp":  "4704F2D802B41637D2AF9A7587601FC57C108D1A25DE73166E8DF921DCB9B2CE",
+                                    "src/textpositions.h":  "9164F4A6E53AF98AD1AFDA994DC12F6A4CA7C93D17A62738892309377E338734",
+                                    "src/moduleprofile.h":  "4F4907010679BA0530D4BC5DA831549ACF7ADECA0D843C78BF2B17FA47E4E29B",
+                                    "src/symbols.h":  "17216D32B85E029A2E15236CD9BC3633695CD2ABCCAE70FA32060633394B42A3",
+                                    "tests/decoder_test.cpp":  "40023743074FE03640EF37CF9EFA6ABD1356376D32FD2041754C1CAA08D9E020",
+                                    "tests/inputmodule_test.cpp":  "797264E3C29A0D23BDF25AC420890B9ABF1A99ECDF2125B5AC361DAF86354EA0",
+                                    "assets/NativeModulePage.qml":  "118BFFA9418DA5F83CE448B9BA97D3C9F18932C084D33B041C3F2D28F1F30B27",
+                                    "assets/CandidateStrip.qml":  "21DAD1F07F05B5AE74F1157F7A4F86C8CD49BCED62E6743F0575859CFBA0AA77",
+                                    "assets/NativeSymbolPanel.qml":  "9D59A5897C1FDDAEF3C0821E4607D9F7B0578106C96AE238201251535747F858",
+                                    "assets/ImeToggle.qml":  "4D4FF7A14E6990A1CAE7AC48F69BA1A4AA227C3EDC28048BC0D75FD4E52E5285",
+                                    "assets/ime-menu.png":  "244BCF2DF451E0A986004DD8A9008AE8716B78B9463BF2DD5FD822BEBE5D97E8",
+                                    "src/modulesettings.h":  "9521C42214D22EADABE4A831E94DDDD3AA9DA7FBB204AF8C62A5CDC557DF684F",
+                                    "src/modulesettings.cpp":  "F435CF8E469A64AB900DA610130BC24FE3154FC6965356F5AE3574F701204944",
+                                    "vendor/libgooglepinyin-0.1.2/src/matrixsearch.cpp":  "14CBCE33986CB0373DDE55761963AFD255712EC454F3116C316F6A61E69E48FD",
+                                    "vendor/libgooglepinyin-0.1.2/src/dicttrie.cpp":  "B2A34E6599A4D325D7D1D55C875D574935C905E87F9648E5B450631AEA1D89F5",
+                                    "src/backend.cpp":  "0A67C52578E28DD3F6B724B37BD9AC7F62A09A75AD1B0DB0AD7AB32C41BF0EC8",
+                                    "src/main.cpp":  "0324B23F6BDA0CD30311365EE9E9908D3EE02AA1D857E96B026948E705CD4F07",
+                                    "src/backend.h":  "964199023BAD17891A7AB00B045F6B8BE62B6C3EFA89F75D34992E9F291682DA",
+                                    "assets/main.qml":  "2CCC82CCE0DDFE3580FB7CDCA85AA10A21FC8DB190F3601697F65CA4CA16282F",
+                                    "bar-descriptor.xml":  "6C1860F3A3B0584265F8C229042DB585EB77016869CA5C97B2FB1F00D3C4AB24",
+                                    "module/BBIME-Sources.ps1":  "AEEE44F677CD6A14115E8CE8B1A7B8D3DB299FFB18B0FC92DC00F78A77EA8502",
+                                    "tools/Test-Decoder.ps1":  "A136FA3A879218964610204AFC7A23751AC8E3BB2A507889B0F3201F6C73A05B",
+                                    "tools/Test-ModuleContracts.ps1":  "0A1F197561BFF523C02072554E5B7DBBAA6D73DA35A0103C4E6086C2C8FC3F61",
+                                    "tools/Test-PhaseAB.ps1":  "8975AF15B4825252F1CC873CE30397C25900F3798929694FDCED69DF53F402C8",
+                                    "tools/Test-Q10Module.ps1":  "5E937A1B0A56F4111F4EB42CD4BA514F7A99B3593B38BE6D13F0DC91AD1DE54A",
+                                    "tools/Sdk-Environment.ps1":  "14912A2A3A2A858AAC716BCBE95373508AECECBFA56E5FC1A92B2BD72736F71F",
+                                    "tools/Test-SdkApi.ps1":  "05287648875305905EFF49C1D2B4E4D658DA1825A66BDD0A31D1677EA6377663",
+                                    "build.ps1":  "CB64E8D28B63FE9C543ABFDAA636A695277760100CD08FBC2D6894A9D7D79E50",
+                                    "build/BBIME.bar":  "F5C17E59221B4A3F3C3D23DC058DAFEC73B08A0BCE1890B0536974438DCBF92C",
+                                    "tools/Test-Qml.ps1":  "B75A91F323E812297882061744FCA8E8372C2CD4C6A463CDB80542A0F4DE9ED9",
+                                    "tools/verify_qml_syntax.java":  "02F9E83D32A78B6FD06B754F5DDA49C088B0D00668AEBD59DC69A2AE399A783F",
+                                    "tests/native_ui_state_test.cjs":  "F651D0AB522F92F2BB74406872C07DDBE4C42B358ADB264B95493E421B16839D",
+                                    "build/host/decoder_test.exe":  "B7D36197BAC266E28831C2AB348BCA90CAFDF27B3F528C17CB207EE4D0063819",
+                                    "build/host/inputmodule_test.exe":  "78D1C0247AEABA03DF7D302491C57AF36F3FE7E6DC6571C4CE75CA6FB4A40459",
+                                    "build/arm/decoder_test":  "EF16CD24EDE5AA3D85C6712D3ED5F1123FBFDA17D283294B8D8F52A687A89B5F",
+                                    "build/arm/inputmodule_test":  "BFD205984C16EA9DEF648FF1B1371FB056CAAB49B23FC488D3602CDD73F65968",
+                                    "assets/dict_pinyin.dat":  "179311C55AB9B912A07EF040E5A95AF97E704E2248B7B97735F17A3E05D13B67"
+                                }
+}

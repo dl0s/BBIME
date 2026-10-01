@@ -4,6 +4,7 @@
 #include "inputmodule.h"
 #include "nativecontroller.h"
 #include "modulesettings.h"
+#include "focusstate.h"
 #include <QObject>
 #include <QStringList>
 #include <QHash>
@@ -70,10 +71,17 @@ public:
     bool learnSelections() const { return m_moduleSettings.learnSelections(); }
     QString settingsStatus() const { return m_settingsStatus; }
     Q_INVOKABLE void attachEditor(QObject *editor);
+    Q_INVOKABLE void editorFocusChanged(bool focused);
+    Q_INVOKABLE void setMainScopeActive(bool active);
+    Q_INVOKABLE bool registerNativeEditor(QObject *editor);
+    Q_INVOKABLE void nativeEditorFocusChanged(QObject *editor, bool focused);
+    Q_INVOKABLE void setNativeScopeActive(bool active);
+    Q_INVOKABLE void toggleNativeIme();
     Q_INVOKABLE bool handleKey(QObject *event);
     Q_INVOKABLE bool handleNativeKey(QObject *editor, QObject *event);
     Q_INVOKABLE bool choose(int slot);
     Q_INVOKABLE bool chooseCandidate(int index);
+    Q_INVOKABLE bool chooseCandidateAt(int index, unsigned long generation);
     Q_INVOKABLE void cycleSymbols();
     Q_INVOKABLE void closeSymbols();
     Q_INVOKABLE bool chooseSymbol(int index);
@@ -110,6 +118,10 @@ public slots:
     void captureLayout();
     void saveLayout();
     void writeMetrics();
+    void queueMainFocusCheck();
+    void queueNativeFocusCheck();
+    void reconcileMainFocus();
+    void reconcileNativeFocus();
 signals:
     void changed();
     void metricsChanged();
@@ -119,6 +131,8 @@ signals:
     void settingsChanged();
 private:
     bool settingsWritable() const;
+    void watchEditorState(QObject *editor, bool native);
+    QObject *focusedNativeEditor() const;
     void saveModuleProfile(const bbime::ModuleProfile &profile, bool learn);
     void setImeEnabled(bool enabled);
     void refreshCandidates();
@@ -140,6 +154,10 @@ private:
     bbime::Decoder &m_decoder;
     bbime::NativeController *m_nativeModule;
     bool m_nativePageOpen;
+    bool m_mainScopeActive, m_nativeScopeActive;
+    bool m_mainFocusQueued, m_nativeFocusQueued;
+    bbime::EditorFocusGate m_mainFocusGate, m_nativeFocusGate;
+    QList<QPointer<QObject> > m_nativeEditors;
     bbime::ModuleSettings m_moduleSettings;
     bb::cascades::ArrayDataModel *m_candidateModel, *m_symbolModel;
     QPointer<bb::cascades::TextArea> m_editor;
@@ -154,6 +172,7 @@ private:
     int m_page, m_highlight, m_selectionAnchor, m_selectionCursor, m_symbolGroup, m_symbolCycleStart;
     bool m_imeEnabled, m_ready, m_active, m_loading, m_editing, m_testing, m_symbolsVisible;
     bool m_cursorCodePoints;
+    unsigned long m_candidateGeneration;
     QVector<double> m_samples;
     unsigned m_sampleCount;
     unsigned m_leftShiftSeen, m_rightShiftSeen, m_shiftMoves;

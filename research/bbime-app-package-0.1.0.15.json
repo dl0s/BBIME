@@ -1,0 +1,107 @@
+﻿{
+    "timestamp":  "2026-10-02T01:24:10.7631022+08:00",
+    "version":  "0.1.0.15",
+    "scope":  "LOCAL_BBIME_BAR_BYTES_ONLY_NOT_DEVICE_VALIDATION",
+    "barSha256":  "6E278638441CF5339482659C92FB044ADAD6C44F4E10F5C652E0D55A14BE90B8",
+    "customSymQmlPackaged":  false,
+    "appQmlByteMatch":  true,
+    "status":  "PASS",
+    "checkedAssets":  [
+                          {
+                              "source":  "assets/icon.png",
+                              "entry":  "native/icon.png",
+                              "sha256":  "EB14ED1523E8BAD8049540E3979FE4339E85BACF0CEFA7F487ACC11CA3A49AB8",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "build/bbime",
+                              "entry":  "native/bbime",
+                              "sha256":  "C733646285EBC91B64601E3A100416430E2530F27B4BE90D804B71B78FB25BAE",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "assets/main.qml",
+                              "entry":  "native/assets/main.qml",
+                              "sha256":  "6B0112593A9F62A19BEC7E4B052EA87A7E628D7C338DB841C9BCBCDF1326A921",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "assets/CandidateStrip.qml",
+                              "entry":  "native/assets/CandidateStrip.qml",
+                              "sha256":  "1EC3570D1AE2AB26465326A6EB210D3052979A822370A96E56F3E0072478CA0D",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "assets/NativeModulePage.qml",
+                              "entry":  "native/assets/NativeModulePage.qml",
+                              "sha256":  "6F1E73D9DB808B66BB72C9C519B5152FA77827858286F7444F251C12A618A9D9",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "assets/ImeToggle.qml",
+                              "entry":  "native/assets/ImeToggle.qml",
+                              "sha256":  "4D4FF7A14E6990A1CAE7AC48F69BA1A4AA227C3EDC28048BC0D75FD4E52E5285",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "assets/ime-menu.png",
+                              "entry":  "native/assets/ime-menu.png",
+                              "sha256":  "244BCF2DF451E0A986004DD8A9008AE8716B78B9463BF2DD5FD822BEBE5D97E8",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "assets/dict_pinyin.dat",
+                              "entry":  "native/assets/dict_pinyin.dat",
+                              "sha256":  "179311C55AB9B912A07EF040E5A95AF97E704E2248B7B97735F17A3E05D13B67",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "assets/copy.png",
+                              "entry":  "native/assets/copy.png",
+                              "sha256":  "3EFE94D62395067942A46CF18FE082E0527131B41A009E537E82B72A8B3A7702",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "assets/clear.png",
+                              "entry":  "native/assets/clear.png",
+                              "sha256":  "621D4E69BFD123844DD5E05E01C781E5EFFC0362BEF2A0B5B3D4EE6CD6188D41",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "assets/diagnostics.png",
+                              "entry":  "native/assets/diagnostics.png",
+                              "sha256":  "DC839A23FB18B1AFB0049E41DA4A2B3655B51012A13EF21475EF6FE795B21CFB",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "assets/tools.png",
+                              "entry":  "native/assets/tools.png",
+                              "sha256":  "244BCF2DF451E0A986004DD8A9008AE8716B78B9463BF2DD5FD822BEBE5D97E8",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "assets/cancel.png",
+                              "entry":  "native/assets/cancel.png",
+                              "sha256":  "7DDB195C18DA516FF51E2318AD50CC30C3C6C381DE26E2475B2619E667656ABD",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "vendor/libgooglepinyin-0.1.2/LICENSE",
+                              "entry":  "native/assets/licenses/Apache-2.0.txt",
+                              "sha256":  "3DDF9BE5C28FE27DAD143A5DC76EEA25222AD1DD68934A047064E56ED2FA40C5",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "vendor/libgooglepinyin-0.1.2/COPYRIGHT",
+                              "entry":  "native/assets/licenses/libgooglepinyin-copyright.txt",
+                              "sha256":  "6A94B6C85FE0A9F4F8CFA5F34489144939C686BC3D483E578C25442B127FC13E",
+                              "status":  "PASS"
+                          },
+                          {
+                              "source":  "vendor/libgooglepinyin-0.1.2/BBIME-MODIFICATIONS.md",
+                              "entry":  "native/assets/licenses/BBIME-MODIFICATIONS.md",
+                              "sha256":  "D0827452C50E2912F4C3097EB33278E7CD2E65C7326E81F993679FDE464F5956",
+                              "status":  "PASS"
+                          }
+                      ]
+}

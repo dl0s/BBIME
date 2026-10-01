@@ -1,0 +1,312 @@
+{
+  "auditDate": "2026-10-01",
+  "timezone": "Asia/Shanghai",
+  "scope": "READ_ONLY_HOST_SOURCES_PINNED_IMPORTS_SDK_HEADERS_AND_EXISTING_VALIDATION_RECORDS",
+  "report": "research/THREE_APP_IME_RECTIFICATION_REPORT_2026-10-01.md",
+  "moduleSourceVersion": "0.1.0.12",
+  "moduleSourceCommit": "b3ec5e02132f24f560d929889c62918a89b9cbc0",
+  "repositories": [
+    {
+      "name": "BBIME",
+      "path": "C:\\Users\\dove\\Documents\\BBIME",
+      "version": "0.1.0.12",
+      "head": "b3ec5e02132f24f560d929889c62918a89b9cbc0",
+      "baselineWorktree": "CLEAN"
+    },
+    {
+      "name": "BBnote",
+      "path": "C:\\Users\\dove\\Documents\\BBnote",
+      "version": "1.0.0.8",
+      "head": "2871cccd9d70c0159412a808025a1f9c2129c6be",
+      "baselineWorktree": "CLEAN"
+    },
+    {
+      "name": "IntroOP",
+      "path": "C:\\Users\\dove\\Documents\\IntroOP",
+      "version": "0.1.0.21",
+      "head": "d95133150bddfbca4aec97bf5cc49dd37d09df45",
+      "baselineWorktree": "CLEAN"
+    },
+    {
+      "name": "BBFile",
+      "path": "C:\\Users\\dove\\Documents\\BBFile",
+      "version": "1.0.0.18",
+      "head": "15d3050d2be07ade7041c79af465d18231acbff5",
+      "baselineWorktree": [
+        " M tests/build_app_fixture.ps1",
+        " M tools/debug_root_trust.py"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "bbime-source-contracts",
+      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/Test-ModuleContracts.ps1",
+      "execution": "RUN_THIS_REVIEW",
+      "status": "PASS",
+      "exitCode": 0,
+      "count": 24,
+      "limitation": "STRING_CONTRACTS_ONLY_FIXED_BUTTON_SIZE_NOT_PROVEN"
+    },
+    {
+      "name": "bbnote-pinned-import-and-index",
+      "command": "python -B tools/Verify-IME-Import.py --index",
+      "execution": "RUN_THIS_REVIEW",
+      "status": "PASS",
+      "exitCode": 0,
+      "pinnedFiles": 54,
+      "integrationInputs": 4
+    },
+    {
+      "name": "introop-pinned-import",
+      "command": "python -B tools/import-bbime.py --source C:/Users/dove/Documents/BBIME",
+      "execution": "RUN_THIS_REVIEW",
+      "status": "PASS",
+      "exitCode": 0,
+      "pinnedFiles": 58
+    },
+    {
+      "name": "introop-javascript-integration",
+      "command": "node bb10-native/test_ime_integration.js",
+      "execution": "RUN_THIS_REVIEW",
+      "status": "PASS",
+      "exitCode": 0,
+      "limitation": "MOCK_ROUTE_NO_CPP_HARDWARE_DIALOG_OR_LAYOUT"
+    },
+    {
+      "name": "bbfile-manifest-file-hashes",
+      "execution": "READ_AND_SHA256_COMPARE_THIS_REVIEW",
+      "status": "PASS",
+      "matchedFiles": 60
+    }
+  ],
+  "confirmedSourceFindings": [
+    "BBNOTE_WEB_LEFT_RIGHT_SHIFT_IDENTITIES_COLLAPSED_AND_RELEASES_NOT_ROUTED",
+    "BBNOTE_WEB_SYM_PANEL_AND_TRANSACTIONS_NOT_IMPLEMENTED",
+    "NATIVE_CONTROLLER_MISSING_BARE_MODIFIER_IDENTITY_FILTER",
+    "BUTTON_HEIGHT_CONSTRAINTS_IGNORED_BY_CASCADES_NATIVE_BUTTON",
+    "BBNOTE_DOM_FONT_AND_HARDCODED_HEIGHT_DIFFER_FROM_NATIVE_STRIP",
+    "FOCUS_DRIVEN_ENABLED_STATE_COORDINATION_NOT_IMPLEMENTED"
+  ],
+  "userReportedDeviceFailures": [
+    "INTROOP_SYM_FREEZE",
+    "BBFILE_SYM_SEVERE_FREEZE",
+    "BBNOTE_SYM_UNAVAILABLE",
+    "BBNOTE_SHIFT_UNAVAILABLE",
+    "BBNOTE_INITIAL_TOGGLE_SIZE_WRONG",
+    "INTROOP_INITIAL_TOGGLE_SIZE_WRONG",
+    "BBNOTE_CANDIDATE_TOO_LARGE_AND_OBSCURES_TEXT",
+    "INTROOP_MODIFIER_NONSTANDARD_CHARACTER_OUTPUT"
+  ],
+  "userReportedWorkingFeatures": [
+    "INTROOP_SHIFT_CURSOR",
+    "BBFILE_SHIFT_CURSOR",
+    "INTROOP_CANDIDATE_SIZE",
+    "BBFILE_CANDIDATE_SIZE"
+  ],
+  "pendingRuntimeFindings": [
+    "SYM_FREEZE_ROOT_CAUSE_NOT_INDEPENDENTLY_REPRODUCED",
+    "BBNOTE_ACTUAL_CANDIDATE_OVERLAP_TRIGGER",
+    "INITIAL_BUTTON_MEASURED_LAYOUT_FRAMES",
+    "ACTUAL_MODIFIER_EVENT_CODEPOINTS",
+    "USER_TESTED_INSTALLED_PACKAGE_HASH_ALIGNMENT"
+  ],
+  "menuIconResource": {
+    "declaredButtonHeight": 64,
+    "declaredButtonWidth": 76,
+    "widthPixels": 81,
+    "heightPixels": 81
+  },
+  "officialApiVerification": {
+    "method": "LOCAL_OFFICIAL_SDK_HEADERS",
+    "dialog": "opened bool property exists; open/close asynchronous; repeated calls while opening/closing have no effect",
+    "button": "height is fixed; preferred/min/max height are not used; image constrains width"
+  },
+  "deviceExecutionThisReview": "NOT_RUN",
+  "deviceDeploymentThisReview": "NOT_RUN",
+  "runtimeCodeChangesThisReview": "NONE",
+  "focusFeatureImplementation": "DESIGNED_NOT_IMPLEMENTED",
+  "releaseReady": false,
+  "files": [
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBnote\\src\\noteime.cpp",
+      "bytes": 11845,
+      "sha256": "A8879307B66F4DCDA156478426F80A70B74558531CFF6102698282589C5830C5"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBnote\\assets\\ImeTextField.qml",
+      "bytes": 966,
+      "sha256": "4F755FBE2344D9628124FB7C1A7B7D032586AC7CF9B0640667CE8CC8AA54F5CC"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBnote\\assets\\MarkdownEditor.qml",
+      "bytes": 5455,
+      "sha256": "054B33C0D8547FAEC8AF5D7C96D05DF9E233F04CE6C174B3236639CC918BE1CA"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBnote\\assets\\main.qml",
+      "bytes": 53764,
+      "sha256": "417A775AF894547875E572D980EBB0115B363305E91FE81A469F33B341817DF6"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBnote\\assets\\ime-editor.js",
+      "bytes": 18586,
+      "sha256": "4E5165A50A725837303E31ED705511CC22280EEF8101B2EF1D4C4C0DE51995CB"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBnote\\assets\\markdown-editor.js",
+      "bytes": 7086,
+      "sha256": "D7EE2B690B4B5BA5FB50AF507368AACAE48C8AEB0721DBD9B483824F8D0B91B2"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBnote\\assets\\markdown-editor.css",
+      "bytes": 1628,
+      "sha256": "697D9D152C220A6654E3DB916669FE86800426DA03902A9D1BD4FE6248C82559"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBnote\\docs\\ime\\upstream-manifest.json",
+      "bytes": 16034,
+      "sha256": "3396DBE9F09B400AE3810CB1984B102FEBD879E8AB28251BBA7FBC7A3FB0A802"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBnote\\docs\\ime\\FEASIBILITY.md",
+      "bytes": 11398,
+      "sha256": "879F91E86B7D86664460DEB9E58DFD0DA2CE45F91D7B195522535327265F92F3"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\IntroOP\\bb10-native\\introop_ime.cpp",
+      "bytes": 7185,
+      "sha256": "3106A4402A9638F7F3C892EE8931A0C30FDCE8FD7B9C918327ACA0CFE34AB712"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\IntroOP\\bb10-native\\introop_ime.h",
+      "bytes": 1505,
+      "sha256": "9FB7FF87F053724058CBF4E068C65AC88C31FCEE8FC73BEA677DF37902BF7CFB"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\IntroOP\\bb10-native\\ui.cpp",
+      "bytes": 1777,
+      "sha256": "08D55E1A4B4DB370246E45C4C0DAF638D617253766CF359B3A6BAC09768BC15F"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\IntroOP\\bb10-native\\main.qml",
+      "bytes": 30602,
+      "sha256": "B9D1D7E5060B925B37AF25B5163D8E76098DB789D35CDA3778D1A239D6FA4DA7"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\IntroOP\\bb10-native\\vendor\\bbime\\manifest.json",
+      "bytes": 20140,
+      "sha256": "A8D564714F1A526CCDE66C72FF332195E76594B76C773B028613B031C6B96DE3"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\IntroOP\\bb10-native\\ime\\NativeSymbolPanel.qml",
+      "bytes": 4690,
+      "sha256": "DF10CD2E4FAB0837F0844D6D5431932A999018176713CD01E4826024A90D2C06"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\IntroOP\\bb10-native\\ime\\ImeToggle.qml",
+      "bytes": 874,
+      "sha256": "EBEB0006B9AA85D3C9488D458D62814D172884D9C7B97FB6119430A0D3B94261"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\IntroOP\\bb10-native\\test_ime_integration.js",
+      "bytes": 5674,
+      "sha256": "9FFCCFA99C378D62A52A52A07421F701AABF45F5350943970FB8F43BC138B967"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBFile\\src\\imecontroller.cpp",
+      "bytes": 4527,
+      "sha256": "7FE4F2A28DB2A31D4293D9753B0DAC93C2BE3D53558C33EE169F7102479DA74C"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBFile\\src\\imecontroller.h",
+      "bytes": 967,
+      "sha256": "291024C524721D5E4AE9A495B495FCABFF890D0DA1289A6E1E971110C8444B23"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBFile\\assets\\main.qml",
+      "bytes": 61571,
+      "sha256": "A4AD7AB5F87F0D12C655634B14E28E7C070D49ED907F09E2CF913BDE06F8A1D0"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBFile\\assets\\ime\\NativeSymbolPanel.qml",
+      "bytes": 4803,
+      "sha256": "A9571EEEC4702AF3FACA739C19E3067470391EDA85DE2A02D8F153F6B1A9B227"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBFile\\vendor\\bbime\\manifest.json",
+      "bytes": 20963,
+      "sha256": "A56287F9D7619C8147679C9CAB725229617EFDC205C91CC3AA44363D2A34D538"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBFile\\docs\\IME_VALIDATION_2026-10-01_1.0.0.18.json",
+      "bytes": 27569,
+      "sha256": "D4C13B842055EDE3C29E5A7528E7292D7B75EA3093098BFD0ACC333C11DF73F8"
+    },
+    {
+      "path": "C:\\bbdevtools\\target_10_3_1_995\\qnx6\\usr\\include\\bb\\cascades\\controls\\button.h",
+      "bytes": 21140,
+      "sha256": "0D31D32450342A257C177FB5568BAC08DEF2689FFF01D3AF16D520E20A19655F"
+    },
+    {
+      "path": "C:\\bbdevtools\\target_10_3_1_995\\qnx6\\usr\\include\\bb\\cascades\\controls\\abstractdialog.h",
+      "bytes": 9804,
+      "sha256": "CBF0B038100A008AD4D74B676C579AE5043830DE7DC365A5F670A5CF8B7B9014"
+    },
+    {
+      "path": "C:\\bbdevtools\\target_10_3_1_995\\qnx6\\usr\\include\\bb\\cascades\\core\\keyevent.h",
+      "bytes": 9627,
+      "sha256": "A04D51A67B928A97043C819F2BA65CF7057254656EC45C62C6A14764EC940224"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\src\\nativecontroller.cpp",
+      "bytes": 20608,
+      "sha256": "6B9F663095E7F545DF0CD88A337D5D9858F98ED5727D053869DF85436638E17D"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\src\\nativecontroller.h",
+      "bytes": 4333,
+      "sha256": "E0B7884EE8866F3999599178B8ED7B967BCC2392021EA27EB8B18C61636BB372"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\src\\nativeadapter.cpp",
+      "bytes": 8797,
+      "sha256": "818A0512CF77A43C6FEA47575D3E217D11A3E1A085CAF18C8EE8DA862D872D42"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\src\\inputmodule.cpp",
+      "bytes": 6174,
+      "sha256": "FAE2C99E9D036A4AB4030BCC9346C4A737ED285EFC9EA327BB9D26658082E3D3"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\src\\backend.cpp",
+      "bytes": 62655,
+      "sha256": "1D83979111A26C0BC0223D04FD50391946D782775106003D8CF5C9E225F4AA50"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\assets\\NativeSymbolPanel.qml",
+      "bytes": 4800,
+      "sha256": "66B7CF738F384BE41ECF3038616F0D07A52EC1481459CCC68D1B6D1AA1B32CB8"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\assets\\ImeToggle.qml",
+      "bytes": 870,
+      "sha256": "CFAC7D9078F632F983A405B6B69ED63CEFA5EAB87F97F6A77ED48EF2F03C3970"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\assets\\CandidateStrip.qml",
+      "bytes": 2696,
+      "sha256": "21DAD1F07F05B5AE74F1157F7A4F86C8CD49BCED62E6743F0575859CFBA0AA77"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\assets\\ime-menu.png",
+      "bytes": 907,
+      "sha256": "244BCF2DF451E0A986004DD8A9008AE8716B78B9463BF2DD5FD822BEBE5D97E8"
+    },
+    {
+      "path": "C:\\Users\\dove\\Documents\\BBIME\\tools\\Test-ModuleContracts.ps1",
+      "bytes": 7787,
+      "sha256": "5EB96512A7A7317173183DBF7DAC88C991391A3CB3A11C66D16AD9030F45A74B"
+    }
+  ]
+}

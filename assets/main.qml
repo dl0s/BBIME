@@ -3,21 +3,24 @@ import QtQuick 1.0 as Quick
 
 Page {
     id: page
+    property bool sheetActive: false
+    function syncMainScope() {
+        backend.setMainScopeActive(!sheetActive &&
+            actionMenuVisualState === ActionMenuVisualState.Hidden);
+    }
     actionBarVisibility: backend.imeEnabled ? ChromeVisibility.Hidden : ChromeVisibility.Visible
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.Disabled
     keysIgnoreFocusInActionBar: backend.imeEnabled
-    onActionMenuVisualStateChanged: {
-        if (actionMenuVisualState === ActionMenuVisualState.VisibleFull ||
-            actionMenuVisualState === ActionMenuVisualState.AnimatingToVisibleFull)
-            backend.disableIme();
-    }
+    onCreationCompleted: syncMainScope()
+    onActionMenuVisualStateChanged: syncMainScope()
     Container {
         id: content
         implicitLayoutAnimationsEnabled: false
+        layout: StackLayout { orientation: LayoutOrientation.TopToBottom }
         leftPadding: 16
         rightPadding: 16
         topPadding: 8
-        bottomPadding: 8
+        bottomPadding: 0
         Container {
             preferredHeight: 64
             minHeight: 64
@@ -30,6 +33,7 @@ Page {
                 layoutProperties: StackLayoutProperties { spaceQuota: 1 }
             }
             Button {
+                focusPolicy: FocusPolicy.None
                 imageSource: "asset:///cancel.png"
                 topMargin: 0
                 bottomMargin: 0
@@ -41,20 +45,6 @@ Page {
                 maxHeight: 64
                 enabled: backend.imeEnabled && backend.composing
                 onClicked: { backend.cancel(); backend.restoreFocus(); }
-            }
-            Button {
-                text: "Sym"
-                topMargin: 0
-                bottomMargin: 0
-                accessibility.name: "符号"
-                preferredWidth: 92
-                minWidth: 92
-                maxWidth: 92
-                preferredHeight: 64
-                minHeight: 64
-                maxHeight: 64
-                enabled: backend.imeEnabled
-                onClicked: backend.cycleSymbols()
             }
             ImeToggle {
                 id: imeToggle
@@ -76,6 +66,7 @@ Page {
         SegmentedControl {
             id: modes
             property bool initialized: false
+            focusPolicy: FocusPolicy.None
             enabled: backend.imeEnabled
             topMargin: 4
             bottomMargin: 4
@@ -100,7 +91,7 @@ Page {
             inputMode: TextAreaInputMode.Custom
             builtInShortcutsEnabled: false
             input.flags: TextInputFlag.VirtualKeyboardOff
-            inputRoute.primaryKeyTarget: true
+            inputRoute.primaryKeyTarget: backend.imeEnabled && focused
             textFormat: TextFormat.Plain
             hintText: "测试文本"
             minHeight: 88
@@ -115,6 +106,7 @@ Page {
                 backend.attachEditor(editor);
                 editor.requestFocus();
             }
+            onFocusedChanged: backend.editorFocusChanged(focused)
             attachedObjects: [
                 LayoutUpdateHandler {
                     onLayoutFrameChanged: backend.recordLayout("editor", layoutFrame.x, layoutFrame.y, layoutFrame.width, layoutFrame.height)
@@ -145,18 +137,44 @@ Page {
                 }
             ]
         }
+        Container {
+            layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+            preferredHeight: 38
+            minHeight: 38
+            maxHeight: 38
+            Label {
+                text: backend.status.length ? backend.status : backend.pageLabel
+                textStyle.fontSize: FontSize.XSmall
+                textStyle.color: Color.create("#e2c46a")
+                layoutProperties: StackLayoutProperties { spaceQuota: 1 }
+            }
+            Label {
+                text: backend.latency
+                textStyle.fontSize: FontSize.XSmall
+            }
+            attachedObjects: [
+                LayoutUpdateHandler {
+                    onLayoutFrameChanged: backend.recordLayout("footer", layoutFrame.x, layoutFrame.y, layoutFrame.width, layoutFrame.height)
+                }
+            ]
+        }
         ListView {
             id: candidates
+            focusPolicy: FocusPolicy.None
+            visible: backend.imeEnabled
             enabled: backend.imeEnabled
             objectName: "candidateStrip"
             property int highlightedIndex: backend.selectedIndex
             property real viewportWidth: 688
+            property int pendingIndex: -1
+            property variant pendingGeneration: null
             preferredHeight: 72
             minHeight: 72
             maxHeight: 72
             topMargin: 0
             bottomMargin: 0
             horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Bottom
             dataModel: backend.candidateModel
             layout: StackListLayout {
                 orientation: LayoutOrientation.LeftToRight
@@ -167,8 +185,18 @@ Page {
                     type: ""
                     Container {
                         id: candidateItem
+                        focusPolicy: FocusPolicy.None
                         property int candidateIndex: ListItem.indexPath.length ? ListItem.indexPath[0] : -1
                         property bool highlighted: candidateIndex === ListItem.view.highlightedIndex
+                        onTouch: {
+                            if (event.isDown()) {
+                                ListItem.view.pendingIndex = candidateIndex;
+                                ListItem.view.pendingGeneration = ListItemData.generation;
+                            } else if (event.isCancel()) {
+                                ListItem.view.pendingIndex = -1;
+                                ListItem.view.pendingGeneration = null;
+                            }
+                        }
                         preferredWidth: Math.min(ListItem.view.viewportWidth, Math.max(88, ListItemData.text.length * 40 + 32))
                         preferredHeight: 72
                         minHeight: 72
@@ -194,7 +222,19 @@ Page {
                     }
                 }
             ]
-            onTriggered: backend.chooseCandidate(indexPath[0])
+            onTriggered: {
+                var touchedIndex = pendingIndex;
+                var touchedGeneration = pendingGeneration;
+                pendingIndex = -1;
+                pendingGeneration = null;
+                if (touchedIndex >= 0) {
+                    if (touchedIndex === indexPath[0])
+                        backend.chooseCandidateAt(touchedIndex, touchedGeneration);
+                    return;
+                }
+                var item = dataModel.data(indexPath);
+                if (item) backend.chooseCandidateAt(indexPath[0], item.generation);
+            }
             function followHighlight(animated) {
                 if (highlightedIndex >= 0)
                     scrollToItem([highlightedIndex], animated ? ScrollAnimation.Smooth : ScrollAnimation.None);
@@ -205,27 +245,6 @@ Page {
                         candidates.viewportWidth = layoutFrame.width;
                         backend.recordLayout("candidates", layoutFrame.x, layoutFrame.y, layoutFrame.width, layoutFrame.height);
                     }
-                }
-            ]
-        }
-        Container {
-            layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
-            preferredHeight: 38
-            minHeight: 38
-            maxHeight: 38
-            Label {
-                text: backend.status.length ? backend.status : backend.pageLabel
-                textStyle.fontSize: FontSize.XSmall
-                textStyle.color: Color.create("#e2c46a")
-                layoutProperties: StackLayoutProperties { spaceQuota: 1 }
-            }
-            Label {
-                text: backend.latency
-                textStyle.fontSize: FontSize.XSmall
-            }
-            attachedObjects: [
-                LayoutUpdateHandler {
-                    onLayoutFrameChanged: backend.recordLayout("footer", layoutFrame.x, layoutFrame.y, layoutFrame.width, layoutFrame.height)
                 }
             ]
         }
@@ -242,20 +261,24 @@ Page {
             ActionBar.placement: ActionBarPlacement.InOverflow
             enabled: backend.nativeModule.ready
             onTriggered: {
+                page.sheetActive = true;
+                page.syncMainScope();
                 if (backend.startNativeModule()) moduleSheet.open();
+                else {
+                    page.sheetActive = false;
+                    page.syncMainScope();
+                }
             }
         },
         ActionItem {
             title: "设置"
             imageSource: "asset:///tools.png"
             ActionBar.placement: ActionBarPlacement.InOverflow
-            onTriggered: { backend.disableIme(); settingsSheet.open(); }
-        },
-        ActionItem {
-            title: "符号"
-            enabled: backend.imeEnabled
-            ActionBar.placement: ActionBarPlacement.InOverflow
-            onTriggered: backend.cycleSymbols()
+            onTriggered: {
+                page.sheetActive = true;
+                page.syncMainScope();
+                settingsSheet.open();
+            }
         },
         ActionItem {
             title: "复制"
@@ -280,10 +303,25 @@ Page {
         Sheet {
             id: moduleSheet
             content: NativeModulePage {
+                id: nativeModulePage
                 ime: backend.nativeModule
-                onFinished: moduleSheet.close()
+                onFinished: {
+                    backend.setNativeScopeActive(false);
+                    nativeModulePage.sheetOpened = false;
+                    moduleSheet.close();
+                }
             }
-            onClosed: backend.stopNativeModule()
+            onOpened: {
+                nativeModulePage.sheetOpened = true;
+                nativeModulePage.syncNativeScope();
+            }
+            onClosed: {
+                backend.setNativeScopeActive(false);
+                nativeModulePage.sheetOpened = false;
+                backend.stopNativeModule();
+                page.sheetActive = false;
+                page.syncMainScope();
+            }
         },
         Quick.Connections {
             target: backend
@@ -293,13 +331,6 @@ Page {
             }
             onCandidatesChanged: candidates.scrollToPosition(ScrollPosition.Beginning, ScrollAnimation.None)
             onHighlightChanged: candidates.followHighlight(true)
-            onSymbolsChanged: {
-                if (backend.symbolsVisible) {
-                    if (!symbolDialog.opened) symbolDialog.open();
-                } else if (symbolDialog.opened) symbolDialog.close();
-                if (symbolGroups.selectedIndex !== backend.symbolGroup)
-                    symbolGroups.selectedIndex = backend.symbolGroup;
-            }
             onSettingsChanged: {
                 settingsStartMode.selectedValue = backend.defaultMode;
                 settingsShiftCandidates.checked = backend.shiftCandidates;
@@ -310,7 +341,10 @@ Page {
         },
         Sheet {
             id: settingsSheet
-            onClosed: backend.restoreFocus()
+            onClosed: {
+                page.sheetActive = false;
+                page.syncMainScope();
+            }
             content: Page {
                 titleBar: TitleBar {
                     title: "模块设置"
@@ -431,108 +465,6 @@ Page {
                             text: backend.settingsStatus
                             multiline: true
                             textStyle.fontSize: FontSize.XSmall
-                        }
-                    }
-                }
-            }
-        },
-        Dialog {
-            id: symbolDialog
-            onOpened: symbolList.requestFocus()
-            onClosed: { backend.closeSymbols(); backend.restoreFocus(); }
-            Container {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Fill
-                background: Color.create("#99000000")
-                layout: DockLayout {}
-                inputRoute.primaryKeyTarget: true
-                keyListeners: [
-                    KeyListener { onKeyEvent: backend.handleKey(event) }
-                ]
-                Container {
-                    verticalAlignment: VerticalAlignment.Bottom
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    preferredHeight: 420
-                    maxHeight: 420
-                    leftPadding: 16
-                    rightPadding: 16
-                    topPadding: 8
-                    bottomPadding: 8
-                    background: Color.create("#23272b")
-                    Container {
-                        preferredHeight: 64
-                        minHeight: 64
-                        maxHeight: 64
-                        layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
-                        Label {
-                            text: "符号"
-                            verticalAlignment: VerticalAlignment.Center
-                            textStyle.fontSize: FontSize.Medium
-                            layoutProperties: StackLayoutProperties { spaceQuota: 1 }
-                        }
-                        Button {
-                            imageSource: "asset:///cancel.png"
-                            accessibility.name: "关闭符号"
-                            preferredWidth: 76
-                            minWidth: 76
-                            maxWidth: 76
-                            preferredHeight: 64
-                            minHeight: 64
-                            maxHeight: 64
-                            onClicked: backend.closeSymbols()
-                        }
-                    }
-                    SegmentedControl {
-                        id: symbolGroups
-                        Option { text: "中文"; selected: true }
-                        Option { text: "English" }
-                        Option { text: "数学" }
-                        onSelectedIndexChanged: backend.symbolGroup = selectedIndex
-                    }
-                    ListView {
-                        id: symbolList
-                        objectName: "symbolGrid"
-                        dataModel: backend.symbolModel
-                        layoutProperties: StackLayoutProperties { spaceQuota: 1 }
-                        layout: GridListLayout {
-                            columnCount: 10
-                            cellAspectRatio: 0.9
-                            horizontalCellSpacing: 4
-                            verticalCellSpacing: 4
-                            headerMode: ListHeaderMode.None
-                        }
-                        listItemComponents: [
-                            ListItemComponent {
-                                type: ""
-                                Container {
-                                    layout: DockLayout {}
-                                    opacity: ListItemData.symbolIndex >= 0 ? 1 : 0
-                                    background: Color.create("#343b42")
-                                    accessibility.name: ListItemData.text
-                                    Label {
-                                        text: ListItemData.text
-                                        textFormat: TextFormat.Plain
-                                        textStyle.fontSize: FontSize.Small
-                                        horizontalAlignment: HorizontalAlignment.Center
-                                        verticalAlignment: VerticalAlignment.Center
-                                        bottomMargin: 20
-                                    }
-                                    Label {
-                                        text: ListItemData.key
-                                        textStyle.fontSize: FontSize.PointValue
-                                        textStyle.fontSizeValue: 4
-                                        textStyle.color: Color.create("#aab4bd")
-                                        horizontalAlignment: HorizontalAlignment.Right
-                                        verticalAlignment: VerticalAlignment.Bottom
-                                        rightMargin: 8
-                                    }
-                                }
-                            }
-                        ]
-                        onTriggered: {
-                            var item = dataModel.data(indexPath);
-                            if (item && item.symbolIndex >= 0)
-                                backend.chooseSymbol(item.symbolIndex);
                         }
                     }
                 }

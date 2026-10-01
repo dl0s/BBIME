@@ -5,6 +5,10 @@
 #include <bb/cascades/KeyEvent>
 #include <bb/cascades/TextEditor>
 #include <bb/cascades/TextAreaInputMode>
+#include <bb/cascades/TextField>
+#include <bb/cascades/TextFieldInputMode>
+#include <bb/cascades/TextFormat>
+#include <bb/cascades/VisualNode>
 #include <bb/system/Clipboard>
 #include <bb/system/Screenshot>
 #include <bb/cascades/Window>
@@ -28,18 +32,48 @@ using bbime::symbolKeys;
 using bbime::symbolSlots;
 using bbime::symbolCodes;
 
+static bool eligibleAppEditor(QObject *object) {
+    AbstractTextControl *text = qobject_cast<AbstractTextControl *>(object);
+    if (!text || text->textFormat() != TextFormat::Plain) return false;
+    for (QObject *ancestor = object; ancestor; ancestor = ancestor->parent()) {
+        VisualNode *visual = qobject_cast<VisualNode *>(ancestor);
+        Control *control = qobject_cast<Control *>(ancestor);
+        if ((visual && !visual->isVisible()) || (control && !control->isEnabled()))
+            return false;
+    }
+    if (TextArea *area = qobject_cast<TextArea *>(object))
+        return area->isEditable() && (area->inputMode() == TextAreaInputMode::Custom ||
+            area->inputMode() == TextAreaInputMode::Default || area->inputMode() == TextAreaInputMode::Text);
+    if (TextField *field = qobject_cast<TextField *>(object))
+        return field->inputMode() == TextFieldInputMode::Custom ||
+            field->inputMode() == TextFieldInputMode::Default ||
+            field->inputMode() == TextFieldInputMode::Text || field->inputMode() == TextFieldInputMode::Chat;
+    return false;
+}
+static bool appEditorFocused(QObject *object) {
+    Control *control = qobject_cast<Control *>(object);
+    return control && control->isFocused();
+}
+static bool isSymEvent(const KeyEvent *event) {
+    const int identity = event->keycap() ? event->keycap() : event->key();
+    return identity == symKey || identity == Qt::Key_F22 ||
+        event->key() == symKey || event->key() == Qt::Key_F22;
+}
+
 Backend::Backend(QObject *parent) : QObject(parent),
     m_decoder(m_inputService.legacyDecoder()),
     m_nativeModule(new bbime::NativeController(m_inputService, this)),
     m_nativePageOpen(false),
+    m_mainScopeActive(true), m_nativeScopeActive(false),
+    m_mainFocusQueued(false), m_nativeFocusQueued(false),
     m_moduleSettings(QDir::currentPath() + "/data/module-settings.ini"),
     m_candidateModel(new ArrayDataModel(this)), m_symbolModel(new ArrayDataModel(this)),
     m_mode("natural"),
     m_page(0), m_highlight(0), m_selectionAnchor(-1),
     m_selectionCursor(0), m_symbolGroup(0), m_symbolCycleStart(-1),
-    m_imeEnabled(true), m_ready(false), m_active(true),
+    m_imeEnabled(false), m_ready(false), m_active(false),
     m_loading(false), m_editing(false), m_testing(false), m_symbolsVisible(false),
-    m_cursorCodePoints(true),
+    m_cursorCodePoints(true), m_candidateGeneration(1),
     m_sampleCount(0), m_leftShiftSeen(0), m_rightShiftSeen(0), m_shiftMoves(0),
     m_shiftCursorMoves(0), m_altSeen(0), m_symSeen(0), m_symbolCycles(0) {
     if (!m_moduleSettings.load() && m_moduleSettings.error() != "NOT_FOUND")
@@ -60,7 +94,6 @@ Backend::Backend(QObject *parent) : QObject(parent),
     connect(app, SIGNAL(awake()), this, SLOT(active()));
     m_status = QString::fromUtf8("正在载入词库");
     m_latency = QString::fromUtf8("解码 P95 --");
-    refreshSymbols();
     QTimer::singleShot(0, this, SLOT(initialize()));
 }
 Backend::~Backend() {
@@ -90,6 +123,7 @@ void Backend::initialize() {
     std::fprintf(stderr, "BBIME: READY mapped_syllables=%u\n",
                  unsigned(m_decoder.mappedSyllables()));
     emit changed();
+    active();
     if (QFile::exists("data/layout-capture.once"))
         QTimer::singleShot(1800, this, SLOT(captureLayout()));
 }
@@ -122,6 +156,85 @@ void Backend::attachEditor(QObject *object) {
     connect(m_editor->editor(), SIGNAL(selectionEndChanged(int)),
             this, SLOT(editorPositionChanged()));
     m_editor->setInputMode(TextAreaInputMode::Custom);
+    watchEditorState(m_editor, false);
+    queueMainFocusCheck();
+}
+
+void Backend::watchEditorState(QObject *object, bool native) {
+    const char *slot = native ? SLOT(queueNativeFocusCheck()) : SLOT(queueMainFocusCheck());
+    for (QObject *ancestor = object; ancestor; ancestor = ancestor->parent()) {
+        if (qobject_cast<VisualNode *>(ancestor))
+            connect(ancestor, SIGNAL(visibleChanged(bool)), this, slot, Qt::UniqueConnection);
+        if (qobject_cast<Control *>(ancestor))
+            connect(ancestor, SIGNAL(enabledChanged(bool)), this, slot, Qt::UniqueConnection);
+    }
+    connect(object, SIGNAL(destroyed(QObject*)), this, slot, Qt::UniqueConnection);
+    connect(object, SIGNAL(textFormatChanged(bb::cascades::TextFormat::Type)), this, slot);
+    if (qobject_cast<TextArea *>(object)) {
+        connect(object, SIGNAL(editableChanged(bool)), this, slot);
+        connect(object, SIGNAL(inputModeChanged(bb::cascades::TextAreaInputMode::Type)), this, slot);
+    } else connect(object, SIGNAL(inputModeChanged(bb::cascades::TextFieldInputMode::Type)), this, slot);
+}
+void Backend::queueMainFocusCheck() {
+    if (m_testing || m_mainFocusQueued) return;
+    m_mainFocusQueued = true;
+    QTimer::singleShot(0, this, SLOT(reconcileMainFocus()));
+}
+void Backend::queueNativeFocusCheck() {
+    if (m_testing || m_nativeFocusQueued) return;
+    m_nativeFocusQueued = true;
+    QTimer::singleShot(0, this, SLOT(reconcileNativeFocus()));
+}
+void Backend::editorFocusChanged(bool focused) {
+    if (focused) reconcileMainFocus();
+    else queueMainFocusCheck();
+}
+void Backend::setMainScopeActive(bool active) {
+    m_mainScopeActive = active;
+    reconcileMainFocus();
+}
+void Backend::reconcileMainFocus() {
+    m_mainFocusQueued = false;
+    if (m_testing) return;
+    const bool scope = m_mainScopeActive && !m_nativePageOpen;
+    QObject *owner = appEditorFocused(m_editor) ? m_editor.data() : 0;
+    if (m_active && scope) m_mainFocusGate.observe(owner);
+    setImeEnabled(m_mainFocusGate.permits(m_ready && eligibleAppEditor(owner), m_active, scope, owner));
+}
+bool Backend::registerNativeEditor(QObject *editor) {
+    if (!m_nativeModule->registerEditor(editor, "text", false)) return false;
+    m_nativeEditors.append(QPointer<QObject>(editor));
+    watchEditorState(editor, true);
+    queueNativeFocusCheck();
+    return true;
+}
+QObject *Backend::focusedNativeEditor() const {
+    foreach (const QPointer<QObject> &editor, m_nativeEditors)
+        if (appEditorFocused(editor)) return editor.data();
+    return 0;
+}
+void Backend::nativeEditorFocusChanged(QObject *, bool focused) {
+    if (focused) reconcileNativeFocus();
+    else queueNativeFocusCheck();
+}
+void Backend::setNativeScopeActive(bool active) {
+    m_nativeScopeActive = active;
+    reconcileNativeFocus();
+}
+void Backend::reconcileNativeFocus() {
+    m_nativeFocusQueued = false;
+    if (m_testing) return;
+    const bool scope = m_nativePageOpen && m_nativeScopeActive;
+    QObject *owner = focusedNativeEditor();
+    if (m_active && scope) m_nativeFocusGate.observe(owner);
+    m_nativeModule->setEnabled(m_nativeFocusGate.permits(
+        m_nativeModule->ready() && eligibleAppEditor(owner), m_active, scope, owner));
+}
+void Backend::toggleNativeIme() {
+    if (!m_active || !m_nativePageOpen || !m_nativeScopeActive) return;
+    if (m_nativeModule->enabled()) m_nativeFocusGate.pause();
+    else m_nativeFocusGate.resume();
+    reconcileNativeFocus();
 }
 
 void Backend::documentChanged() {
@@ -178,15 +291,16 @@ void Backend::scheduleMetrics() {
 }
 void Backend::recordLayout(const QString &name, double x, double y,
                            double width, double height) {
-    if (m_testing || width <= 0 || height <= 0) return;
+    if (m_testing) return;
     m_layout[name] = QRectF(x, y, width, height);
     m_layoutTimer.start(150);
 }
 void Backend::saveLayout() {
     QSettings layout("data/ui-layout.ini", QSettings::IniFormat);
     const double available = m_layout.value("content").height();
-    bool fits = available > 0;
-    const char *names[] = {"header", "modes", "editor", "composition", "candidates", "footer"};
+    bool complete = available > 0;
+    bool fits = complete;
+    const char *names[] = {"header", "modes", "editor", "composition", "footer", "candidates"};
     layout.remove("first");
     layout.remove("second");
     layout.remove("typing_active");
@@ -194,17 +308,33 @@ void Backend::saveLayout() {
     for (unsigned i = 0; i < sizeof(names) / sizeof(names[0]); ++i) {
         const QString name = names[i];
         const QRectF rect = m_layout.value(name);
-        const bool rowFits = rect.height() > 0 && rect.y() >= previousBottom - 1 &&
-            rect.bottom() <= available + 1;
-        fits = fits && rowFits;
-        previousBottom = rect.bottom();
+        const bool participating = name != "candidates" || imeEnabled();
+        const bool measured = rect.width() > 0 && rect.height() > 0;
+        if (participating) {
+            complete = complete && measured;
+            fits = fits && measured && rect.y() >= previousBottom - 1 &&
+                rect.bottom() <= available + 1;
+            if (measured) previousBottom = rect.bottom();
+        }
+        layout.setValue(name + "/participating", participating);
+        layout.setValue(name + "/measured", measured);
         layout.setValue(name + "/x", rect.x());
         layout.setValue(name + "/y", rect.y());
         layout.setValue(name + "/width", rect.width());
         layout.setValue(name + "/height", rect.height());
     }
     layout.setValue("available_height", available);
-    layout.setValue("action_bar_policy", "manual_custom_ime_gate");
+    const QRectF candidates = m_layout.value("candidates");
+    const bool docked = imeEnabled() && candidates.width() > 0 &&
+        qAbs(candidates.height() - 72) <= 1 && qAbs(candidates.bottom() - available) <= 1;
+    layout.setValue("version", "0.1.0.15");
+    layout.setValue("action_bar_policy", "focus_gated_bottom_candidates");
+    layout.setValue("candidate_position_policy", "last_content_row_replaces_action_bar");
+    layout.setValue("candidate_expected_height", 72);
+    layout.setValue("candidate_bottom_docked", docked);
+    layout.setValue("measurements_complete", complete);
+    layout.setValue("layout_check_status", !complete ? "PENDING_MEASUREMENTS" :
+        fits && (!imeEnabled() || docked) ? "PASS" : "FAIL");
     layout.setValue("ime_enabled", imeEnabled());
     layout.setValue("action_bar_visible", !imeEnabled());
     layout.setValue("nonoverlapping_rows_fit", fits);
@@ -212,6 +342,10 @@ void Backend::saveLayout() {
 }
 void Backend::inactive() {
     m_active = false;
+    if (!m_testing) {
+        reconcileMainFocus();
+        reconcileNativeFocus();
+    }
     m_pressed.clear();
     m_shiftPending.clear();
     closeSymbols();
@@ -224,7 +358,10 @@ void Backend::active() {
         m_pressed.clear();
         m_shiftPending.clear();
     }
-    m_active = true;
+    Application *app = Application::instance();
+    m_active = m_testing || (app->scene() && app->isFullscreen() && app->isAwake());
+    reconcileMainFocus();
+    reconcileNativeFocus();
 }
 
 QString Backend::pinyin() const { return fromUtf8(m_decoder.pinyin()); }
@@ -234,6 +371,7 @@ void Backend::refreshCandidates() {
     for (size_t i = 0; i < m_decoder.candidates().size(); ++i) {
         QVariantMap row;
         row["text"] = fromUtf8(m_decoder.candidates()[i].text);
+        row["generation"] = uint(m_candidateGeneration);
         rows << row;
     }
     m_candidateModel->clear();
@@ -256,30 +394,10 @@ void Backend::refreshSymbols() {
     m_symbolModel->append(rows);
 }
 void Backend::setSymbolGroup(int group) {
-    if (!imeEnabled() || group < 0 || group > 2 || group == m_symbolGroup) return;
-    m_symbolGroup = group;
-    refreshSymbols();
-    if (!m_testing) emit symbolsChanged();
+    Q_UNUSED(group);
 }
 void Backend::cycleSymbols() {
-    if (!m_active || !imeEnabled()) return;
-    if (m_symbolsVisible) {
-        const int next = (m_symbolGroup + 1) % 3;
-        if (next == m_symbolCycleStart) {
-            closeSymbols();
-            return;
-        }
-        setSymbolGroup(next);
-        if (!m_testing) {
-            ++m_symbolCycles;
-            scheduleMetrics();
-        }
-        return;
-    }
-    m_symbolCycleStart = m_mode == "english" ? 1 : 0;
-    m_symbolsVisible = true;
-    setSymbolGroup(m_symbolCycleStart);
-    if (!m_testing) emit symbolsChanged();
+    // This validation application deliberately has no custom Sym interface.
 }
 void Backend::closeSymbols() {
     if (!m_symbolsVisible) return;
@@ -289,16 +407,8 @@ void Backend::closeSymbols() {
     restoreFocus();
 }
 bool Backend::chooseSymbol(int index) {
-    if (!m_active || !imeEnabled() || index < 0 || index >= 26 || !m_symbolsVisible)
-        return false;
-    const QString text(QChar(symbolCodes[m_symbolGroup][index]));
-    if (!m_code.isEmpty()) {
-        if (!m_decoder.candidates().empty() && !chooseCandidate(m_highlight)) return false;
-        if (!m_code.isEmpty() && !literalComposition()) return false;
-    }
-    if (!insert(text)) return false;
-    closeSymbols();
-    return true;
+    Q_UNUSED(index);
+    return false;
 }
 QString Backend::pageLabel() const {
     int count = int(m_decoder.candidates().size());
@@ -318,8 +428,8 @@ void Backend::setMode(const QString &mode) {
     restoreFocus();
 }
 void Backend::setImeEnabled(bool enabled) {
-    if (enabled) m_nativeModule->suspend();
     if (enabled == imeEnabled()) return;
+    if (enabled) m_nativeModule->suspend();
     m_imeEnabled = enabled;
     m_pressed.clear();
     m_shiftPending.clear();
@@ -334,30 +444,40 @@ void Backend::setImeEnabled(bool enabled) {
         scheduleMetrics();
         m_layoutTimer.start(150);
     }
-    restoreFocus();
 }
 void Backend::toggleIme() {
-    setImeEnabled(!imeEnabled());
+    if (m_testing) { setImeEnabled(!imeEnabled()); return; }
+    if (!m_active || !m_mainScopeActive || m_nativePageOpen) return;
+    if (imeEnabled()) m_mainFocusGate.pause();
+    else {
+        m_mainFocusGate.resume();
+        if (eligibleAppEditor(m_editor)) m_editor->requestFocus();
+    }
+    reconcileMainFocus();
 }
 void Backend::disableIme() {
+    if (!m_testing) m_mainFocusGate.pause();
     setImeEnabled(false);
 }
 bool Backend::startNativeModule() {
-    disableIme();
+    setImeEnabled(false);
     m_nativeModule->suspend();
     if (!m_ready || !m_nativeModule->ready() ||
         !m_nativeModule->configure(m_moduleSettings.profile(), learnSelections())) return false;
     m_nativeModule->setMode(m_mode);
-    m_nativeModule->setEnabled(true);
     m_nativePageOpen = true;
+    m_nativeScopeActive = false;
+    m_nativeFocusGate.observe(0);
     return true;
 }
 void Backend::stopNativeModule() {
     if (m_nativePageOpen) m_mode = m_nativeModule->mode();
     m_nativeModule->suspend();
+    m_nativeScopeActive = false;
+    m_nativeFocusGate.observe(0);
     m_nativePageOpen = false;
     if (!m_testing) emit changed();
-    restoreFocus();
+    reconcileMainFocus();
 }
 void Backend::toggleLanguage() {
     if (!imeEnabled()) return;
@@ -416,7 +536,8 @@ void Backend::importSettings() {
     emit settingsChanged();
 }
 void Backend::restoreFocus() {
-    if (m_editor && m_active && !m_testing && !m_symbolsVisible) m_editor->requestFocus();
+    if (imeEnabled() && m_active && m_mainScopeActive && !m_nativePageOpen &&
+        !m_testing && eligibleAppEditor(m_editor)) m_editor->requestFocus();
 }
 
 void Backend::remember() {
@@ -532,6 +653,7 @@ void Backend::updateCode(const QString &code) {
     bool accepted = m_decoder.setCode(code.toLatin1().constData(), true);
     const double ms = timer.nsecsElapsed() / 1000000.0;
     if (accepted) {
+        ++m_candidateGeneration;
         m_code = code;
         m_page = 0;
         m_highlight = 0;
@@ -544,6 +666,7 @@ void Backend::updateCode(const QString &code) {
     if (!m_testing) emit changed();
 }
 void Backend::cancel() {
+    ++m_candidateGeneration;
     m_code.clear();
     m_page = 0;
     m_highlight = 0;
@@ -562,6 +685,7 @@ bool Backend::choose(int slot) {
     return chooseCandidate(m_page * 5 + slot);
 }
 bool Backend::chooseCandidate(int index) {
+    if (!m_testing) reconcileMainFocus();
     if (!m_active || !imeEnabled() || index < 0 ||
         index >= int(m_decoder.candidates().size())) return false;
     const bbime::Candidate chosen = m_decoder.candidates()[index];
@@ -571,6 +695,11 @@ bool Backend::chooseCandidate(int index) {
     updateCode(rest);
     restoreFocus();
     return true;
+}
+bool Backend::chooseCandidateAt(int index, unsigned long generation) {
+    if (!m_testing) reconcileMainFocus();
+    if (generation != m_candidateGeneration) return false;
+    return chooseCandidate(index);
 }
 void Backend::page(int direction) {
     if (!m_active || !imeEnabled()) return;
@@ -613,7 +742,17 @@ void Backend::clear() {
 
 bool Backend::handleNativeKey(QObject *editor, QObject *object) {
     KeyEvent *event = qobject_cast<KeyEvent *>(object);
-    if (!event || !m_active || !m_nativePageOpen || !m_nativeModule->enabled()) return false;
+    if (!event) return false;
+    reconcileNativeFocus();
+    if (!m_active || !m_nativePageOpen || !m_nativeScopeActive ||
+        focusedNativeEditor() != editor || !m_nativeModule->enabled()) return false;
+    if (isSymEvent(event)) {
+        // Consume both phases without entering the shared controller's panel.
+        if (event->isPressed()) m_nativeModule->suppressStandaloneShifts();
+        if (event->isPressed() && !m_testing) { ++m_symSeen; scheduleMetrics(); }
+        event->accept();
+        return true;
+    }
     const int key = event->keycap() ? event->keycap() : event->key();
     const bool enter = key == KEYCODE_RETURN || key == Qt::Key_Return || key == 13;
     // Language is a host shortcut. The module retains its business-key boundary.
@@ -629,6 +768,7 @@ bool Backend::handleNativeKey(QObject *editor, QObject *object) {
 }
 bool Backend::handleKey(QObject *object) {
     KeyEvent *event = qobject_cast<KeyEvent *>(object);
+    if (!m_testing) reconcileMainFocus();
     if (!event || !m_active) return false;
     if (!imeEnabled()) return false;
     const int identity = event->keycap() ? event->keycap() : event->key();
@@ -721,12 +861,12 @@ bool Backend::handleKey(QObject *object) {
     }
     if (symbolKey) {
         if (!m_testing) { ++m_symSeen; scheduleMetrics(); }
-        cycleSymbols();
         return true;
     }
     if (identity == KEYCODE_LEFT_CTRL || identity == KEYCODE_RIGHT_CTRL ||
         identity == KEYCODE_CAPS_LOCK || identity == Qt::Key_Control ||
-        identity == Qt::Key_CapsLock) return true;
+        identity == Qt::Key_CapsLock || identity == Qt::Key_Meta ||
+        identity == KEYCODE_MENU) return true;
     if (m_symbolsVisible) {
         if (escape || backspace) closeSymbols();
         else if (!event->isAltPressed() && !event->isCtrlPressed()) {
@@ -997,72 +1137,29 @@ bool Backend::inputSelftest() {
     const bool altPass = pass;
     pass = true;
     cancel();
-    testKey(this, symKey, symKey, false, false, false, false);
-    testKey(this, symKey, symKey, false, false, false, false, 300);
-    pass = pass && m_symbolsVisible && m_symbolGroup == 0 && m_code.isEmpty();
-    KeyEvent symUp(symKey, symKey, false, false, false, false, 300);
-    handleKey(&symUp);
-    testKey(this, symKey, symKey);
-    pass = pass && m_symbolsVisible && m_symbolGroup == 1;
-    testKey(this, symKey, symKey);
-    pass = pass && m_symbolsVisible && m_symbolGroup == 2;
-    testKey(this, symKey, symKey, false, false, false, false);
-    pass = pass && !m_symbolsVisible && m_symbolCycleStart == -1 &&
-        scratch->text() == beforeAlt && m_code.isEmpty() && m_mode == "natural";
-    testKey(this, symKey, symKey, false, false, false, false, 300);
-    pass = pass && !m_symbolsVisible;
-    handleKey(&symUp);
-    testKey(this, symKey, symKey);
-    pass = pass && m_symbolsVisible && m_symbolGroup == 0;
-    testKey(this, KEYCODE_BACKSPACE, 8);
-    pass = pass && !m_symbolsVisible && scratch->text() == beforeAlt;
     testLetters(this, "nihk");
     const QString beforeSymbol = scratch->text();
-    testKey(this, symKey, symKey);
-    pass = pass && m_symbolsVisible && m_code == "nihk" &&
-        !chooseSymbol(-1) && !chooseSymbol(26);
     const int beforeSymbolCursor = scratch->editor()->cursorPosition();
-    for (int group = 1; group <= 2; ++group) {
+    const unsigned long beforeSymGeneration = m_candidateGeneration;
+    for (int repeat = 0; repeat < 100; ++repeat) {
         testKey(this, symKey, symKey);
-        pass = pass && m_symbolsVisible && m_symbolGroup == group &&
+        testKey(this, Qt::Key_F22, Qt::Key_F22);
+        cycleSymbols();
+        setSymbolGroup(repeat % 3);
+        pass = pass && !m_symbolsVisible && m_symbolCycleStart == -1 &&
             m_code == "nihk" && scratch->text() == beforeSymbol &&
-            scratch->editor()->cursorPosition() == beforeSymbolCursor && m_mode == "natural";
+            scratch->editor()->cursorPosition() == beforeSymbolCursor &&
+            m_candidateGeneration == beforeSymGeneration && m_mode == "natural" &&
+            !chooseSymbol(0);
     }
-    testKey(this, symKey, symKey);
-    pass = pass && !m_symbolsVisible && m_symbolCycleStart == -1 &&
-        m_code == "nihk" && scratch->text() == beforeSymbol &&
-        scratch->editor()->cursorPosition() == beforeSymbolCursor && m_mode == "natural";
-    testKey(this, symKey, symKey);
-    pass = pass && m_symbolsVisible && m_symbolGroup == 0;
-    testKey(this, 'q', 'q');
+    testKey(this, ' ', ' ');
     pass = pass && !m_symbolsVisible && m_code.isEmpty() &&
-        scratch->text() == beforeSymbol + QString::fromUtf8("\xe4\xbd\xa0\xe5\xa5\xbd") + QChar(0xff0c);
+        scratch->text() == beforeSymbol + QString::fromUtf8("\xe4\xbd\xa0\xe5\xa5\xbd");
     setMode("english");
     const QString beforeEnglishSymbols = scratch->text();
-    testKey(this, symKey, symKey);
-    pass = pass && m_symbolsVisible && m_symbolGroup == 1;
-    testKey(this, symKey, symKey);
-    pass = pass && m_symbolsVisible && m_symbolGroup == 2;
-    testKey(this, symKey, symKey);
-    pass = pass && m_symbolsVisible && m_symbolGroup == 0;
-    testKey(this, symKey, symKey);
-    pass = pass && !m_symbolsVisible && m_symbolCycleStart == -1 &&
-        m_mode == "english" && scratch->text() == beforeEnglishSymbols;
-    testKey(this, symKey, symKey);
-    pass = pass && m_symbolsVisible && m_symbolGroup == 1;
-    pass = pass && chooseSymbol(symbolSlots[25]) && scratch->text().endsWith("\\");
-    testKey(this, symKey, symKey);
-    testKey(this, symKey, symKey);
-    pass = pass && m_symbolsVisible && m_symbolGroup == 2;
-    pass = pass && chooseSymbol(1) && scratch->text().endsWith(QChar(0x00d7));
-    testKey(this, symKey, symKey);
-    testKey(this, KEYCODE_ESCAPE, 27);
-    pass = pass && !m_symbolsVisible;
-    scratch->setText(QString(16384, 'x'));
-    scratch->editor()->setCursorPosition(16384);
-    testKey(this, symKey, symKey);
-    pass = pass && !chooseSymbol(0) && m_symbolsVisible && scratch->text().size() == 16384;
-    closeSymbols();
+    for (int repeat = 0; repeat < 100; ++repeat) testKey(this, symKey, symKey);
+    pass = pass && !m_symbolsVisible && m_mode == "english" &&
+        scratch->text() == beforeEnglishSymbols;
     const bool symbolsPass = pass;
     pass = true;
     QString keyboardRows[3];
@@ -1146,10 +1243,13 @@ bool Backend::inputSelftest() {
     pass = testCursorCheckpoint(scratch, "capital_combination", afterCapital) && pass;
     const QString beforePopupCursor = scratch->text();
     testKey(this, symKey, symKey);
+    pass = testCursorCheckpoint(scratch, "sym_noop", afterCapital) && pass &&
+        !m_symbolsVisible && scratch->text() == beforePopupCursor;
     testKey(this, KEYCODE_RIGHT_SHIFT, KEYCODE_RIGHT_SHIFT);
-    pass = testCursorCheckpoint(scratch, "symbol_popup", afterCapital) && pass && m_symbolsVisible &&
+    const int afterSymShift = editorOffset(beforePopupCursor,
+        qMin(beforePopupCursor.size(), utf16Offset(beforePopupCursor, afterCapital) + 1));
+    pass = testCursorCheckpoint(scratch, "shift_after_sym", afterSymShift) && pass && !m_symbolsVisible &&
         scratch->text() == beforePopupCursor;
-    closeSymbols();
     const bool cursorPass = pass;
     pass = true;
     scratch->setText(cursorText);
@@ -1309,7 +1409,7 @@ bool Backend::inputSelftest() {
     testKey(this, 'a', 'A', false, true);
     pass = pass && scratch->text() == expectedCapital;
     const bool preferencesPass = pass;
-    std::fprintf(stderr, "BBIME: INPUT_EXTENSIONS STRIP=%s ALT=%s SYMBOLS=%s GRID=%s CURSOR=%s POSITIONS=%s PAUSED=%s GATE=%s PREFERENCES=%s\n",
+    std::fprintf(stderr, "BBIME: INPUT_EXTENSIONS STRIP=%s ALT=%s SYM_DISABLED=%s SHARED_GRID=%s CURSOR=%s POSITIONS=%s PAUSED=%s GATE=%s PREFERENCES=%s\n",
         stripPass ? "PASS" : "FAIL", altPass ? "PASS" : "FAIL",
         symbolsPass ? "PASS" : "FAIL", gridPass ? "PASS" : "FAIL",
         cursorPass ? "PASS" : "FAIL", positionsPass ? "PASS" : "FAIL", pausedPass ? "PASS" : "FAIL",
@@ -1365,7 +1465,9 @@ void Backend::runDiagnostics() {
     std::sort(values.begin(), values.end());
     const bool inputPass = inputSelftest();
     QSettings diagnostic("data/startup-diagnostics.ini", QSettings::IniFormat);
-    diagnostic.setValue("version", "0.1.0.12");
+    diagnostic.setValue("version", "0.1.0.15");
+    diagnostic.setValue("custom_sym_interface", "REMOVED");
+    diagnostic.setValue("focus_policy", "ELIGIBLE_EDITOR_WITH_SCOPE_AND_MANUAL_PAUSE");
     diagnostic.setValue("editor_input_mode", "Custom");
     diagnostic.setValue("system_ime", "NEVER_ENABLED");
     diagnostic.setValue("ime_enabled", imeEnabled());

@@ -1,0 +1,46 @@
+{
+  "timestamp": "2026-10-02T01:26:27.4955853+08:00",
+  "version": "0.1.0.15",
+  "applicationScope": "BBIME_STANDALONE_AND_SHARED_BASE_ONLY_HOSTS_PAUSED",
+  "gitBranch": "codex/bbime-0.1.0.15-baseline",
+  "gitBaselineTag": "bbime-0.1.0.15-baseline",
+  "package": {
+    "path": "build/releases/0.1.0.15/BBIME-0.1.0.15.bar",
+    "sha256": "6E278638441CF5339482659C92FB044ADAD6C44F4E10F5C652E0D55A14BE90B8",
+    "deviceInstalled": false
+  },
+  "focusPolicy": {
+    "header": "src/focusstate.h",
+    "type": "bbime::EditorFocusGate",
+    "manifest": "BBIMEPolicyHeaders",
+    "scope": "PURE_CPP98_POLICY_WITH_BACKEND_WIRING_EXAMPLE"
+  },
+  "candidatePolicy": {
+    "heightPx": 72,
+    "position": "LAST_CONTENT_ROW_BOTTOM_PADDING_ZERO_FLEXIBLE_EDITOR",
+    "visible": "IME_ENABLED",
+    "actionBar": "HIDDEN_WHILE_IME_ENABLED"
+  },
+  "customSymInterface": "REMOVED_FROM_PRODUCT_AND_DEFAULT_MODULE",
+  "validation": {
+    "phase": "research/phase-ab-validation-0.1.0.15.json",
+    "package": "research/bbime-app-package-0.1.0.15.json",
+    "hostPreservation": "research/host-preservation-baseline-0.1.0.15.json",
+    "priorDeviceStartup": "research/q10-app-startup-0.1.0.14.txt",
+    "status": "LOCAL_PASS_DEVICE_ACCEPTANCE_PENDING",
+    "focusPolicyChecks": 21,
+    "qmlHandlerGroups": 20,
+    "sourceContracts": 37,
+    "randomQueries": 10000
+  },
+  "deviceVersion": "0.1.0.14",
+  "releaseReady": false,
+  "remainingEffectiveHours": "3-6",
+  "remainingGates": [
+    "0.15_INSTALL_AND_COLD_START",
+    "BOTTOM_DOCK_MEASUREMENTS_AND_LONG_TEXT",
+    "FOCUS_PAUSE_FIRST_KEY_SHEETS_AND_LIFECYCLE",
+    "PHYSICAL_KEYS_AND_TOUCH_ACCEPTANCE"
+  ],
+  "report": "research/BBIME_BASELINE_0.1.0.15_2026-10-02.md"
+}

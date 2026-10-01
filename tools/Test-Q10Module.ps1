@@ -1,8 +1,14 @@
 param(
-    [string]$ConnectionPath = 'C:\Users\dove1\AppData\Local\Q10Manager\connection.json'
+    [string]$ConnectionPath = '',
+    [switch]$LegacyAlgorithms
 )
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
+if (-not $ConnectionPath) {
+    $ConnectionPath = if ($env:Q10DEPLOY_CONFIG) { $env:Q10DEPLOY_CONFIG } else {
+        Join-Path $env:LOCALAPPDATA 'Q10Deploy\config.json'
+    }
+}
 $config = Get-Content -LiteralPath $ConnectionPath -Raw -Encoding UTF8 | ConvertFrom-Json
 if ($config.DeviceHost -ne '192.168.1.61' -or $config.SshUser -ne 'root') {
     throw 'Synthetic validation is restricted to the configured Q10.'
@@ -13,7 +19,7 @@ $options = @('-F', 'none', '-o', 'BatchMode=yes', '-o', 'IdentitiesOnly=yes',
     '-o', 'GlobalKnownHostsFile=none', '-o', 'ConnectTimeout=4',
     '-o', 'ServerAliveInterval=5', '-o', 'ServerAliveCountMax=1',
     '-i', $config.SshKeyPath)
-if ($config.LegacyAlgorithms) {
+if ($LegacyAlgorithms -or $config.LegacyAlgorithms) {
     $options += @('-o', 'HostKeyAlgorithms=+ssh-rsa',
         '-o', 'PubkeyAcceptedKeyTypes=+ssh-rsa', '-o', 'MACs=+hmac-sha1')
 }
@@ -29,7 +35,7 @@ $remote = '/tmp/bbime-validation/' + [guid]::NewGuid().ToString('N')
 if ($remote -notmatch '^/tmp/bbime-validation/[a-f0-9]{32}$') { throw 'Invalid scratch path' }
 $record = [ordered]@{
     timestamp = [DateTimeOffset]::Now.ToOffset([TimeSpan]::FromHours(8)).ToString('o')
-    sourceVersion = '0.1.0.12'
+    sourceVersion = '0.1.0.15'
     scope = 'ARM32_SYNTHETIC_CORE_ONLY_SSH_ROOT_NOT_APP_PERMISSIONS_OR_UI'
     scratchDirectory = $remote
     status = 'PENDING'
@@ -83,5 +89,5 @@ try {
     throw
 } finally {
     $record | ConvertTo-Json -Depth 8 |
-        Set-Content -LiteralPath (Join-Path $root 'research/native-module-arm-validation-0.1.0.12.json') -Encoding UTF8
+        Set-Content -LiteralPath (Join-Path $root 'research/native-module-arm-validation-0.1.0.15.json') -Encoding UTF8
 }

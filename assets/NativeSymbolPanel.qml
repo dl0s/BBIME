@@ -4,8 +4,45 @@ import QtQuick 1.0 as Quick
 Dialog {
     id: panel
     property variant ime
-    onOpened: grid.requestFocus()
-    onClosed: { ime.closeSymbols(); ime.restoreFocus(); }
+    // 0 closed, 1 opening, 2 open, 3 closing. SDK opened changes only
+    // after the animation, and ignores close/open requests during it.
+    property int animationPhase: 0
+    property bool syncingGroup: false
+    function reconcile() {
+        if (!ime) return;
+        if (groups.selectedIndex !== ime.symbolGroup) {
+            syncingGroup = true;
+            groups.selectedIndex = ime.symbolGroup;
+            syncingGroup = false;
+        }
+        if (ime.symbolsVisible && animationPhase === 0) {
+            animationPhase = 1;
+            ime.setSymbolPanelActive(true);
+            open();
+        } else if (!ime.symbolsVisible && animationPhase === 2) {
+            animationPhase = 3;
+            close();
+        }
+    }
+    onOpened: {
+        animationPhase = 2;
+        if (ime && ime.symbolsVisible) grid.requestFocus();
+        reconcile();
+    }
+    onClosed: {
+        var requestedClose = animationPhase === 3;
+        animationPhase = 0;
+        if (!ime) return;
+        // An unsolicited dismissal cancels this panel. A requested close
+        // must not cancel a newer open intent that arrived during animation.
+        if (!requestedClose && ime.symbolsVisible) ime.closeSymbols();
+        if (!ime.symbolsVisible) {
+            ime.setSymbolPanelActive(false);
+            ime.restoreFocus();
+        }
+        reconcile();
+    }
+    onCreationCompleted: reconcile()
     Container {
         horizontalAlignment: HorizontalAlignment.Fill
         verticalAlignment: VerticalAlignment.Fill
@@ -48,7 +85,10 @@ Dialog {
                 Option { text: "中文"; selected: true }
                 Option { text: "English" }
                 Option { text: "数学" }
-                onSelectedIndexChanged: panel.ime.symbolGroup = selectedIndex
+                onSelectedIndexChanged: {
+                    if (!panel.syncingGroup && panel.ime && panel.ime.symbolsVisible)
+                        panel.ime.symbolGroup = selectedIndex;
+                }
             }
             ListView {
                 id: grid
@@ -100,13 +140,7 @@ Dialog {
         attachedObjects: [
             Quick.Connections {
                 target: panel.ime
-                onSymbolsChanged: {
-                    if (panel.ime.symbolsVisible) {
-                        if (!panel.opened) panel.open();
-                    } else if (panel.opened) panel.close();
-                    if (groups.selectedIndex !== panel.ime.symbolGroup)
-                        groups.selectedIndex = panel.ime.symbolGroup;
-                }
+                onSymbolsChanged: panel.reconcile()
             }
         ]
     }

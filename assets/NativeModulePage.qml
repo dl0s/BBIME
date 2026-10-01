@@ -4,28 +4,35 @@ import QtQuick 1.0 as Quick
 Page {
     id: page
     property variant ime
+    property bool sheetOpened: false
+    function syncNativeScope() {
+        backend.setNativeScopeActive(sheetOpened &&
+            actionMenuVisualState === ActionMenuVisualState.Hidden);
+    }
     signal finished()
     actionBarVisibility: ime.enabled ? ChromeVisibility.Hidden : ChromeVisibility.Visible
     actionBarAutoHideBehavior: ActionBarAutoHideBehavior.Disabled
     keysIgnoreFocusInActionBar: ime.enabled
-    onActionMenuVisualStateChanged: {
-        if (actionMenuVisualState === ActionMenuVisualState.VisibleFull ||
-            actionMenuVisualState === ActionMenuVisualState.AnimatingToVisibleFull)
-            ime.suspend();
-    }
+    onCreationCompleted: syncNativeScope()
+    onActionMenuVisualStateChanged: syncNativeScope()
     titleBar: TitleBar {
         title: "原生模块"
         dismissAction: ActionItem {
             title: "关闭"
             imageSource: "asset:///cancel.png"
-            onTriggered: { ime.suspend(); page.finished(); }
+            onTriggered: {
+                backend.setNativeScopeActive(false);
+                page.finished();
+            }
         }
     }
     Container {
+        id: nativeContent
+        layout: StackLayout { orientation: LayoutOrientation.TopToBottom }
         leftPadding: 16
         rightPadding: 16
         topPadding: 8
-        bottomPadding: 8
+        bottomPadding: 0
         Container {
             layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
             SegmentedControl {
@@ -44,23 +51,11 @@ Page {
                     if (initialized && ime.enabled) ime.mode = selectedValue;
                 }
             }
-            Button {
-                focusPolicy: FocusPolicy.None
-                text: "Sym"
-                enabled: ime.enabled
-                preferredWidth: 76
-                minWidth: 76
-                maxWidth: 76
-                onClicked: ime.cycleSymbols()
-            }
             ImeToggle {
                 inputEnabled: ime.enabled
                 inputMode: ime.mode
                 enabled: ime.ready || ime.enabled
-                onToggleRequested: {
-                    ime.enabled = !ime.enabled;
-                    if (ime.enabled) ime.restoreFocus();
-                }
+                onToggleRequested: backend.toggleNativeIme()
             }
         }
         TextField {
@@ -72,7 +67,8 @@ Page {
             inputMode: TextFieldInputMode.Custom
             builtInShortcutsEnabled: false
             input.flags: TextInputFlag.VirtualKeyboardOff
-            onCreationCompleted: ime.registerEditor(title, "text", false)
+            onCreationCompleted: backend.registerNativeEditor(title)
+            onFocusedChanged: backend.nativeEditorFocusChanged(title, focused)
             keyListeners: [ KeyListener { onKeyEvent: backend.handleNativeKey(title, event) } ]
         }
         TextArea {
@@ -86,7 +82,8 @@ Page {
             input.flags: TextInputFlag.VirtualKeyboardOff
             minHeight: 88
             layoutProperties: StackLayoutProperties { spaceQuota: 1 }
-            onCreationCompleted: ime.registerEditor(body, "text", false)
+            onCreationCompleted: backend.registerNativeEditor(body)
+            onFocusedChanged: backend.nativeEditorFocusChanged(body, focused)
             keyListeners: [ KeyListener { onKeyEvent: backend.handleNativeKey(body, event) } ]
         }
         TextField {
@@ -95,6 +92,7 @@ Page {
             inputMode: TextFieldInputMode.Password
             hintText: "密码"
             maximumLength: 64
+            onFocusedChanged: backend.nativeEditorFocusChanged(password, focused)
         }
         Label {
             text: ime.composition.length ? ime.composition : " "
@@ -104,7 +102,6 @@ Page {
         CandidateStrip { ime: page.ime }
     }
     attachedObjects: [
-        NativeSymbolPanel { ime: page.ime },
         Quick.Connections {
             target: page.ime
             onChanged: {

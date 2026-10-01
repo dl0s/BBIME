@@ -18,6 +18,7 @@ class NativeController : public QObject {
     Q_PROPERTY(int selectedIndex READ selectedIndex NOTIFY highlightChanged)
     Q_PROPERTY(bb::cascades::ArrayDataModel* candidateModel READ candidateModel CONSTANT)
     Q_PROPERTY(bool symbolsVisible READ symbolsVisible NOTIFY symbolsChanged)
+    Q_PROPERTY(bool symbolPanelActive READ symbolPanelActive WRITE setSymbolPanelActive NOTIFY symbolsChanged)
     Q_PROPERTY(int symbolGroup READ symbolGroup WRITE setSymbolGroup NOTIFY symbolsChanged)
     Q_PROPERTY(bb::cascades::ArrayDataModel* symbolModel READ symbolModel CONSTANT)
 public:
@@ -26,6 +27,7 @@ public:
     bool initialize();
     bool selftest();
     bool configure(const ModuleProfile &profile, bool learningEnabled);
+    void suppressStandaloneShifts();
     bool ready() const { return positionsReady_ && service_.ready(); }
     bool enabled() const { return enabled_; }
     bool composing() const { return active_ && !active_->session->composition().empty(); }
@@ -35,6 +37,7 @@ public:
     bb::cascades::ArrayDataModel *candidateModel() const { return model_; }
     bb::cascades::ArrayDataModel *symbolModel() const { return symbols_; }
     bool symbolsVisible() const { return symbolsVisible_; }
+    bool symbolPanelActive() const { return symbolPanelActive_; }
     int symbolGroup() const { return symbolGroup_; }
     Q_INVOKABLE bool registerEditor(QObject *editor, const QString &policy, bool learn = false);
     Q_INVOKABLE void unregisterEditor(QObject *editor);
@@ -54,10 +57,12 @@ public slots:
     void setEnabled(bool enabled);
     void setMode(const QString &mode);
     void setSymbolGroup(int group);
+    void setSymbolPanelActive(bool active);
 private slots:
     void focused(bool value);
     void invalidated();
     void retired();
+    void reconcileActiveFocus();
 signals:
     void changed();
     void highlightChanged();
@@ -93,12 +98,13 @@ private:
     Binding *active_;
     bb::cascades::ArrayDataModel *model_;
     bb::cascades::ArrayDataModel *symbols_;
+    QVariantList candidateRows_;
     QString mode_;
     ModuleProfile profile_;
     QHash<int, int> pressed_;
     QHash<int, bool> shifts_;
     bool enabled_, positionsReady_, areaPoints_, fieldPoints_, learningEnabled_;
-    bool symbolsVisible_;
+    bool symbolsVisible_, symbolPanelActive_, focusCheckQueued_;
     int symbolGroup_, symbolStart_;
     CandidateTicket symbolTicket_;
     unsigned long symbolRevision_;

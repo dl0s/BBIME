@@ -1,0 +1,527 @@
+{
+  "timestamp": "2026-10-02T01:17:42.1688047+08:00",
+  "scope": "READ_ONLY_PRE_PAUSE_HOST_FILE_HASH_CHECK",
+  "baseline": "build/rectification/apply-plan.json plus preserved IntroOP diagnostic instrumentation",
+  "fileCount": 74,
+  "status": "PASS",
+  "files": [
+    {
+      "app": "BBnote",
+      "path": "assets/ime-editor.js",
+      "expectedSha256": "8a9499b2f1e59e8ab90c3c0c1684553148c01dd66d19a3cee3477c2744aa05b3",
+      "actualSha256": "8A9499B2F1E59E8AB90C3C0C1684553148C01DD66D19A3CEE3477C2744AA05B3",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "assets/ImeTextField.qml",
+      "expectedSha256": "3576ebef2b1715f4beb47f998adee509f5e2522022bd910ccbc385769011153f",
+      "actualSha256": "3576EBEF2B1715F4BEB47F998ADEE509F5E2522022BD910CCBC385769011153F",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "assets/ImeToggle.qml",
+      "expectedSha256": "4d4ff7a14e6990a1cae7ac48f69ba1a4aa227c3edc28048bc0d75fd4e52e5285",
+      "actualSha256": "4D4FF7A14E6990A1CAE7AC48F69BA1A4AA227C3EDC28048BC0D75FD4E52E5285",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "assets/markdown-editor.css",
+      "expectedSha256": "d2b2052126ec02abc175a02631ed5b1d0ec818d249a11d73868100d20c915b43",
+      "actualSha256": "D2B2052126EC02ABC175A02631ED5B1D0EC818D249A11D73868100D20C915B43",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "assets/markdown-editor.js",
+      "expectedSha256": "fcfd8282f03a66a47cde7f83462a7b974923ca0915ff157188feef2126b95713",
+      "actualSha256": "FCFD8282F03A66A47CDE7F83462A7B974923CA0915FF157188FEEF2126B95713",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "assets/MarkdownEditor.qml",
+      "expectedSha256": "7cf18ee34c3ff12928736c83d808e6d76686c5f468d173a786666b7b18caacfc",
+      "actualSha256": "7CF18EE34C3FF12928736C83D808E6D76686C5F468D173A786666B7B18CAACFC",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "assets/NativeSymbolPanel.qml",
+      "expectedSha256": "9d59a5897c1fddaef3c0821e4607d9f7b0578106c96ae238201251535747f858",
+      "actualSha256": "9D59A5897C1FDDAEF3C0821E4607D9F7B0578106C96AE238201251535747F858",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "bar-descriptor.xml",
+      "expectedSha256": "859b41f5bea9371223b0b61bedf80e471755a90da342aa8ca18a5bc79190fc02",
+      "actualSha256": "859B41F5BEA9371223B0B61BEDF80E471755A90DA342AA8CA18A5BC79190FC02",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "docs/ime/host-patches.json",
+      "expectedSha256": "3d21d8a42de6e655a8bb1b05bf256e1b7651536a5d076ddadb09977c77483d36",
+      "actualSha256": "3D21D8A42DE6E655A8BB1B05BF256E1B7651536A5D076DDADB09977C77483D36",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "docs/ime/MERGE_RECORD.md",
+      "expectedSha256": "706c08f5fc72493e72075b630254a0b65305f0c7b409a91e9d01f4ed0d0035e1",
+      "actualSha256": "706C08F5FC72493E72075B630254A0B65305F0C7B409A91E9D01F4ED0D0035E1",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "docs/ime/rectification-2026-10-01.json",
+      "expectedSha256": "82dcb6e84f8508df46e65bb28460f15074e3b575a28ca0b7f0d57eb9e0a763ef",
+      "actualSha256": "82DCB6E84F8508DF46E65BB28460F15074E3B575A28CA0B7F0D57EB9E0A763EF",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "docs/ime/RECTIFICATION_2026-10-01.md",
+      "expectedSha256": "d0acf0e7743b5441cd3797039769f135aa47a993bd73230c3b64bcc3891b4671",
+      "actualSha256": "D0ACF0E7743B5441CD3797039769F135AA47A993BD73230C3B64BCC3891B4671",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "docs/ime/upstream/module/INTEGRATION_WORKFLOW.md",
+      "expectedSha256": "77c4730988e806f8b33023af68366641b371fc842bb84d49ae1fdb991189885a",
+      "actualSha256": "77C4730988E806F8B33023AF68366641B371FC842BB84D49AE1FDB991189885A",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "docs/ime/upstream/module/README.md",
+      "expectedSha256": "563b80c5c1896f1ab72d1718b93c1eb80cc63f9b2dc72b74055e2cb71eadef2b",
+      "actualSha256": "563B80C5C1896F1AB72D1718B93C1EB80CC63F9B2DC72B74055E2CB71EADEF2B",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "docs/ime/upstream-manifest.json",
+      "expectedSha256": "54ba99ad173a30e3ec990c006bbdbb3e9cfd34ab4adfcfe29ced86ce8a44b930",
+      "actualSha256": "54BA99AD173A30E3EC990C006BBDBB3E9CFD34AB4ADFCFE29CED86CE8A44B930",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "README.md",
+      "expectedSha256": "e70d99a1fa33b775c338bb3582fd8347eaaed9bdbcf756b6824b55a64e698fc1",
+      "actualSha256": "E70D99A1FA33B775C338BB3582FD8347EAAED9BDBCF756B6824B55A64E698FC1",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "src/noteime.cpp",
+      "expectedSha256": "e25d60132fb5f3e3a51daccc325903b8fbcb0e548e602386e9c5c4a93d53ae84",
+      "actualSha256": "E25D60132FB5F3E3A51DACCC325903B8FBCB0E548E602386E9C5C4A93D53AE84",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "src/noteime.h",
+      "expectedSha256": "647a1e2f1be863d9803f385cf01b7c6a0f8890e1a8ffd6d494facbad169c49b5",
+      "actualSha256": "647A1E2F1BE863D9803F385CF01B7C6A0F8890E1A8FFD6D494FACBAD169C49B5",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "tests/ime_editor_test.cjs",
+      "expectedSha256": "8ccac12898bac873ab05d0c34caac4946dd4c8afb7087097f032d9ca1b1a50a8",
+      "actualSha256": "8CCAC12898BAC873AB05D0C34CAAC4946DD4C8AFB7087097F032D9CA1B1A50A8",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "tests/validation-descriptor.xml",
+      "expectedSha256": "21604a77e2d3b4ebcd6962bead3c9a5a83988466a2f33a3c7751bbb77cf8896b",
+      "actualSha256": "21604A77E2D3B4EBCD6962BEAD3C9A5A83988466A2F33A3C7751BBB77CF8896B",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "tests/verify_ime_symbols.py",
+      "expectedSha256": "924e137d0071510521c7e3986a1265b0c259de36630b32dc94ffeb551fa94518",
+      "actualSha256": "924E137D0071510521C7E3986A1265B0C259DE36630B32DC94FFEB551FA94518",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "third_party/bbime/src/nativecontroller.cpp",
+      "expectedSha256": "4704f2d802b41637d2af9a7587601fc57c108d1a25de73166e8df921dcb9b2ce",
+      "actualSha256": "4704F2D802B41637D2AF9A7587601FC57C108D1A25DE73166E8DF921DCB9B2CE",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "third_party/bbime/src/nativecontroller.h",
+      "expectedSha256": "fc2edb14b2b87d21afb18b9e104cecb278a598027224a83510c9e21fdff2084c",
+      "actualSha256": "FC2EDB14B2B87D21AFB18B9E104CECB278A598027224A83510C9E21FDFF2084C",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBnote",
+      "path": "tools/Import-BBIME.ps1",
+      "expectedSha256": "4cdf2f3db486508170586996f0f54d4df9046cf4c945812e11ddc76c12781775",
+      "actualSha256": "4CDF2F3DB486508170586996F0F54D4DF9046CF4C945812E11DDC76C12781775",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/backend.cpp",
+      "expectedSha256": "10a55c038a46951ec1d7e79275546329e764e36db3ddc2b9eea1a5ef79786908",
+      "actualSha256": "10A55C038A46951EC1D7E79275546329E764E36DB3DDC2B9EEA1A5EF79786908",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/bar-descriptor.xml",
+      "expectedSha256": "6869f7099fe872af6e9f2090178bbf6e0aceb75f37ec7346d2bb6cd2280fa14f",
+      "actualSha256": "6869F7099FE872AF6E9F2090178BBF6E0ACEB75F37EC7346D2BB6CD2280FA14F",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/build.ps1",
+      "expectedSha256": "9790ccfb2e6948c2e4bf822dc9a12b00a6223433bb4efd0d3f023992c133d936",
+      "actualSha256": "9790CCFB2E6948C2E4BF822DC9A12B00A6223433BB4EFD0D3F023992C133D936",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/ime/ImeBar.qml",
+      "expectedSha256": "f9a9367ced074341e29c8d1d10d016e35db84459065eb10bd8a2cd65ff7965d7",
+      "actualSha256": "F9A9367CED074341E29C8D1D10D016E35DB84459065EB10BD8A2CD65FF7965D7",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/ime/ImeToggle.qml",
+      "expectedSha256": "4b6e28fb23e5c68d5e2b2b73ac27c45ec83e69fa495e68c748cf217bc7731346",
+      "actualSha256": "4B6E28FB23E5C68D5E2B2B73AC27C45EC83E69FA495E68C748CF217BC7731346",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/ime/NativeSymbolPanel.qml",
+      "expectedSha256": "75847c6e713f64a597c16fbcf31b94cb4d1a4971da54ad57b5a25a1045299bfa",
+      "actualSha256": "75847C6E713F64A597C16FBCF31B94CB4D1A4971DA54AD57B5A25A1045299BFA",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/ime-test-descriptor.xml",
+      "expectedSha256": "f2ec60853b9193032aaf5de7da1126b8ae8b94e1d0a5af596b1f416a7a9d4592",
+      "actualSha256": "F2EC60853B9193032AAF5DE7DA1126B8AE8B94E1D0A5AF596B1F416A7A9D4592",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/ime_key_guard.h",
+      "expectedSha256": "2407ed0687b3ba7803ccc5e2af9b39aed482e9974749a92fe0ceb7b06d5d3569",
+      "actualSha256": "2407ED0687B3BA7803CCC5E2AF9B39AED482E9974749A92FE0CEB7B06D5D3569",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/introop_ime.cpp",
+      "expectedSha256": "ef235d689ac8cd3902e28c81e7314368ee857645d30709d7cfd821964af86d4c",
+      "actualSha256": "EF235D689AC8CD3902E28C81E7314368EE857645D30709D7CFD821964AF86D4C",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/introop_ime.h",
+      "expectedSha256": "5192b6efaff46c4f85df1efe7de47378f09aa2b1b50b9b9c3d64060a16c9c04d",
+      "actualSha256": "5192B6EFAFF46C4F85DF1EFE7DE47378F09AA2B1B50B9B9C3D64060A16C9C04D",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/INTROOP_IME.md",
+      "expectedSha256": "14ab89a7396bc635c6b2b35e9300aa045cb7c17c31146f4ac3c9d57f751f5c02",
+      "actualSha256": "14AB89A7396BC635C6B2B35E9300AA045CB7C17C31146F4AC3C9D57F751F5C02",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/main.qml",
+      "expectedSha256": "82de000af1e93acfe1e65080a05c6d029b72b1e9a2607b73154f1fe5eceaa0b7",
+      "actualSha256": "82DE000AF1E93ACFE1E65080A05C6D029B72B1E9A2607B73154F1FE5ECEAA0B7",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/OperationGuide.qml",
+      "expectedSha256": "f87ed5c3e511db30071b34d70158224380051d5a3e9cecf17a6ed6d71487b260",
+      "actualSha256": "F87ED5C3E511DB30071B34D70158224380051D5A3E9CECF17A6ED6D71487B260",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/Q10_VALIDATION_0.1.0.22.md",
+      "expectedSha256": "a24b7f2cead9b35b0738bc37f8538e97ace73d33218ccee9e97e4f5906636ed2",
+      "actualSha256": "A24B7F2CEAD9B35B0738BC37F8538E97ACE73D33218CCEE9E97E4F5906636ED2",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/test_ime_integration.js",
+      "expectedSha256": "7c6d74add27195ace171ede3e789d2a5d901a6ff233460e2aa0e3224ec84aa16",
+      "actualSha256": "7C6D74ADD27195ACE171EDE3E789D2A5D901A6FF233460E2AA0E3224EC84AA16",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/test_ime_key_guard.cpp",
+      "expectedSha256": "bd55c931018046cb648074073a805db4da1ab9c900237b10ad788c63bbf8e5de",
+      "actualSha256": "BD55C931018046CB648074073A805DB4DA1AB9C900237B10AD788C63BBF8E5DE",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/test_ime_native.cpp",
+      "expectedSha256": "C8BC8513D55DB1066F7CED390A4560A3E6E093AEACC9E4AC7346E450E8B8D5E0",
+      "actualSha256": "C8BC8513D55DB1066F7CED390A4560A3E6E093AEACC9E4AC7346E450E8B8D5E0",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/tests/ImeDiagnosticPage.qml",
+      "expectedSha256": "c9f4ef10d8f0b9efcbec51a4207ad9a7d03a4e2e861819fffd0c1d1ea8645d8e",
+      "actualSha256": "C9F4EF10D8F0B9EFCBEC51A4207AD9A7D03A4E2E861819FFFD0C1D1EA8645D8E",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/ui.cpp",
+      "expectedSha256": "4c82a76598ee92238575a359842d164f74f44f5f25fa5c21ab0c30ebc27d1e81",
+      "actualSha256": "4C82A76598EE92238575A359842D164F74F44F5F25FA5C21AB0C30EBC27D1E81",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/vendor/bbime/manifest.json",
+      "expectedSha256": "a61bdb4d427ef187f48572fb2ed35cc4781fe8403e134c225bf8b86554c61eaf",
+      "actualSha256": "A61BDB4D427EF187F48572FB2ED35CC4781FE8403E134C225BF8B86554C61EAF",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/vendor/bbime/module/INTEGRATION_WORKFLOW.md",
+      "expectedSha256": "77c4730988e806f8b33023af68366641b371fc842bb84d49ae1fdb991189885a",
+      "actualSha256": "77C4730988E806F8B33023AF68366641B371FC842BB84D49AE1FDB991189885A",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/vendor/bbime/module/README.md",
+      "expectedSha256": "563b80c5c1896f1ab72d1718b93c1eb80cc63f9b2dc72b74055e2cb71eadef2b",
+      "actualSha256": "563B80C5C1896F1AB72D1718B93C1EB80CC63F9B2DC72B74055E2CB71EADEF2B",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/vendor/bbime/src/nativecontroller.cpp",
+      "expectedSha256": "6f38dcf0072bad71e31f8a6e60b9d4bbdfc3e14dce397e3a002262888281d049",
+      "actualSha256": "6F38DCF0072BAD71E31F8A6E60B9D4BBDFC3E14DCE397E3A002262888281D049",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/vendor/bbime/src/nativecontroller.h",
+      "expectedSha256": "438e8637f5c1d133528448ad6ea2e1c1011ff4aba6f2d9685f523dd4d0880211",
+      "actualSha256": "438E8637F5C1D133528448AD6EA2E1C1011FF4ABA6F2D9685F523DD4D0880211",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "bb10-native/verify_qml_syntax.ps1",
+      "expectedSha256": "14ba9ce3387eae97ee610b69fb27a8f48c116653f03684fd5880516e851ba304",
+      "actualSha256": "14BA9CE3387EAE97EE610B69FB27A8F48C116653F03684FD5880516E851BA304",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "IntroOP",
+      "path": "tools/import-bbime.py",
+      "expectedSha256": "1bd3b7cbf33dd48b37280507aecb49e10ba515e6b4c3f2418b26be0d2df6a0a0",
+      "actualSha256": "1BD3B7CBF33DD48B37280507AECB49E10BA515E6B4C3F2418B26BE0D2DF6A0A0",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "assets/ime/ImeTitleBar.qml",
+      "expectedSha256": "5fef879bea654ab95f30ccfcb20570c848dfef82daee8059f0cba95657d1b98c",
+      "actualSha256": "5FEF879BEA654AB95F30CCFCB20570C848DFEF82DAEE8059F0CBA95657D1B98C",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "assets/ime/ImeToggle.qml",
+      "expectedSha256": "4b6e28fb23e5c68d5e2b2b73ac27c45ec83e69fa495e68c748cf217bc7731346",
+      "actualSha256": "4B6E28FB23E5C68D5E2B2B73AC27C45EC83E69FA495E68C748CF217BC7731346",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "assets/ime/NativeSymbolPanel.qml",
+      "expectedSha256": "4e260076da0a6aafbcb1e776a85f6a08baa76a98c5198b3a0a4037ca043d9759",
+      "actualSha256": "4E260076DA0A6AAFBCB1E776A85F6A08BAA76A98C5198B3A0A4037CA043D9759",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "assets/main.qml",
+      "expectedSha256": "bbc7994b83e19cd6c6ec61fcea0d56bbc4148210d1438e07ca1608fb7a17158a",
+      "actualSha256": "BBC7994B83E19CD6C6EC61FCEA0D56BBC4148210D1438E07CA1608FB7A17158A",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "bar-descriptor.xml",
+      "expectedSha256": "2ddc0dc49fba6ec5ac849d018a3f29d935a3a9aea05bc92e305d018e467a303c",
+      "actualSha256": "2DDC0DC49FBA6EC5AC849D018A3F29D935A3A9AEA05BC92E305D018E467A303C",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "docs/IME_INTEGRATION_WORKFLOW.md",
+      "expectedSha256": "85703c14343ddf4b2deb477686a8bea6f57e461b78a0dac76e542ab342ae3f6f",
+      "actualSha256": "85703C14343DDF4B2DEB477686A8BEA6F57E461B78A0DAC76E542AB342AE3F6F",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "docs/IME_RECTIFICATION_2026-10-01_1.0.0.19.md",
+      "expectedSha256": "e90e1e4426e22b7a536cd9bd099a6116c6594bc6132a7b593e99391da0006896",
+      "actualSha256": "E90E1E4426E22B7A536CD9BD099A6116C6594BC6132A7B593E99391DA0006896",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "docs/IME_VALIDATION_2026-10-01_1.0.0.19.json",
+      "expectedSha256": "ce20c5688b07492ad537f511830ed41dbc19af15f071b1d554267f679933a134",
+      "actualSha256": "CE20C5688B07492AD537F511830ED41DBC19AF15F071B1D554267F679933A134",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "module/BBFile-IME-0.1.0.13-r3.patch",
+      "expectedSha256": "dde5d4aad24ab8b0c289cbd65f2f3f5e1b8ae0c73b166f7cc83a13eb5f31aaf9",
+      "actualSha256": "DDE5D4AAD24AB8B0C289CBD65F2F3F5E1B8AE0C73B166F7CC83A13EB5F31AAF9",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "src/imecontroller.cpp",
+      "expectedSha256": "d97526119455aeed3d96f37bd3f6da90b62cf624dc8d560ff815c6ae305a1a76",
+      "actualSha256": "D97526119455AEED3D96F37BD3F6DA90B62CF624DC8D560FF815C6AE305A1A76",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "src/imecontroller.h",
+      "expectedSha256": "d3ad2b4d366fa87af8ea4d7ea78222b87c6436feadb66c9aab2053fb99a830cc",
+      "actualSha256": "D3AD2B4D366FA87AF8EA4D7EA78222B87C6436FEADB66C9AAB2053FB99A830CC",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "src/main.cpp",
+      "expectedSha256": "3da8ceca6982d60ae4c951f5865fca02024be974799f30a7c6156cb0519ae8f8",
+      "actualSha256": "3DA8CECA6982D60AE4C951F5865FCA02024BE974799F30A7C6156CB0519AE8F8",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "tests/ime_device_test.py",
+      "expectedSha256": "e9875afdf08129b31648ae43f6552f74a234f51f2eccc8f97f42af0ff7bcf21f",
+      "actualSha256": "E9875AFDF08129B31648AE43F6552F74A234F51F2ECCC8F97F42AF0FF7BCF21F",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "tests/ime_focus_host_test.py",
+      "expectedSha256": "445100782ba0d05a7f858d3de73b08921fbe8ee061643a120798d9115f3a8ff3",
+      "actualSha256": "445100782BA0D05A7F858D3DE73B08921FBE8EE061643A120798D9115F3A8FF3",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "tests/ime_host_test.js",
+      "expectedSha256": "23b0bf681150859df60d5a38381f7a38353b44bfbb00bb50608631aebf44d421",
+      "actualSha256": "23B0BF681150859DF60D5A38381F7A38353B44BFBB00BB50608631AEBF44D421",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "tests/ime_package_test.py",
+      "expectedSha256": "42be970f414f684f729f92d8596786f771fbc89b9ca107cac96fd39eec0ad19c",
+      "actualSha256": "42BE970F414F684F729F92D8596786F771FBC89B9CA107CAC96FD39EEC0AD19C",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "tools/archive_ime_validation.py",
+      "expectedSha256": "ae0a75b8231ffbb3fbff637d3b843732015f105483ecbd3b6e441e430893a51c",
+      "actualSha256": "AE0A75B8231FFBB3FBFF637D3B843732015F105483ECBD3B6E441E430893A51C",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "tools/Check-IME.ps1",
+      "expectedSha256": "762f106c5b5df01005528f76d50aafdbc5372778b13411ceda87ae0b43491e93",
+      "actualSha256": "762F106C5B5DF01005528F76D50AAFDBC5372778B13411CEDA87AE0B43491E93",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "tools/import_bbime.py",
+      "expectedSha256": "2dd4f2a3fa9fe5c39183fb909dbbb42782d4a252d22bcb26136b695515580538",
+      "actualSha256": "2DD4F2A3FA9FE5C39183FB909DBBB42782D4A252D22BCB26136B695515580538",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "vendor/bbime/manifest.json",
+      "expectedSha256": "6c3db60a9f7a2cbaad80aa71e9c7cbc97d2cf21c6e67065c4d9f699d89bf8ccc",
+      "actualSha256": "6C3DB60A9F7A2CBAAD80AA71E9C7CBC97D2CF21C6E67065C4D9F699D89BF8CCC",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "vendor/bbime/module/INTEGRATION_WORKFLOW.md",
+      "expectedSha256": "77c4730988e806f8b33023af68366641b371fc842bb84d49ae1fdb991189885a",
+      "actualSha256": "77C4730988E806F8B33023AF68366641B371FC842BB84D49AE1FDB991189885A",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "vendor/bbime/module/README.md",
+      "expectedSha256": "563b80c5c1896f1ab72d1718b93c1eb80cc63f9b2dc72b74055e2cb71eadef2b",
+      "actualSha256": "563B80C5C1896F1AB72D1718B93C1EB80CC63F9B2DC72B74055E2CB71EADEF2B",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "vendor/bbime/src/nativecontroller.cpp",
+      "expectedSha256": "9f8756e04e081a6ada3d900ff27750a7965893af6c1f4cd5cc1cb6297a2f8472",
+      "actualSha256": "9F8756E04E081A6ADA3D900FF27750A7965893AF6C1F4CD5CC1CB6297A2F8472",
+      "status": "UNCHANGED"
+    },
+    {
+      "app": "BBFile",
+      "path": "vendor/bbime/src/nativecontroller.h",
+      "expectedSha256": "786eb5b7fbce2c3c5ed1e46134cb88d3ccf47dda230ce71a114898f8f48fd4d3",
+      "actualSha256": "786EB5B7FBCE2C3C5ED1E46134CB88D3CCF47DDA230CE71A114898F8F48FD4D3",
+      "status": "UNCHANGED"
+    }
+  ]
+}

@@ -9,6 +9,7 @@
 #include <bb/cascades/Application>
 #include <sys/keycodes.h>
 #include <cstring>
+#include <QTimer>
 
 using namespace bb::cascades;
 namespace bbime {
@@ -17,7 +18,8 @@ NativeController::NativeController(ImeService &service, QObject *parent) :
     symbols_(new ArrayDataModel(this)),
     mode_("natural"), enabled_(false), positionsReady_(false),
     areaPoints_(true), fieldPoints_(true), learningEnabled_(false),
-    symbolsVisible_(false), symbolGroup_(0), symbolStart_(-1), symbolRevision_(0) {
+    symbolsVisible_(false), symbolPanelActive_(false), focusCheckQueued_(false),
+    symbolGroup_(0), symbolStart_(-1), symbolRevision_(0) {
     Application *app = Application::instance();
     connect(app, SIGNAL(thumbnail()), this, SLOT(suspend()));
     connect(app, SIGNAL(invisible()), this, SLOT(suspend()));
@@ -132,9 +134,19 @@ void NativeController::focused(bool value) {
     foreach (Binding *binding, bindings_) {
         if (binding->adapter != sender()) continue;
         if (value) activate(binding);
-        else if (active_ == binding && !symbolsVisible_) deactivate();
+        else if (active_ == binding && !symbolsVisible_ && !symbolPanelActive_ && !focusCheckQueued_) {
+            // Coalesce a field transfer; let the host finish a pending submit
+            // before retiring its original editor on this event-loop turn.
+            focusCheckQueued_ = true;
+            QTimer::singleShot(0, this, SLOT(reconcileActiveFocus()));
+        }
         return;
     }
+}
+void NativeController::reconcileActiveFocus() {
+    focusCheckQueued_ = false;
+    if (active_ && !active_->adapter->focused() && !symbolsVisible_ && !symbolPanelActive_)
+        deactivate();
 }
 void NativeController::invalidated() {
     if (!active_ || active_->adapter != sender()) return;
@@ -171,9 +183,12 @@ void NativeController::refresh() {
             rows << row;
         }
     }
-    model_->clear();
-    model_->append(rows);
-    emit candidatesChanged();
+    if (candidateRows_ != rows) {
+        candidateRows_ = rows;
+        model_->clear();
+        model_->append(rows);
+        emit candidatesChanged();
+    }
     emit highlightChanged();
     emit changed();
 }
@@ -187,7 +202,7 @@ void NativeController::setEnabled(bool value) {
 }
 void NativeController::suspend() { setEnabled(false); }
 void NativeController::setMode(const QString &mode) {
-    if (mode != "natural" && mode != "english") return;
+    if ((mode != "natural" && mode != "english") || mode_ == mode) return;
     mode_ = mode;
     symbolsVisible_ = false;
     symbolStart_ = -1;
@@ -203,7 +218,7 @@ void NativeController::cancel() {
     refresh();
 }
 void NativeController::restoreFocus() {
-    if (enabled_ && active_ && !symbolsVisible_ && active_->adapter->eligible())
+    if (enabled_ && active_ && !symbolsVisible_ && !symbolPanelActive_ && active_->adapter->eligible())
         qobject_cast<AbstractTextControl *>(active_->adapter->control())->requestFocus();
 }
 void NativeController::refreshSymbols() {
@@ -227,24 +242,13 @@ void NativeController::refreshSymbols() {
     emit symbolsChanged();
 }
 void NativeController::cycleSymbols() {
-    if (!enabled_ || !active_ || !active_->session->active()) return;
-    if (!symbolsVisible_) {
-        if (!active_->adapter->focused()) return;
-        symbolStart_ = symbolGroup_ = mode_ == "english" ? 1 : 0;
-        symbolTicket_ = active_->session->ticket(0);
-        symbolsVisible_ = true;
-        shifts_.clear();
-    } else {
-        const int next = (symbolGroup_ + 1) % 3;
-        if (next == symbolStart_) { closeSymbols(); return; }
-        symbolGroup_ = next;
-    }
-    refreshSymbols();
+    // Compatibility entry point: the baseline has no custom Sym panel.
 }
 void NativeController::setSymbolGroup(int group) {
-    if (!symbolsVisible_ || group < 0 || group >= 3 || symbolGroup_ == group) return;
-    symbolGroup_ = group;
-    refreshSymbols();
+    Q_UNUSED(group);
+}
+void NativeController::setSymbolPanelActive(bool value) {
+    Q_UNUSED(value);
 }
 void NativeController::closeSymbols() {
     if (!symbolsVisible_) return;
@@ -252,30 +256,27 @@ void NativeController::closeSymbols() {
     symbolStart_ = -1;
     shifts_.clear();
     emit symbolsChanged();
-    restoreFocus();
+    // A displayed Dialog still owns focus until its close animation finishes.
+    // Direct controller callers without a Dialog retain synchronous restoration.
+    if (!symbolPanelActive_) restoreFocus();
 }
 bool NativeController::chooseSymbol(unsigned long session, unsigned long revision,
                                     unsigned long document, unsigned long panel, int group, int index) {
-    if (!enabled_ || !active_ || !symbolsVisible_ || group != symbolGroup_ ||
-        panel != symbolRevision_ || index < 0 || index >= 26) return false;
-    CandidateTicket ticket;
-    ticket.session = session;
-    ticket.revision = revision;
-    ticket.document = document;
-    if (!active_->session->accepts(ticket)) return false;
-    Binding *binding = active_;
-    BindingCall call(*this, binding);
-    const QString text(QChar(symbolCodes[group][index]));
-    const bool result = binding->session->insertLiteral(text.toUtf8().constData());
-    if (active_ == binding && !binding->retired) {
-        if (result) closeSymbols();
-        else { symbolTicket_ = binding->session->ticket(0); refreshSymbols(); }
-    }
-    refresh();
-    return result;
+    Q_UNUSED(session);
+    Q_UNUSED(revision);
+    Q_UNUSED(document);
+    Q_UNUSED(panel);
+    Q_UNUSED(group);
+    Q_UNUSED(index);
+    return false;
 }
 bool NativeController::handleSymbolKey(QObject *event) {
-    return symbolsVisible_ && active_ && handleKey(active_->control, event);
+    Q_UNUSED(event);
+    return false;
+}
+void NativeController::suppressStandaloneShifts() {
+    for (QHash<int, bool>::iterator it = shifts_.begin(); it != shifts_.end(); ++it)
+        it.value() = false;
 }
 bool NativeController::chooseCandidate(unsigned long session, unsigned long revision,
                                        unsigned long document, int index) {
@@ -292,8 +293,9 @@ bool NativeController::chooseCandidate(unsigned long session, unsigned long revi
     return result;
 }
 bool NativeController::prepareSubmit(QObject *control) {
-    if (!active_ || (control && active_->control != control) ||
-        !active_->adapter->focused()) return false;
+    if (!active_ || (control && active_->control != control) || !active_->adapter->eligible() ||
+        (!control && !active_->adapter->focused() && !symbolsVisible_ && !symbolPanelActive_))
+        return false;
     Binding *binding = active_;
     BindingCall call(*this, binding);
     const bool result = binding->session->commitPending();
@@ -304,10 +306,21 @@ bool NativeController::handleKey(QObject *control, QObject *object) {
     KeyEvent *event = qobject_cast<KeyEvent *>(object);
     Binding *binding = bindings_.value(control, 0);
     if (!event || !ready() || !enabled_ || !binding || active_ != binding ||
-        (!binding->adapter->focused() && !symbolsVisible_) || !binding->session->active())
+        (!binding->adapter->focused() && !symbolsVisible_ && !symbolPanelActive_) ||
+        !binding->session->active())
         return false;
     BindingCall call(*this, binding);
     const int identity = event->keycap() ? event->keycap() : event->key();
+    if (identity == KEYCODE_F1 + 21 || identity == Qt::Key_F22 ||
+        event->key() == KEYCODE_F1 + 21 || event->key() == Qt::Key_F22) {
+        if (event->isPressed()) suppressStandaloneShifts();
+        event->accept();
+        return true;
+    }
+    if (symbolPanelActive_ && !symbolsVisible_) {
+        event->accept();
+        return true;
+    }
     const bool leftShift = identity == KEYCODE_LEFT_SHIFT || identity == Qt::Key_Shift;
     const bool rightShift = identity == KEYCODE_RIGHT_SHIFT;
     if (leftShift || rightShift) {
@@ -330,6 +343,19 @@ bool NativeController::handleKey(QObject *control, QObject *object) {
                 emit highlightChanged();
             }
         }
+        event->accept();
+        return true;
+    }
+    const bool modifier = identity == KEYCODE_LEFT_ALT || identity == KEYCODE_RIGHT_ALT ||
+        identity == KEYCODE_LEFT_CTRL || identity == KEYCODE_RIGHT_CTRL ||
+        identity == KEYCODE_CAPS_LOCK || identity == Qt::Key_Alt ||
+        identity == Qt::Key_AltGr || identity == Qt::Key_Control ||
+        identity == Qt::Key_CapsLock || identity == Qt::Key_Meta;
+    if (modifier) {
+        for (QHash<int, bool>::iterator it = shifts_.begin(); it != shifts_.end(); ++it)
+            it.value() = false;
+        if (event->isPressed()) pressed_[identity] = event->duration();
+        else pressed_.remove(identity);
         event->accept();
         return true;
     }
@@ -362,15 +388,7 @@ bool NativeController::handleKey(QObject *control, QObject *object) {
         unicode = QChar(event->key());
     bool recognized = true;
     const bool escape = key == KEYCODE_ESCAPE || key == Qt::Key_Escape || key == 27;
-    if (key == KEYCODE_F1 + 21) cycleSymbols();
-    else if (symbolsVisible_) {
-        if (escape || backspace) closeSymbols();
-        else if (key >= 'a' && key <= 'z' && !event->isAltPressed()) {
-            const char *found = std::strchr(symbolKeys, key);
-            if (found) chooseSymbol(symbolTicket_.session, symbolTicket_.revision,
-                symbolTicket_.document, symbolRevision_, symbolGroup_, int(found - symbolKeys));
-        }
-    } else if (escape) session.cancel();
+    if (escape) session.cancel();
     else if (backspace) session.backspace();
     else if (enter) {
         if (event->isShiftPressed() || !session.multiline()) {
@@ -390,7 +408,10 @@ bool NativeController::handleKey(QObject *control, QObject *object) {
     } else if (session.mode() != "english" && !event->isAltPressed() &&
                key >= 'a' && key <= 'z') session.append(char(key));
     else if (!unicode.isEmpty() && unicode[0].unicode() >= 32 &&
-             unicode[0].category() != QChar::Other_PrivateUse) {
+             unicode[0].category() != QChar::Other_PrivateUse &&
+             unicode[0].category() != QChar::Other_Control &&
+             unicode[0].category() != QChar::Other_Format &&
+             unicode[0].category() != QChar::Other_NotAssigned) {
         if (session.mode() == "english" && !event->isAltPressed() && key >= 'a' && key <= 'z')
             unicode = QChar(event->isShiftPressed() ? key - ('a' - 'A') : key);
         if (session.mode() != "english" && !event->isAltPressed() &&
@@ -431,10 +452,19 @@ bool NativeController::selftest() {
     NativeEditorAdapter b(&field, policy, fieldPoints_);
     InputSession second(service_, b, policy);
     const QString originalMode = mode_;
+    bool symbolsDisabled = true;
+    for (int repeat = 0; repeat < 100; ++repeat) {
+        cycleSymbols();
+        setSymbolGroup(repeat % 3);
+        setSymbolPanelActive(true);
+        symbolsDisabled = !symbolsVisible() && !symbolPanelActive() &&
+            symbols_->isEmpty() && !handleSymbolKey(0) &&
+            !chooseSymbol(0, 0, 0, 0, repeat % 3, repeat % 26) && symbolsDisabled;
+    }
     setMode("english");
     setMode("full");
     setMode("system");
-    bool pass = mode_ == "english";
+    bool pass = mode_ == "english" && symbolsDisabled;
     setMode("natural");
     setMode("full");
     pass = mode_ == "natural" && pass;

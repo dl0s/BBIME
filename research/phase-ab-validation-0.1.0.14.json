@@ -1,0 +1,111 @@
+﻿{
+    "timestamp":  "2026-10-02T00:45:50.5675304+08:00",
+    "sourceVersion":  "0.1.0.14",
+    "applicationScope":  "BBIME_STANDALONE_APP_ONLY",
+    "sdkRoot":  "C:\\bbdevtools",
+    "packagingJavaBin":  "C:\\bbndk\\features\\com.qnx.tools.jre.win32.x86_64_1.7.0.51\\jre\\bin",
+    "qmlVerifierScript":  "C:\\Users\\dove\\Documents\\BBIME\\tools\\Test-Qml.ps1",
+    "status":  "LOCAL_PASS_BBIME_DEVICE_GATES_REMAIN",
+    "checks":  [
+                   {
+                       "name":  "host-regression",
+                       "status":  "PASS",
+                       "exitCode":  0,
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\host-regression-validation.log"
+                   },
+                   {
+                       "name":  "module-contracts",
+                       "status":  "PASS",
+                       "exitCode":  0,
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\module-contracts-validation.log"
+                   },
+                   {
+                       "name":  "native-ui-state",
+                       "status":  "PASS",
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\native-ui-state-validation.log",
+                       "scope":  "SHARED_COMPONENT_SOURCE_ONLY_NOT_IN_BBIME_BAR;PRODUCTION_QML_HANDLERS_NOT_SDK_RENDERING_OR_PHYSICAL_GESTURES"
+                   },
+                   {
+                       "name":  "app-focus-state",
+                       "status":  "PASS",
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\app-focus-state-validation.log",
+                       "scope":  "BBIME_PRODUCTION_QML_HANDLERS_WITH_TEST_DOUBLES_NOT_SDK_FOCUS_DELIVERY"
+                   },
+                   {
+                       "name":  "app-focus-gate",
+                       "status":  "PASS",
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\app-focus-gate-validation.log",
+                       "scope":  "PRODUCTION_PURE_CPP98_POLICY_NOT_SDK_FOCUS_DELIVERY"
+                   },
+                   {
+                       "name":  "arm-build",
+                       "status":  "PASS",
+                       "exitCode":  0,
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\arm-build-validation.log"
+                   },
+                   {
+                       "name":  "qml-syntax",
+                       "status":  "PASS",
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\qml-validation.log",
+                       "scope":  "SYNTAX_ONLY_NOT_RUNTIME_TYPE_OR_LAYOUT_VALIDATION"
+                   }
+               ],
+    "device":  "NOT_RUN",
+    "releaseReady":  false,
+    "remainingGates":  [
+                           "ARM_SYNTHETIC_CORE_RUNTIME",
+                           "Q10_BBIME_FOCUS_KEYS_LAYOUT_AND_LIFECYCLE",
+                           "SHARED_PERMISSION_FAILURES_IF_ENABLED",
+                           "LIFECYCLE_AND_STORAGE_STRESS"
+                       ],
+    "sourceAndArtifactSha256":  {
+                                    "src/decoder.h":  "1DF4513A3E614EADD5BEEBF3F5CF595E4E64FE596C28D14DBE7C73AA401175B4",
+                                    "src/decoder.cpp":  "BC507A99A509B2F48087D1922FEA940BD53DCB0B64A20CD3D0C5591E1EA87732",
+                                    "src/inputmodule.h":  "82F388B8973776893CEF91B68D444BB1010BE67715A8F8013231FB2E421A733E",
+                                    "src/inputmodule.cpp":  "FAE2C99E9D036A4AB4030BCC9346C4A737ED285EFC9EA327BB9D26658082E3D3",
+                                    "src/nativeadapter.h":  "7825238CD05D971CDED7AB0FA481255636B19B8CA06911D4FB2AFA44B00C44C4",
+                                    "src/nativeadapter.cpp":  "818A0512CF77A43C6FEA47575D3E217D11A3E1A085CAF18C8EE8DA862D872D42",
+                                    "src/nativecontroller.h":  "CAB50FBA7E8656850FDAA883E4D4066E5DB3128C375391C9E1893B1EA5BA89C3",
+                                    "src/nativecontroller.cpp":  "61444DD77A6D09A600F748DD91A656A475F61C507956714EBEE1F10E9260437A",
+                                    "src/textpositions.h":  "9164F4A6E53AF98AD1AFDA994DC12F6A4CA7C93D17A62738892309377E338734",
+                                    "src/moduleprofile.h":  "4F4907010679BA0530D4BC5DA831549ACF7ADECA0D843C78BF2B17FA47E4E29B",
+                                    "src/symbols.h":  "17216D32B85E029A2E15236CD9BC3633695CD2ABCCAE70FA32060633394B42A3",
+                                    "tests/decoder_test.cpp":  "40023743074FE03640EF37CF9EFA6ABD1356376D32FD2041754C1CAA08D9E020",
+                                    "tests/inputmodule_test.cpp":  "797264E3C29A0D23BDF25AC420890B9ABF1A99ECDF2125B5AC361DAF86354EA0",
+                                    "assets/NativeModulePage.qml":  "6951407476161A806670BE4F430F4DCF4C3E8CC0B487921B42F3BBD458A69E6B",
+                                    "assets/CandidateStrip.qml":  "21DAD1F07F05B5AE74F1157F7A4F86C8CD49BCED62E6743F0575859CFBA0AA77",
+                                    "assets/NativeSymbolPanel.qml":  "9D59A5897C1FDDAEF3C0821E4607D9F7B0578106C96AE238201251535747F858",
+                                    "assets/ImeToggle.qml":  "4D4FF7A14E6990A1CAE7AC48F69BA1A4AA227C3EDC28048BC0D75FD4E52E5285",
+                                    "assets/ime-menu.png":  "244BCF2DF451E0A986004DD8A9008AE8716B78B9463BF2DD5FD822BEBE5D97E8",
+                                    "src/modulesettings.h":  "9521C42214D22EADABE4A831E94DDDD3AA9DA7FBB204AF8C62A5CDC557DF684F",
+                                    "src/modulesettings.cpp":  "F435CF8E469A64AB900DA610130BC24FE3154FC6965356F5AE3574F701204944",
+                                    "vendor/libgooglepinyin-0.1.2/src/matrixsearch.cpp":  "14CBCE33986CB0373DDE55761963AFD255712EC454F3116C316F6A61E69E48FD",
+                                    "vendor/libgooglepinyin-0.1.2/src/dicttrie.cpp":  "B2A34E6599A4D325D7D1D55C875D574935C905E87F9648E5B450631AEA1D89F5",
+                                    "src/backend.cpp":  "290BBFFCC4CD2B19EFB1DB6DA19BDEDBE5D7E4EA3AA56958EBBC3AD2F2721B0A",
+                                    "src/main.cpp":  "45C35F8EFB2124EC7B7B4D74DE04F8C4292540DACA21C9B0A7A0FAC7EFAEBA2D",
+                                    "src/backend.h":  "1937A9D17FCE60EBA0FBE8DC46FDF28274AE5DA5B6AE59F152EBAF43799B0EC3",
+                                    "assets/main.qml":  "1F95F218BDAC76C480B41CAE43996C224D0E3D1A00352507AE094BFCB0BB4F8A",
+                                    "bar-descriptor.xml":  "00237F960257200D79849B743973B132385B34DAC812F04A23790F2AA8395286",
+                                    "module/BBIME-Sources.ps1":  "AEEE44F677CD6A14115E8CE8B1A7B8D3DB299FFB18B0FC92DC00F78A77EA8502",
+                                    "tools/Test-Decoder.ps1":  "A136FA3A879218964610204AFC7A23751AC8E3BB2A507889B0F3201F6C73A05B",
+                                    "tools/Test-ModuleContracts.ps1":  "E04821D2F165CB1D044B66766B3321733A8E4AEE051ED23674FED5A43A3AF5AA",
+                                    "tools/Test-PhaseAB.ps1":  "831F5A38FDDE4A6205D7CCFDB44A1DB5D6453400D0A495926B8ECE9A874B3958",
+                                    "tools/Test-Q10Module.ps1":  "5E937A1B0A56F4111F4EB42CD4BA514F7A99B3593B38BE6D13F0DC91AD1DE54A",
+                                    "tools/Sdk-Environment.ps1":  "14912A2A3A2A858AAC716BCBE95373508AECECBFA56E5FC1A92B2BD72736F71F",
+                                    "tools/Test-SdkApi.ps1":  "05287648875305905EFF49C1D2B4E4D658DA1825A66BDD0A31D1677EA6377663",
+                                    "build.ps1":  "9A1AA40DCAF4D778751EF2A0C0D0769F5D6C86B5C882436BFB0B12150401F6AD",
+                                    "build/BBIME.bar":  "38E054F9C758819A81FC79B33F178D7B55ABAFEF60A918FFECE8570A4A2E014A",
+                                    "tools/Test-Qml.ps1":  "B75A91F323E812297882061744FCA8E8372C2CD4C6A463CDB80542A0F4DE9ED9",
+                                    "tools/verify_qml_syntax.java":  "02F9E83D32A78B6FD06B754F5DDA49C088B0D00668AEBD59DC69A2AE399A783F",
+                                    "tests/native_ui_state_test.cjs":  "F651D0AB522F92F2BB74406872C07DDBE4C42B358ADB264B95493E421B16839D",
+                                    "src/appfocusstate.h":  "A7FF7A475FE9AF87F6D058EBB46A395A4683EB881B006EFDE70D5A70961A05A2",
+                                    "tests/app_focus_gate_test.cpp":  "B1BC4A1B0517B90C73A197B5D944032853027EDA7E2F566AFE03918186EA12DE",
+                                    "tests/app_focus_state_test.cjs":  "7541BDA8D93974EB824531D7A1109065617771D39B32860B509A14AD69D493B3",
+                                    "build/host/app_focus_gate_test.exe":  "451F5DCCE19BC085E45792AF86BEBD22BE0D2AB66BC377060503622EC92B8F7C",
+                                    "build/host/decoder_test.exe":  "56788E347D148DD474D9F4DE0A13F6DAB56C7A8E93FF80903D59E246D9214F00",
+                                    "build/host/inputmodule_test.exe":  "9A86BF8C70C500EAEC399CC650A0B043920173F9F679BFC409F0C19F4BC6AA8E",
+                                    "build/arm/decoder_test":  "EF16CD24EDE5AA3D85C6712D3ED5F1123FBFDA17D283294B8D8F52A687A89B5F",
+                                    "build/arm/inputmodule_test":  "BFD205984C16EA9DEF648FF1B1371FB056CAAB49B23FC488D3602CDD73F65968",
+                                    "assets/dict_pinyin.dat":  "179311C55AB9B912A07EF040E5A95AF97E704E2248B7B97735F17A3E05D13B67"
+                                }
+}
