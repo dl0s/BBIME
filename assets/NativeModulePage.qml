@@ -5,6 +5,14 @@ Page {
     id: page
     property variant ime
     signal finished()
+    actionBarVisibility: ime.enabled ? ChromeVisibility.Hidden : ChromeVisibility.Visible
+    actionBarAutoHideBehavior: ActionBarAutoHideBehavior.Disabled
+    keysIgnoreFocusInActionBar: ime.enabled
+    onActionMenuVisualStateChanged: {
+        if (actionMenuVisualState === ActionMenuVisualState.VisibleFull ||
+            actionMenuVisualState === ActionMenuVisualState.AnimatingToVisibleFull)
+            ime.suspend();
+    }
     titleBar: TitleBar {
         title: "原生模块"
         dismissAction: ActionItem {
@@ -22,24 +30,19 @@ Page {
             layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
             SegmentedControl {
                 id: modes
+                property bool initialized: false
                 focusPolicy: FocusPolicy.None
-                enabled: ime.ready
+                enabled: ime.enabled
                 layoutProperties: StackLayoutProperties { spaceQuota: 1 }
                 Option { text: "自然码"; value: "natural"; selected: true }
-                Option { text: "全拼"; value: "full" }
                 Option { text: "English"; value: "english" }
-                onSelectedValueChanged: ime.mode = selectedValue
-            }
-            Button {
-                focusPolicy: FocusPolicy.None
-                text: ime.enabled ? (ime.mode === "english" ? "EN" : "中") : ""
-                imageSource: ime.enabled ? "" : "asset:///tools.png"
-                enabled: ime.ready
-                preferredWidth: 76
-                minWidth: 76
-                maxWidth: 76
-                accessibility.name: ime.enabled ? "暂停输入" : "启用输入"
-                onClicked: ime.enabled = !ime.enabled
+                onCreationCompleted: {
+                    selectedValue = ime.mode;
+                    initialized = true;
+                }
+                onSelectedValueChanged: {
+                    if (initialized && ime.enabled) ime.mode = selectedValue;
+                }
             }
             Button {
                 focusPolicy: FocusPolicy.None
@@ -50,6 +53,15 @@ Page {
                 maxWidth: 76
                 onClicked: ime.cycleSymbols()
             }
+            ImeToggle {
+                inputEnabled: ime.enabled
+                inputMode: ime.mode
+                enabled: ime.ready || ime.enabled
+                onToggleRequested: {
+                    ime.enabled = !ime.enabled;
+                    if (ime.enabled) ime.restoreFocus();
+                }
+            }
         }
         TextField {
             id: title
@@ -57,8 +69,11 @@ Page {
             textFormat: TextFormat.Plain
             hintText: "标题"
             maximumLength: 96
+            inputMode: TextFieldInputMode.Custom
+            builtInShortcutsEnabled: false
+            input.flags: TextInputFlag.VirtualKeyboardOff
             onCreationCompleted: ime.registerEditor(title, "text", false)
-            keyListeners: [ KeyListener { onKeyEvent: ime.handleKey(title, event) } ]
+            keyListeners: [ KeyListener { onKeyEvent: backend.handleNativeKey(title, event) } ]
         }
         TextArea {
             id: body
@@ -66,10 +81,13 @@ Page {
             textFormat: TextFormat.Plain
             hintText: "正文"
             maximumLength: 16384
+            inputMode: TextAreaInputMode.Custom
+            builtInShortcutsEnabled: false
+            input.flags: TextInputFlag.VirtualKeyboardOff
             minHeight: 88
             layoutProperties: StackLayoutProperties { spaceQuota: 1 }
             onCreationCompleted: ime.registerEditor(body, "text", false)
-            keyListeners: [ KeyListener { onKeyEvent: ime.handleKey(body, event) } ]
+            keyListeners: [ KeyListener { onKeyEvent: backend.handleNativeKey(body, event) } ]
         }
         TextField {
             id: password

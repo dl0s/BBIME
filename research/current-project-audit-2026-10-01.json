@@ -1,0 +1,347 @@
+{
+  "timestamp": "2026-10-01T17:04:05.9503862+08:00",
+  "projectRoot": "C:\\Users\\dove\\Documents\\BBIME",
+  "sourceVersion": "0.1.0.11",
+  "sourceCommit": "0e8bfc6af0723b1b57820080a92ddc0d352ea743",
+  "status": "HOST_SYNTAX_AND_ARM_BUILD_PASS_ARM_RUNTIME_AND_HOST_INTEGRATION_PENDING",
+  "releaseReady": false,
+  "checks": [
+    {
+      "name": "host-decoder-and-input-sessions",
+      "status": "PASS",
+      "exitCode": 0,
+      "randomizedQueries": 10000,
+      "log": "build/host-regression-validation.log",
+      "output": [
+        "PASS: module profile validation, engine ownership, no-learning, UTF8, text position units, natural code, dictionary, phrases, partial syllable, deletion, invalid input, pool exhaustion and 10000 randomized queries, full pinyin and bounds. CPU ms p50=0.000 p95=0.000 max=1.000",
+        "PASS: input sessions, field isolation, stale tickets, selection replacement, failed commit recovery, read-only and denied fields, prefix submit, English/full pinyin, wrong thread, lifecycle, reentrant host callbacks and no-learning."
+      ],
+      "sandboxInitialAttempt": "BLOCKED_WIN32_ERROR_5",
+      "retry": "APPROVED_OUTSIDE_SANDBOX"
+    },
+    {
+      "name": "source-contracts",
+      "status": "PASS",
+      "exitCode": 0,
+      "contracts": 18,
+      "script": "tools/Test-ModuleContracts.ps1",
+      "scope": "SOURCE_CONSTRAINTS_ONLY"
+    },
+    {
+      "name": "qml-syntax",
+      "status": "PASS",
+      "exitCode": 0,
+      "files": [
+        "assets/main.qml",
+        "assets/NativeModulePage.qml",
+        "assets/CandidateStrip.qml",
+        "assets/NativeSymbolPanel.qml"
+      ],
+      "parser": "C:/bbndk/plugins/com.rim.tad.tools.qml.parser_10.3.1.v201410141836.jar",
+      "generatedClasses": "BBarmin/bb10-native/build/qml-syntax (verifier default)",
+      "scope": "SYNTAX_ONLY_NOT_RUNTIME_TYPES_OR_UI",
+      "verifierScript": "C:\\Users\\dove\\Documents\\BBarmin\\bb10-native\\verify_qml_syntax.ps1",
+      "log": "build/qml-validation.log"
+    },
+    {
+      "name": "prior-source-provenance",
+      "status": "PASS_AFTER_LF_NORMALIZATION",
+      "fileCount": 28,
+      "files": [
+        {
+          "file": "src/decoder.h",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/decoder.cpp",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/inputmodule.h",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/inputmodule.cpp",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/nativeadapter.h",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/nativeadapter.cpp",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/nativecontroller.h",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/nativecontroller.cpp",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/textpositions.h",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/moduleprofile.h",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/symbols.h",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "tests/decoder_test.cpp",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "tests/inputmodule_test.cpp",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "assets/NativeModulePage.qml",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "assets/CandidateStrip.qml",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "assets/NativeSymbolPanel.qml",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "vendor/libgooglepinyin-0.1.2/src/matrixsearch.cpp",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "vendor/libgooglepinyin-0.1.2/src/dicttrie.cpp",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/backend.cpp",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/main.cpp",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "src/backend.h",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "assets/main.qml",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "bar-descriptor.xml",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "module/BBIME-Sources.ps1",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "tools/Test-Decoder.ps1",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "tools/Test-ModuleContracts.ps1",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "tools/Test-PhaseAB.ps1",
+          "normalizedLfMatchesPrior": true
+        },
+        {
+          "file": "tools/Test-Q10Module.ps1",
+          "normalizedLfMatchesPrior": true
+        }
+      ],
+      "scope": "INITIAL_SNAPSHOT_BEFORE_SDK_SCRIPT_CHANGES"
+    },
+    {
+      "name": "packaged-arm-dictionary",
+      "status": "PASS",
+      "hash": "179311C55AB9B912A07EF040E5A95AF97E704E2248B7B97735F17A3E05D13B67"
+    },
+    {
+      "name": "current-arm-build",
+      "status": "PASS",
+      "detectedSdkCandidate": "C:\\bbdevtools",
+      "qccExists": true,
+      "mocExists": true,
+      "historicalResult": "PASS_ON_PRIOR_MACHINE",
+      "sdkVariableScope": "USER",
+      "processSdkVariable": null,
+      "exitCode": 0,
+      "log": "build/arm-build-validation.log",
+      "checksPassed": [
+        "ARM_APPLICATION_COMPILE_LINK",
+        "ARM_DECODER_TEST_COMPILE_LINK",
+        "ARM_INPUTMODULE_TEST_COMPILE_LINK",
+        "LIBCPP_SO_4_ABI_NO_LIBSTDCXX",
+        "BAR_PACKAGING"
+      ],
+      "invocation": "build.ps1 -Package -Tests; no -SdkRoot required, resolved by tools/Sdk-Environment.ps1.",
+      "runtimeScope": "BUILD_ONLY_NO_ARM_TEST_EXECUTION_OR_INSTALLATION",
+      "defaultSdkSetting": "INTROOP_SDK_ROOT (User)"
+    },
+    {
+      "name": "q10-runtime",
+      "status": "NOT_RUN_THIS_AUDIT",
+      "historicalVersion011CoreStatus": "EXECUTION_DENIED",
+      "latestRecordedInstallationVersion": "0.1.0.9",
+      "latestRecordedObservedRuntimeVersion": "0.1.0.8",
+      "evidence": [
+        "research/native-module-arm-validation-0.1.0.11.json",
+        "research/q10-app-deployment.json",
+        "research/q10-interaction-validation.json"
+      ]
+    },
+    {
+      "name": "native-host-embedding",
+      "status": "NO_EMBEDDING_MARKERS_FOUND",
+      "hostsInspected": [
+        "BBFile",
+        "BBnote",
+        "BBarmin/bb10-native"
+      ],
+      "markers": [
+        "BBIME-Sources",
+        "bbime::",
+        "ImeService",
+        "NativeController",
+        "registerEditor"
+      ],
+      "verifiedHosts": 0,
+      "requiredHosts": 2,
+      "scope": "READ_ONLY_CPP_H_QML_PS1_SOURCE_AND_BUILD_FILES"
+    }
+  ],
+  "remainingGates": [
+    "PACKAGED_ARM32_FULL_CORE_RUNTIME",
+    "Q10_NATIVE_UI_FOCUS_HARDWARE_KEYS_SYMBOLS_MINIMIZE_RESUME",
+    "TWO_ORDINARY_HOST_APPS_SAVE_UNDO_FALLBACK_UPGRADE",
+    "LIFECYCLE_STORAGE_AND_PERFORMANCE_ACCEPTANCE",
+    "SHARED_PERMISSION_FAILURES_IF_ENABLED",
+    "BBNOTE_CODEMIRROR_BRIDGE_IF_BODY_REQUIRED",
+    "INTROOP_BUSINESS_KEYS_AND_FIELD_POLICY_IF_REQUIRED"
+  ],
+  "sourceAndArtifactSha256": {
+    "src/decoder.h": "1DF4513A3E614EADD5BEEBF3F5CF595E4E64FE596C28D14DBE7C73AA401175B4",
+    "src/decoder.cpp": "BC507A99A509B2F48087D1922FEA940BD53DCB0B64A20CD3D0C5591E1EA87732",
+    "src/inputmodule.h": "82F388B8973776893CEF91B68D444BB1010BE67715A8F8013231FB2E421A733E",
+    "src/inputmodule.cpp": "C523C5DE1F8698622B26F2400986F2B936F7F539C4AC9577A5CEB3CDE3CDBDD1",
+    "src/nativeadapter.h": "7825238CD05D971CDED7AB0FA481255636B19B8CA06911D4FB2AFA44B00C44C4",
+    "src/nativeadapter.cpp": "C1CFB76F98F8711B4883ED0009700CD1C38391DD9DF406A0F268E2AC2218AECC",
+    "src/nativecontroller.h": "E0B7884EE8866F3999599178B8ED7B967BCC2392021EA27EB8B18C61636BB372",
+    "src/nativecontroller.cpp": "868BB362942966A9EE994AA687F1EBEBD4EF6EBE960812EB8775734AA1483AB8",
+    "src/textpositions.h": "9164F4A6E53AF98AD1AFDA994DC12F6A4CA7C93D17A62738892309377E338734",
+    "src/moduleprofile.h": "F963E779FC7D5D8143A41942F48B90502EDE2912435749685B48335DADD5F00A",
+    "src/symbols.h": "17216D32B85E029A2E15236CD9BC3633695CD2ABCCAE70FA32060633394B42A3",
+    "tests/decoder_test.cpp": "5AAD4FC3A2D05F19ED73C5A227B90A1804EDD9C8FB8F030C26039DE9791A020B",
+    "tests/inputmodule_test.cpp": "7813711BDC9C254E66DC50D4313E2C54259AFE759FEF57226B07D1FD6ED53D67",
+    "assets/NativeModulePage.qml": "D173037552D5558B24B12FDB3498A7483655B2543C13F29EC495567C1A3BD785",
+    "assets/CandidateStrip.qml": "21DAD1F07F05B5AE74F1157F7A4F86C8CD49BCED62E6743F0575859CFBA0AA77",
+    "assets/NativeSymbolPanel.qml": "66B7CF738F384BE41ECF3038616F0D07A52EC1481459CCC68D1B6D1AA1B32CB8",
+    "vendor/libgooglepinyin-0.1.2/src/matrixsearch.cpp": "14CBCE33986CB0373DDE55761963AFD255712EC454F3116C316F6A61E69E48FD",
+    "vendor/libgooglepinyin-0.1.2/src/dicttrie.cpp": "B2A34E6599A4D325D7D1D55C875D574935C905E87F9648E5B450631AEA1D89F5",
+    "src/backend.cpp": "E995330A6D6365A1CD193E83770D6C64B33271B82E33829A0377B8DC91D1F372",
+    "src/main.cpp": "819D7A9744D10B704350ACCE4AAAE1BAD729F47858C1C493AFF270C59DD71F7B",
+    "src/backend.h": "B963AB51675DF4FE55742F4B33182939D85E47272235BB2E02F33735ADFA212A",
+    "assets/main.qml": "D733D1BB98F5E368AF636AB486DAC68CF6DEB8930C12AFF10354CE8D5D1209FF",
+    "bar-descriptor.xml": "6DF2A052C377EC2912316B3CA412B7A5D1F13B1ED979D673A79C88663D06689D",
+    "module/BBIME-Sources.ps1": "C451FA9F77D67D24053811CA387F6DA616BFE1BAABCBD22F5DCA6A481B998F77",
+    "tools/Test-Decoder.ps1": "A136FA3A879218964610204AFC7A23751AC8E3BB2A507889B0F3201F6C73A05B",
+    "tools/Test-ModuleContracts.ps1": "54619B29C74CD73ADF4D272061E17669A77249518AA903190ED6F5AED4D8863B",
+    "tools/Test-Q10Module.ps1": "AE7FEF55891994FDD32DA2358B928BC69D004E3F17D658D7F23E5001C94B16B2",
+    "src/modulesettings.cpp": "981186281E4D93453F26512966046EBC8F7B24B434B99A37B760B3F784A9ABF5",
+    "src/modulesettings.h": "9521C42214D22EADABE4A831E94DDDD3AA9DA7FBB204AF8C62A5CDC557DF684F",
+    "vendor/libgooglepinyin-0.1.2/src/userdict.cpp": "1956AC623B07CEBFE290640E29A6CDFD8B033DB4A8400713C9A83F2D09EF8F2B",
+    "assets/dict_pinyin.dat": "179311C55AB9B912A07EF040E5A95AF97E704E2248B7B97735F17A3E05D13B67",
+    "build-host-audit.log": "A42C572D2F7D9E847D550EFF0495F6C37015137895D16868518B640083400CE1",
+    "build/audit/arm-build-validation.log": "5FCA0664782CF292DD294470F9769E6AF0558E516C797E7DABAF9DFF22EC7662",
+    "build.ps1": "EEABA89AB08AF0403CD83F4679526ED4ABE29B5DEE6A86D58BC419F052701B6E",
+    "tools/Sdk-Environment.ps1": "A8D65C7BD9C03D21D26E7F962D30CD496ABB4A1104924FA5DC3A5C44755A0E18",
+    "tools/Test-SdkApi.ps1": "05287648875305905EFF49C1D2B4E4D658DA1825A66BDD0A31D1677EA6377663",
+    "tools/Test-PhaseAB.ps1": "9BD249E1BC27F56D8A0B809D556C19019B1E13038D4FA96C720F7E5DFE58A604",
+    "README.md": "B88208E968F1B3736D6E696B363450651C71FE0334DC70B303ABE427623346AC",
+    "Q10_SHUANGPIN_FEASIBILITY.md": "16C7E0FBF8EFB1E8AB59703CF02F6156C6F946C522D86DA62665BF8E32652B30",
+    "build/bbime": "8B211DB0872683ED7037B9E2CA0A46E55ADAA6E23E7BE7617B1023CDEC231525",
+    "build/BBIME.bar": "0958A5AEE9642F8885DFD6A98ACE59DFE00C8054E0CF86CEBFDA130589B80E3E",
+    "build/arm/decoder_test": "4C2C1D2581EF7A5880FC54351F96ECB2D8901C08C1FEB45D6878C0D85BB3FCDE",
+    "build/arm/inputmodule_test": "B0FBCDEA207C501AF45BC3F1096DE1AE686AFA41DA4B0B2455B0BC6BCD3C14C9",
+    "build/host/decoder_test.exe": "32A83B26C3BFF17522D681DF54AA67BB156DFA7849174CC267ECB8B268C2DEB2",
+    "build/host/inputmodule_test.exe": "248F4937E2C97B526D91ABDFE29B32949BB253977492C57F08316B1134F61648",
+    "build/host-regression-validation.log": "18EF4F52DA1B81978A9C8F65AB56ED57ED5E56582B490958857FF277FE8B018B",
+    "build/arm-build-validation.log": "D90FD198F417AACD4D4A3A52EA26BF0B8C6B2B67FB2FFA2CED5DA1B32410E09E",
+    "build/qml-validation.log": "6BAB158D95101515F4BF95AA3C3E48123065DC6CAAEF735BAD44CE4E61B4A872",
+    "build/audit/phase-ab-sdk-directory-validation.json": "62FD746115C027B4FAA96B6D9EB936A29EF3FDA8D854C4439FC9652A53B60D96",
+    "build/audit/sdk-api-current-directory.json": "1E945B3E3D14529B43181DCD78D58E19D60EEEC8C68313DCB19A19FE00191C8D"
+  },
+  "report": "research/CURRENT_PROJECT_AUDIT_2026-10-01.md",
+  "changes": "SDK_BUILD_VALIDATION_ENTRYPOINTS_AND_CURRENT_DOCUMENTATION_UPDATED",
+  "updatedAt": "2026-10-01T17:33:39.4737183+08:00",
+  "sdkAssessmentCorrection": "User INTROOP_SDK_ROOT is C:/bbdevtools. Active SDK scripts now resolve explicit parameter, user setting, then process setting. The SDK API and complete local phase validation passed with default SDK resolution.",
+  "sdkConfigurationUpdate": {
+    "sdkRoot": "C:\\bbdevtools",
+    "resolutionPriority": [
+      "EXPLICIT_SDKROOT",
+      "USER_INTROOP_SDK_ROOT",
+      "PROCESS_INTROOP_SDK_ROOT"
+    ],
+    "resolverChecks": [
+      "STALE_PROCESS_VALUE_OVERRIDDEN_BY_USER",
+      "EXPLICIT_OVERRIDE_ACCEPTED",
+      "INVALID_DIRECTORY_REJECTED",
+      "FOUR_POWERSHELL_FILES_PARSE"
+    ],
+    "phaseChecks": [
+      {
+        "name": "host-regression",
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "C:\\Users\\dove\\Documents\\BBIME\\build\\host-regression-validation.log"
+      },
+      {
+        "name": "module-contracts",
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "C:\\Users\\dove\\Documents\\BBIME\\build\\module-contracts-validation.log"
+      },
+      {
+        "name": "arm-build",
+        "status": "PASS",
+        "exitCode": 0,
+        "log": "C:\\Users\\dove\\Documents\\BBIME\\build\\arm-build-validation.log"
+      },
+      {
+        "name": "qml-syntax",
+        "status": "PASS",
+        "log": "C:\\Users\\dove\\Documents\\BBIME\\build\\qml-validation.log",
+        "scope": "SYNTAX_ONLY_NOT_RUNTIME_TYPE_OR_LAYOUT_VALIDATION"
+      }
+    ],
+    "phaseEvidence": "build/audit/phase-ab-sdk-directory-validation.json",
+    "sdkApiResult": "COMPILE_AND_LINK_PASS",
+    "sdkApiEvidence": "build/audit/sdk-api-current-directory.json",
+    "qmlVerifier": "C:\\Users\\dove\\Documents\\BBarmin\\bb10-native\\verify_qml_syntax.ps1",
+    "device": "NOT_RUN",
+    "historicalEvidencePreserved": [
+      "research/phase-ab-validation-0.1.0.11.json",
+      "research/sdk-api-evidence.json"
+    ],
+    "filesChanged": [
+      "build.ps1",
+      "tools/Sdk-Environment.ps1",
+      "tools/Test-SdkApi.ps1",
+      "tools/Test-PhaseAB.ps1",
+      "README.md",
+      "Q10_SHUANGPIN_FEASIBILITY.md"
+    ]
+  }
+}

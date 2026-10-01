@@ -52,7 +52,8 @@ bool ModuleSettings::read(const QString &path, ModuleProfile &profile, bool *lea
         values.erase(it);
     }
     ModuleProfile next;
-    if (!ModuleProfile::parse(values, next)) {
+    if (!ModuleProfile::parse(values, next) &&
+        !(learn && ModuleProfile::migrateLegacy(values, next))) {
         m_error = "SCHEMA"; return false;
     }
     profile = next;
@@ -146,7 +147,6 @@ bool ModuleSettings::selftest() {
     ModuleSettings owner(localPath);
     ModuleProfile expected;
     expected.startMode = "english";
-    expected.chineseMode = "full";
     expected.shiftCursor = false;
     bool pass = owner.save(expected, false) && owner.publish(sharedPath);
     ModuleSettings peer(localPath);
@@ -187,6 +187,38 @@ bool ModuleSettings::selftest() {
     invalidProfile.startMode = "system";
     pass = !peer.save(invalidProfile, true) && !peer.learnSelections() &&
         peer.profile().values() == before.values() && pass;
+    // Local v1 settings migrate, while shared files cannot transfer legacy state
+    // or local learning consent. The next publication always emits schema v2.
+    pass = owner.save(expected, false) && pass;
+    {
+        QSettings legacy(localPath, QSettings::IniFormat);
+        legacy.setValue("profile/version", "1");
+        legacy.setValue("input/startMode", "full");
+        legacy.setValue("input/chineseMode", "full");
+        legacy.sync();
+    }
+    pass = owner.load() && owner.profile().startMode == "natural" &&
+        !owner.learnSelections() && owner.profile().values().count("input/chineseMode") == 0 && pass;
+    pass = owner.publish(sharedPath) && peer.importProfile(sharedPath) &&
+        peer.profile().startMode == "natural" && !peer.learnSelections() && pass;
+    const ModuleProfile migrated = peer.profile();
+    {
+        QSettings legacy(sharedPath, QSettings::IniFormat);
+        legacy.setValue("profile/version", "1");
+        legacy.setValue("input/startMode", "full");
+        legacy.setValue("input/chineseMode", "full");
+        legacy.sync();
+    }
+    pass = !peer.importProfile(sharedPath) && peer.error() == "SCHEMA" &&
+        peer.profile().values() == migrated.values() && !peer.learnSelections() && pass;
+    {
+        QSettings invalid(localPath, QSettings::IniFormat);
+        invalid.setValue("unknown/key", "true");
+        invalid.sync();
+    }
+    const ModuleProfile localBefore = owner.profile();
+    pass = !owner.load() && owner.profile().values() == localBefore.values() &&
+        !owner.learnSelections() && pass;
     return pass;
 }
 }

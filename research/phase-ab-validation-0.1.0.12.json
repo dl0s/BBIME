@@ -1,0 +1,86 @@
+﻿{
+    "timestamp":  "2026-10-01T19:26:02.7052724+08:00",
+    "sourceVersion":  "0.1.0.12",
+    "sdkRoot":  "C:\\bbdevtools",
+    "packagingJavaBin":  "C:\\bbndk\\features\\com.qnx.tools.jre.win32.x86_64_1.7.0.51\\jre\\bin",
+    "qmlVerifierScript":  "C:\\Users\\dove\\Documents\\BBarmin\\bb10-native\\verify_qml_syntax.ps1",
+    "status":  "LOCAL_PASS_DEVICE_AND_HOST_INTEGRATION_GATES_REMAIN",
+    "checks":  [
+                   {
+                       "name":  "host-regression",
+                       "status":  "PASS",
+                       "exitCode":  0,
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\host-regression-validation.log"
+                   },
+                   {
+                       "name":  "module-contracts",
+                       "status":  "PASS",
+                       "exitCode":  0,
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\module-contracts-validation.log"
+                   },
+                   {
+                       "name":  "arm-build",
+                       "status":  "PASS",
+                       "exitCode":  0,
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\arm-build-validation.log"
+                   },
+                   {
+                       "name":  "qml-syntax",
+                       "status":  "PASS",
+                       "log":  "C:\\Users\\dove\\Documents\\BBIME\\build\\qml-validation.log",
+                       "scope":  "SYNTAX_ONLY_NOT_RUNTIME_TYPE_OR_LAYOUT_VALIDATION"
+                   }
+               ],
+    "device":  "NOT_RUN",
+    "releaseReady":  false,
+    "remainingGates":  [
+                           "ARM_SYNTHETIC_CORE_RUNTIME",
+                           "Q10_NATIVE_UI_FOCUS_KEYS_AND_SYMBOLS",
+                           "TWO_ORDINARY_HOST_APPS",
+                           "SHARED_PERMISSION_FAILURES_IF_ENABLED",
+                           "LIFECYCLE_AND_STORAGE_STRESS"
+                       ],
+    "sourceAndArtifactSha256":  {
+                                    "src/decoder.h":  "1DF4513A3E614EADD5BEEBF3F5CF595E4E64FE596C28D14DBE7C73AA401175B4",
+                                    "src/decoder.cpp":  "BC507A99A509B2F48087D1922FEA940BD53DCB0B64A20CD3D0C5591E1EA87732",
+                                    "src/inputmodule.h":  "82F388B8973776893CEF91B68D444BB1010BE67715A8F8013231FB2E421A733E",
+                                    "src/inputmodule.cpp":  "FAE2C99E9D036A4AB4030BCC9346C4A737ED285EFC9EA327BB9D26658082E3D3",
+                                    "src/nativeadapter.h":  "7825238CD05D971CDED7AB0FA481255636B19B8CA06911D4FB2AFA44B00C44C4",
+                                    "src/nativeadapter.cpp":  "818A0512CF77A43C6FEA47575D3E217D11A3E1A085CAF18C8EE8DA862D872D42",
+                                    "src/nativecontroller.h":  "E0B7884EE8866F3999599178B8ED7B967BCC2392021EA27EB8B18C61636BB372",
+                                    "src/nativecontroller.cpp":  "6B9F663095E7F545DF0CD88A337D5D9858F98ED5727D053869DF85436638E17D",
+                                    "src/textpositions.h":  "9164F4A6E53AF98AD1AFDA994DC12F6A4CA7C93D17A62738892309377E338734",
+                                    "src/moduleprofile.h":  "4F4907010679BA0530D4BC5DA831549ACF7ADECA0D843C78BF2B17FA47E4E29B",
+                                    "src/symbols.h":  "17216D32B85E029A2E15236CD9BC3633695CD2ABCCAE70FA32060633394B42A3",
+                                    "tests/decoder_test.cpp":  "40023743074FE03640EF37CF9EFA6ABD1356376D32FD2041754C1CAA08D9E020",
+                                    "tests/inputmodule_test.cpp":  "797264E3C29A0D23BDF25AC420890B9ABF1A99ECDF2125B5AC361DAF86354EA0",
+                                    "assets/NativeModulePage.qml":  "118BFFA9418DA5F83CE448B9BA97D3C9F18932C084D33B041C3F2D28F1F30B27",
+                                    "assets/CandidateStrip.qml":  "21DAD1F07F05B5AE74F1157F7A4F86C8CD49BCED62E6743F0575859CFBA0AA77",
+                                    "assets/NativeSymbolPanel.qml":  "66B7CF738F384BE41ECF3038616F0D07A52EC1481459CCC68D1B6D1AA1B32CB8",
+                                    "assets/ImeToggle.qml":  "CFAC7D9078F632F983A405B6B69ED63CEFA5EAB87F97F6A77ED48EF2F03C3970",
+                                    "assets/ime-menu.png":  "244BCF2DF451E0A986004DD8A9008AE8716B78B9463BF2DD5FD822BEBE5D97E8",
+                                    "src/modulesettings.h":  "9521C42214D22EADABE4A831E94DDDD3AA9DA7FBB204AF8C62A5CDC557DF684F",
+                                    "src/modulesettings.cpp":  "F435CF8E469A64AB900DA610130BC24FE3154FC6965356F5AE3574F701204944",
+                                    "vendor/libgooglepinyin-0.1.2/src/matrixsearch.cpp":  "14CBCE33986CB0373DDE55761963AFD255712EC454F3116C316F6A61E69E48FD",
+                                    "vendor/libgooglepinyin-0.1.2/src/dicttrie.cpp":  "B2A34E6599A4D325D7D1D55C875D574935C905E87F9648E5B450631AEA1D89F5",
+                                    "src/backend.cpp":  "1D83979111A26C0BC0223D04FD50391946D782775106003D8CF5C9E225F4AA50",
+                                    "src/main.cpp":  "280FFB456B607AB94EBB6C47CBC5D8DE8A50EB45D1A7F8C57CA215DB63E57201",
+                                    "src/backend.h":  "964199023BAD17891A7AB00B045F6B8BE62B6C3EFA89F75D34992E9F291682DA",
+                                    "assets/main.qml":  "2CCC82CCE0DDFE3580FB7CDCA85AA10A21FC8DB190F3601697F65CA4CA16282F",
+                                    "bar-descriptor.xml":  "D838489DAEAA6F21D89C2FE4B3C08658E871D6CA51B725B9E404339730438B18",
+                                    "module/BBIME-Sources.ps1":  "AEEE44F677CD6A14115E8CE8B1A7B8D3DB299FFB18B0FC92DC00F78A77EA8502",
+                                    "tools/Test-Decoder.ps1":  "A136FA3A879218964610204AFC7A23751AC8E3BB2A507889B0F3201F6C73A05B",
+                                    "tools/Test-ModuleContracts.ps1":  "5EB96512A7A7317173183DBF7DAC88C991391A3CB3A11C66D16AD9030F45A74B",
+                                    "tools/Test-PhaseAB.ps1":  "4FBA4A73034E3920E22BE3FEAD41EE329F3022B3B73B0F5B023DC54F19ACA996",
+                                    "tools/Test-Q10Module.ps1":  "413245FABEB35B1FD690E862AF6DB5C62742124B3AEDFF8F354D206F3F23204B",
+                                    "tools/Sdk-Environment.ps1":  "14912A2A3A2A858AAC716BCBE95373508AECECBFA56E5FC1A92B2BD72736F71F",
+                                    "tools/Test-SdkApi.ps1":  "05287648875305905EFF49C1D2B4E4D658DA1825A66BDD0A31D1677EA6377663",
+                                    "build.ps1":  "CB64E8D28B63FE9C543ABFDAA636A695277760100CD08FBC2D6894A9D7D79E50",
+                                    "build/BBIME.bar":  "CCEB8EAB631D047459E65E19824BB1C8A439C3C10F6C8E087D4D4E532C07994D",
+                                    "build/host/decoder_test.exe":  "A1B3831066A1618DF9E0C28569F0F5F2890E92BF5228BB3389CE896335DE2EF0",
+                                    "build/host/inputmodule_test.exe":  "48C4AFCAB25E8DCE941A5C5D1E43AF928316ADAC177C6E639DE2C829872C19CC",
+                                    "build/arm/decoder_test":  "EF16CD24EDE5AA3D85C6712D3ED5F1123FBFDA17D283294B8D8F52A687A89B5F",
+                                    "build/arm/inputmodule_test":  "BFD205984C16EA9DEF648FF1B1371FB056CAAB49B23FC488D3602CDD73F65968",
+                                    "assets/dict_pinyin.dat":  "179311C55AB9B912A07EF040E5A95AF97E704E2248B7B97735F17A3E05D13B67"
+                                }
+}

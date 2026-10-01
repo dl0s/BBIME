@@ -143,11 +143,23 @@ int main(int argc, char **argv) {
     check(prefix < first.candidates().size() && first.choose(first.ticket(prefix)) &&
         first.composition() == "hk", "prefix choice preserves suffix");
     check(first.commitPending() && first.composition().empty(), "submit completes suffix");
-    check(first.setMode("full") && first.setCode("ni'hao") &&
-        first.commitPending(), "full pinyin session");
+    check(first.setCode("nihk"), "mode rejection preparation");
+    old = first.ticket(0);
+    check(!first.setMode("full") && !first.setMode("system") &&
+        !first.setMode("") && first.mode() == "natural" &&
+        first.composition() == "nihk" && first.accepts(old),
+        "removed modes preserve composition and candidate ticket");
     check(first.setMode("english") && !first.append('n') && first.insertLiteral("A"),
         "English bypasses decoder");
     check(!first.setMode("system") && first.mode() == "english", "invalid mode unchanged");
+    check(!first.setMode("full") && first.mode() == "english", "English rejects removed mode");
+    first.deactivate();
+    check(first.activate() && first.mode() == "english" && first.composition().empty(),
+        "pause and resume preserve English without preedit");
+    check(first.setMode("natural") && first.setCode("nihk"), "natural mode restored");
+    first.deactivate();
+    check(first.activate() && first.mode() == "natural" && first.composition().empty(),
+        "pause and resume preserve natural mode without preedit");
 
     const bbime::FieldPolicy::Kind denied[] = { bbime::FieldPolicy::Denied,
         bbime::FieldPolicy::Sensitive, bbime::FieldPolicy::Password, bbime::FieldPolicy::Numeric };
@@ -201,7 +213,7 @@ int main(int argc, char **argv) {
     check(service.close() && !first.active() && first.composition().empty() &&
         service.open(argv[1], argv[2]) && first.activate(), "close and reopen resets sessions");
     std::printf("PASS: input sessions, field isolation, stale tickets, selection replacement, "
-        "failed commit recovery, read-only and denied fields, prefix submit, English/full pinyin, "
+        "failed commit recovery, read-only and denied fields, prefix submit, natural/English modes, "
         "wrong thread, lifecycle, reentrant host callbacks and no-learning.\n");
     return 0;
 }

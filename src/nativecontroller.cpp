@@ -5,6 +5,7 @@
 #include <bb/cascades/TextField>
 #include <bb/cascades/TextFormat>
 #include <bb/cascades/TextFieldInputMode>
+#include <bb/cascades/TextAreaInputMode>
 #include <bb/cascades/Application>
 #include <sys/keycodes.h>
 #include <cstring>
@@ -186,7 +187,7 @@ void NativeController::setEnabled(bool value) {
 }
 void NativeController::suspend() { setEnabled(false); }
 void NativeController::setMode(const QString &mode) {
-    if (mode != "natural" && mode != "full" && mode != "english") return;
+    if (mode != "natural" && mode != "english") return;
     mode_ = mode;
     symbolsVisible_ = false;
     symbolStart_ = -1;
@@ -388,7 +389,6 @@ bool NativeController::handleKey(QObject *control, QObject *object) {
         session.choose(session.ticket((session.selectedIndex() / 5) * 5 + unicode[0].unicode() - '1'));
     } else if (session.mode() != "english" && !event->isAltPressed() &&
                key >= 'a' && key <= 'z') session.append(char(key));
-    else if (session.mode() == "full" && unicode == "'") session.append('\'');
     else if (!unicode.isEmpty() && unicode[0].unicode() >= 32 &&
              unicode[0].category() != QChar::Other_PrivateUse) {
         if (session.mode() == "english" && !event->isAltPressed() && key >= 'a' && key <= 'z')
@@ -421,6 +421,8 @@ bool NativeController::selftest() {
     TextField field;
     area.setTextFormat(TextFormat::Plain);
     field.setTextFormat(TextFormat::Plain);
+    area.setInputMode(TextAreaInputMode::Custom);
+    field.setInputMode(TextFieldInputMode::Custom);
     area.setMaximumLength(64);
     field.setMaximumLength(64);
     NativeEditorAdapter a(&area, policy, areaPoints_);
@@ -428,7 +430,17 @@ bool NativeController::selftest() {
     policy.multiline = false;
     NativeEditorAdapter b(&field, policy, fieldPoints_);
     InputSession second(service_, b, policy);
-    bool pass = a.takeInput() && first.activate() && first.setCode("nihk");
+    const QString originalMode = mode_;
+    setMode("english");
+    setMode("full");
+    setMode("system");
+    bool pass = mode_ == "english";
+    setMode("natural");
+    setMode("full");
+    pass = mode_ == "natural" && pass;
+    setMode(originalMode);
+    pass = a.eligible() && b.eligible() && a.takeInput() && first.activate() &&
+        first.setCode("nihk") && pass;
     const CandidateTicket old = first.ticket(0);
     pass = b.takeInput() && second.activate() && !first.choose(old) &&
         area.text().isEmpty() && first.composition().empty() && pass;
@@ -449,6 +461,10 @@ bool NativeController::selftest() {
     b.releaseInput();
     pass = field.inputMode() == TextFieldInputMode::Password && pass;
     a.releaseInput();
+    pass = area.inputMode() == TextAreaInputMode::Custom && pass;
+    pass = a.takeInput() && pass;
+    a.releaseInput();
+    pass = area.inputMode() == TextAreaInputMode::Custom && pass;
     area.setEditable(false);
     pass = !a.takeInput() && !first.activate() && pass;
     if (!pass) positionsReady_ = false;

@@ -1,8 +1,10 @@
 # 最小原生输入模块
 
-源码版本：`0.1.0.11`。这是源码嵌入模块，不是系统输入法或独立跨应用服务。
-测试证据由 `tools/Test-PhaseAB.ps1` 写入 `research/phase-ab-validation-0.1.0.11.json`。
+源码版本：`0.1.0.12`。这是源码嵌入模块，不是系统输入法或独立跨应用服务。
+测试证据由 `tools/Test-PhaseAB.ps1` 写入 `research/phase-ab-validation-0.1.0.12.json`。
 编译成功不表示原生控件、硬件键盘或两个真实宿主已经完成验收。
+完整操作过程、右上角按钮状态表和升级兼容要求见 [标准接入规范](INTEGRATION_WORKFLOW.md)。
+BBFile/BBnote 的接入已完成源码工作，设备与按钮差异见 [两款宿主检查](../research/HOST_INTEGRATION_REVIEW_2026-10-01.md)。
 
 ## 所有权
 
@@ -40,6 +42,8 @@ if (service.open(packagedDictionary, appPrivateUserDictionary) &&
 TextField {
     id: search
     textFormat: TextFormat.Plain
+    inputMode: TextFieldInputMode.Custom
+    input.flags: TextInputFlag.VirtualKeyboardOff
     onCreationCompleted: ime.registerEditor(search, "search", false)
     keyListeners: [
         KeyListener {
@@ -53,11 +57,16 @@ TextField {
 }
 CandidateStrip { ime: ime }
 // 将 NativeSymbolPanel { ime: ime } 放在页面 attachedObjects 中。
+// 最右端使用 ImeToggle：inputEnabled/inputMode 绑定宿主，toggleRequested 只切换 enabled。
 ```
 
 上例的 `host.routeKey` 是宿主接口示意，不是模块内置方法。
 `configure()` 只在控制器停用、无活跃会话时接受严格校验后的偏好；
 它不改变正在运行的语言模式。启动模式由宿主显式设置。
+公开输入和启动模式只有 natural/english。共享 profile/version=2，不再含 chineseMode；
+已知私有 v1 设置可迁移 full→natural，下一次保存为 v2，共享 v1 整体拒绝。
+资源清单导出 ImeToggle.qml/ime-menu.png，按钮 76×64、无焦点，只切换输入/菜单并保留语言。
+Alt+Enter 在宿主唯一按键入口实现；不得将暂停→自然码→英文循环绑定到按钮。
 
 `registerEditor(control, policy, learn)` 只接受 `text/search/path`：
 `text` 可配置中文标点，`search/path` 保留 ASCII 标点且不学习。
@@ -67,7 +76,8 @@ CandidateStrip { ime: ime }
 
 ## 编辑与按键
 
-原生适配器启用时暂借 `Custom` 模式，退出时恢复原模式；宿主随后改成密码等
+接入字段由宿主预设 Custom + VirtualKeyboardOff，适配器支持预设 Custom，退出时仍恢复 Custom。
+适配器也支持暂借其他合格原模式，退出时恢复原模式；宿主随后改成密码等
 其他模式时不会被恢复代码覆盖。通过 `TextEditor::insertPlainText()` 替换选区，
 不调用 `setText()` 重写整个宿主文档，也不读写统一草稿或实现第二套撤销。
 位置单位分别探测 TextArea/TextField；保护 UTF-16 代理对，不宣称完整字素簇编辑。
@@ -85,7 +95,7 @@ Ctrl 组合、Alt+Enter、Alt+Backspace 留给宿主。模块不继承测试应�
 
 单按左右 Shift 根据本地偏好移动候选或光标，组合、长按及跨字段释放不触发动作。
 Sym 使用中文/English/数学单轮面板；Esc/退格取消面板，保留编码。
-宿主可以只使用候选条，布局和工具栏仍由宿主决定。
+宿主负责布局；右上角开关遵循共享组件契约，候选条与符号面板按字段能力启用。
 
 ## 验证与范围
 
@@ -103,4 +113,5 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/Test-PhaseAB.ps1 -
 本工程菜单“原生模块”提供标题、正文和不接入的密码字段，字段均不学习、
 不自动持久化。保留原来的单编辑框测试页；两个页面互斥使用同一解码服务。
 模块页面打开期间禁止测试应用的旧调试窗口截图。
-下一闸门是新版 Q10 原生页面和两个真实宿主，不包含 BBnote CodeMirror 接入。
+下一闸门是当前版本 Q10 原生页面、两款宿主升级及其设备验收；
+BBnote 已有 CodeMirror 桥，需另测异步事务和保存等待，不能用原生字段回归代替。

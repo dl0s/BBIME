@@ -29,7 +29,7 @@ $remote = '/tmp/bbime-validation/' + [guid]::NewGuid().ToString('N')
 if ($remote -notmatch '^/tmp/bbime-validation/[a-f0-9]{32}$') { throw 'Invalid scratch path' }
 $record = [ordered]@{
     timestamp = [DateTimeOffset]::Now.ToOffset([TimeSpan]::FromHours(8)).ToString('o')
-    sourceVersion = '0.1.0.11'
+    sourceVersion = '0.1.0.12'
     scope = 'ARM32_SYNTHETIC_CORE_ONLY_SSH_ROOT_NOT_APP_PERMISSIONS_OR_UI'
     scratchDirectory = $remote
     status = 'PENDING'
@@ -83,5 +83,5 @@ try {
     throw
 } finally {
     $record | ConvertTo-Json -Depth 8 |
-        Set-Content -LiteralPath (Join-Path $root 'research/native-module-arm-validation-0.1.0.11.json') -Encoding UTF8
+        Set-Content -LiteralPath (Join-Path $root 'research/native-module-arm-validation-0.1.0.12.json') -Encoding UTF8
 }

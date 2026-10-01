@@ -47,13 +47,13 @@ bool NativeEditorAdapter::eligible() const {
     if (TextField *field = qobject_cast<TextField *>(control_.data())) {
         const TextFieldInputMode::Type mode = field->inputMode();
         return mode == TextFieldInputMode::Default || mode == TextFieldInputMode::Text ||
-            mode == TextFieldInputMode::Chat || (leased_ && mode == TextFieldInputMode::Custom);
+            mode == TextFieldInputMode::Chat || mode == TextFieldInputMode::Custom;
     }
     TextArea *area = qobject_cast<TextArea *>(control_.data());
     if (!area->isEditable()) return false;
     const TextAreaInputMode::Type mode = area->inputMode();
     return mode == TextAreaInputMode::Default || mode == TextAreaInputMode::Text ||
-        (leased_ && mode == TextAreaInputMode::Custom);
+        mode == TextAreaInputMode::Custom;
 }
 bool NativeEditorAdapter::takeInput() {
     if (!eligible()) return false;

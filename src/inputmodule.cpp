@@ -70,10 +70,10 @@ void InputSession::cancel() {
     highlight_ = 0;
     ++revision_;
     if (service_.active_ == this && service_.ready())
-        service_.decoder_.setCode("", mode_ != "full");
+        service_.decoder_.setCode("", true);
 }
 bool InputSession::setMode(const std::string &mode) {
-    if (!active() || (mode != "natural" && mode != "full" && mode != "english"))
+    if (!active() || (mode != "natural" && mode != "english"))
         return false;
     cancel();
     mode_ = mode;
@@ -85,7 +85,7 @@ bool InputSession::setCode(const std::string &code) {
         cancel();
         return false;
     }
-    if (!service_.decoder_.setCode(code, mode_ != "full")) return false;
+    if (!service_.decoder_.setCode(code, true)) return false;
     code_ = code;
     pinyin_ = service_.decoder_.pinyin();
     candidates_ = service_.decoder_.candidates();

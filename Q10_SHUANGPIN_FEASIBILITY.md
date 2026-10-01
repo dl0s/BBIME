@@ -29,7 +29,7 @@
 
 本机存在以下可用材料：
 
-- SDK：`C:\Users\dove1\Documents\BBarmin\sdk`。
+- SDK：用户级环境变量 `INTROOP_SDK_ROOT`，当前有效目录 `C:\bbdevtools`。
 - Host：`host_10_3_1_12\win32\x86`。
 - Target：`target_10_3_1_995\qnx6`，BB10 10.3.1 SDK。
 - 编译器：`qcc`，ARMv7 little-endian 目标。
@@ -386,22 +386,22 @@ SSH root 是管理入口，不自动将通过 Launcher 启动的 GUI 变为 root
 
 ### 官方 SDK 头文件
 
-- [H1] [screen.h](C:/Users/dove1/Documents/BBarmin/sdk/target_10_3_1_995/qnx6/usr/include/screen/screen.h:164)：
+- [H1] [screen.h](C:/bbdevtools/target_10_3_1_995/qnx6/usr/include/screen/screen.h:164)：
   上下文类型；第 5680 行为 `screen_inject_event()` 声明，第 6581 行为会话创建声明。
-- [H2] [textfieldinputmode.h](C:/Users/dove1/Documents/BBarmin/sdk/target_10_3_1_995/qnx6/usr/include/bb/cascades/resources/textfieldinputmode.h:109)：
+- [H2] [textfieldinputmode.h](C:/bbdevtools/target_10_3_1_995/qnx6/usr/include/bb/cascades/resources/textfieldinputmode.h:109)：
   Custom 输入模式及 IMF 限制。
-- [H3] [texteditor.h](C:/Users/dove1/Documents/BBarmin/sdk/target_10_3_1_995/qnx6/usr/include/bb/cascades/controls/texteditor.h:109)：
+- [H3] [texteditor.h](C:/bbdevtools/target_10_3_1_995/qnx6/usr/include/bb/cascades/controls/texteditor.h:109)：
   光标与选区文本插入。
-- [H4] [inputrouteproperties.h](C:/Users/dove1/Documents/BBarmin/sdk/target_10_3_1_995/qnx6/usr/include/bb/cascades/controls/inputrouteproperties.h:13)：
+- [H4] [inputrouteproperties.h](C:/bbdevtools/target_10_3_1_995/qnx6/usr/include/bb/cascades/controls/inputrouteproperties.h:13)：
   当前应用内控件事件路由。
-- [H5] [textinputproperties.h](C:/Users/dove1/Documents/BBarmin/sdk/target_10_3_1_995/qnx6/usr/include/bb/cascades/controls/input/textinputproperties.h:23)：
+- [H5] [textinputproperties.h](C:/bbdevtools/target_10_3_1_995/qnx6/usr/include/bb/cascades/controls/input/textinputproperties.h:23)：
   文本输入属性。
 
 复核脚本：
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\dove1\Documents\BBIME\tools\Get-Q10InputEvidence.ps1
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\dove1\Documents\BBIME\tools\Test-SdkApi.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\Get-Q10InputEvidence.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\Test-SdkApi.ps1
 ```
 
 第一个脚本只读当前固定设备的相关元数据；第二个只在电脑编译和检查 ARM ELF。

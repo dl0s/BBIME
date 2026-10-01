@@ -1,9 +1,13 @@
 param(
     [switch]$Package,
     [switch]$Tests,
-    [string]$SdkRoot = 'C:\Users\dove1\Documents\BBarmin\sdk'
+    [string]$SdkRoot = '',
+    [string]$JavaBin = ''
 )
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'tools/Sdk-Environment.ps1')
+$SdkRoot = Get-BBIMESdkRoot -SdkRoot $SdkRoot
+if ($Package) { $JavaBin = Get-BBIMEJavaBin -SdkRoot $SdkRoot -JavaBin $JavaBin }
 $savedHost = $env:QNX_HOST
 $savedTarget = $env:QNX_TARGET
 $savedPath = $env:PATH
@@ -11,8 +15,7 @@ Push-Location $PSScriptRoot
 try {
     $env:QNX_HOST = Join-Path $SdkRoot 'host_10_3_1_12\win32\x86'
     $env:QNX_TARGET = Join-Path $SdkRoot 'target_10_3_1_995\qnx6'
-    $env:PATH = 'C:\bbndk\features\com.qnx.tools.jre.win32.x86_64_1.7.0.51\jre\bin;' +
-        (Join-Path $env:QNX_HOST 'usr\bin') + ';' + $savedPath
+    $env:PATH = (Join-Path $env:QNX_HOST 'usr\bin') + ';' + $savedPath
     New-Item -ItemType Directory -Force -Path 'build\arm' | Out-Null
     $qcc = Join-Path $env:QNX_HOST 'usr\bin\qcc.exe'
     $moc = Join-Path $env:QNX_HOST 'usr\bin\moc.exe'
@@ -59,6 +62,8 @@ try {
         }
     }
     if ($Package) {
+        $env:PATH = $JavaBin + ';' + $env:PATH
+        Write-Output "Packaging Java: $JavaBin"
         & (Join-Path $env:QNX_HOST 'usr\bin\blackberry-nativepackager.bat') `
             -package -devMode build/BBIME.bar bar-descriptor.xml
         if ($LASTEXITCODE -ne 0) { throw 'BAR packaging failed' }

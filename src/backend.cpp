@@ -35,7 +35,6 @@ Backend::Backend(QObject *parent) : QObject(parent),
     m_moduleSettings(QDir::currentPath() + "/data/module-settings.ini"),
     m_candidateModel(new ArrayDataModel(this)), m_symbolModel(new ArrayDataModel(this)),
     m_mode("natural"),
-    m_lastChineseMode("natural"),
     m_page(0), m_highlight(0), m_selectionAnchor(-1),
     m_selectionCursor(0), m_symbolGroup(0), m_symbolCycleStart(-1),
     m_imeEnabled(true), m_ready(false), m_active(true),
@@ -46,7 +45,6 @@ Backend::Backend(QObject *parent) : QObject(parent),
     if (!m_moduleSettings.load() && m_moduleSettings.error() != "NOT_FOUND")
         m_settingsStatus = QString::fromUtf8("配置读取失败，保留默认值：") + m_moduleSettings.error();
     m_mode = defaultMode();
-    m_lastChineseMode = QString::fromStdString(m_moduleSettings.profile().chineseMode);
     m_saveTimer.setSingleShot(true);
     connect(&m_saveTimer, SIGNAL(timeout()), this, SLOT(saveDraft()));
     m_metricsTimer.setSingleShot(true);
@@ -308,7 +306,7 @@ QString Backend::pageLabel() const {
 }
 
 void Backend::setMode(const QString &mode) {
-    if (mode != "natural" && mode != "full" && mode != "english")
+    if (mode != "natural" && mode != "english")
         return;
     if (mode == m_mode) return;
     if (!imeEnabled()) return;
@@ -316,7 +314,6 @@ void Backend::setMode(const QString &mode) {
     closeSymbols();
     m_shiftPending.clear();
     m_mode = mode;
-    if (mode == "natural" || mode == "full") m_lastChineseMode = mode;
     if (!m_testing) emit changed();
     restoreFocus();
 }
@@ -356,13 +353,15 @@ bool Backend::startNativeModule() {
     return true;
 }
 void Backend::stopNativeModule() {
+    if (m_nativePageOpen) m_mode = m_nativeModule->mode();
     m_nativeModule->suspend();
     m_nativePageOpen = false;
+    if (!m_testing) emit changed();
     restoreFocus();
 }
 void Backend::toggleLanguage() {
     if (!imeEnabled()) return;
-    setMode(m_mode == "english" ? m_lastChineseMode : "english");
+    setMode(m_mode == "english" ? "natural" : "english");
 }
 bool Backend::settingsWritable() const {
     return m_active && !m_testing && !imeEnabled() && m_code.isEmpty() &&
@@ -378,7 +377,6 @@ void Backend::saveModuleProfile(const bbime::ModuleProfile &profile, bool learn)
 void Backend::setDefaultMode(const QString &mode) {
     bbime::ModuleProfile profile = m_moduleSettings.profile();
     profile.startMode = mode.toStdString();
-    if (mode == "natural" || mode == "full") profile.chineseMode = profile.startMode;
     saveModuleProfile(profile, learnSelections());
 }
 void Backend::setShiftCandidates(bool enabled) {
@@ -531,7 +529,7 @@ void Backend::updateCode(const QString &code) {
     if (!m_ready || !imeEnabled()) return;
     QElapsedTimer timer;
     timer.start();
-    bool accepted = m_decoder.setCode(code.toLatin1().constData(), m_mode != "full");
+    bool accepted = m_decoder.setCode(code.toLatin1().constData(), true);
     const double ms = timer.nsecsElapsed() / 1000000.0;
     if (accepted) {
         m_code = code;
@@ -549,7 +547,7 @@ void Backend::cancel() {
     m_code.clear();
     m_page = 0;
     m_highlight = 0;
-    if (m_ready) m_decoder.setCode("", m_mode != "full");
+    if (m_ready) m_decoder.setCode("", true);
     m_status.clear();
     refreshCandidates();
     if (!m_testing) emit changed();
@@ -613,6 +611,22 @@ void Backend::clear() {
     restoreFocus();
 }
 
+bool Backend::handleNativeKey(QObject *editor, QObject *object) {
+    KeyEvent *event = qobject_cast<KeyEvent *>(object);
+    if (!event || !m_active || !m_nativePageOpen || !m_nativeModule->enabled()) return false;
+    const int key = event->keycap() ? event->keycap() : event->key();
+    const bool enter = key == KEYCODE_RETURN || key == Qt::Key_Return || key == 13;
+    // Language is a host shortcut. The module retains its business-key boundary.
+    if (enter && event->isAltPressed() && !event->isCtrlPressed()) {
+        if (event->isPressed() && event->duration() == 0) {
+            m_nativeModule->setMode(m_nativeModule->mode() == "english" ? "natural" : "english");
+            m_nativeModule->restoreFocus();
+        }
+        event->accept();
+        return true;
+    }
+    return m_nativeModule->handleKey(editor, object);
+}
 bool Backend::handleKey(QObject *object) {
     KeyEvent *event = qobject_cast<KeyEvent *>(object);
     if (!event || !m_active) return false;
@@ -631,7 +645,7 @@ bool Backend::handleKey(QObject *object) {
                 if (alone && !m_symbolsVisible && !event->isAltPressed() && !event->isCtrlPressed()) {
                     if (m_code.isEmpty() && shiftCursor()) action = CursorShiftAction;
                     else if (!m_code.isEmpty() && shiftCandidates() &&
-                        (m_mode == "natural" || m_mode == "full")) action = CandidateShiftAction;
+                        m_mode == "natural") action = CandidateShiftAction;
                 }
                 m_shiftPending[identity] = action;
                 if (!m_testing) {
@@ -647,7 +661,7 @@ bool Backend::handleKey(QObject *object) {
             const bool shortAlone = event->duration() <= 500 && !m_symbolsVisible &&
                 !event->isAltPressed() && !event->isCtrlPressed();
             if (shortAlone && action == CandidateShiftAction && !m_code.isEmpty() &&
-                (m_mode == "natural" || m_mode == "full")) {
+                m_mode == "natural") {
                 moveCandidate(leftShift ? -1 : 1);
                 if (!m_testing) {
                     ++m_shiftMoves;
@@ -793,10 +807,6 @@ bool Backend::handleKey(QObject *object) {
         updateCode(m_code + QChar(physical));
         return true;
     }
-    if (m_mode == "full" && unicode == "'") {
-        updateCode(m_code + "'");
-        return true;
-    }
     if (unicode.isEmpty() || unicode[0].unicode() < 32 ||
         unicode[0].category() == QChar::Other_PrivateUse) return true;
     if (!m_code.isEmpty()) {
@@ -859,7 +869,7 @@ bool Backend::inputSelftest() {
     settingsFixture.close();
     m_moduleSettings = bbime::ModuleSettings(settingsFixture.fileName());
     QPointer<TextArea> originalEditor = m_editor;
-    const QString originalMode = m_mode, originalChinese = m_lastChineseMode;
+    const QString originalMode = m_mode;
     const QString originalLatency = m_latency;
     const QHash<int, int> originalPressed = m_pressed;
     const QHash<int, ShiftAction> originalShifts = m_shiftPending;
@@ -888,7 +898,6 @@ bool Backend::inputSelftest() {
     m_active = true;
     m_mode = "natural";
     m_imeEnabled = true;
-    m_lastChineseMode = "natural";
     m_editor = scratch;
     m_symbolsVisible = false;
     m_symbolCycleStart = -1;
@@ -1250,14 +1259,17 @@ bool Backend::inputSelftest() {
     testKey(this, ' ', ' ');
     pass = pass && !gateCandidate.isEmpty() && scratch->text() == pausedText + gateCandidate &&
         m_code.isEmpty();
-    setMode("full");
+    // Removed public modes are rejected without changing a live composition.
     testLetters(this, "ni");
-    disableIme();
-    pass = pass && !imeEnabled() && m_code.isEmpty() && m_mode == "full";
-    toggleIme();
-    pass = pass && imeEnabled() && m_mode == "full";
+    setMode("full");
     setMode("system");
-    pass = pass && imeEnabled() && m_mode == "full" &&
+    pass = pass && m_mode == "natural" && m_code == "ni";
+    disableIme();
+    pass = pass && !imeEnabled() && m_code.isEmpty() && m_mode == "natural";
+    toggleIme();
+    pass = pass && imeEnabled() && m_mode == "natural";
+    setMode("system");
+    pass = pass && imeEnabled() && m_mode == "natural" &&
         scratch->inputMode() == TextAreaInputMode::Custom;
     setMode("english");
     toggleIme();
@@ -1306,7 +1318,6 @@ bool Backend::inputSelftest() {
         cursorPass && positionsPass && pausedPass && gatePass && preferencesPass;
     m_editor = originalEditor;
     m_mode = originalMode;
-    m_lastChineseMode = originalChinese;
     m_imeEnabled = originalImeEnabled;
     m_pressed = originalPressed;
     m_shiftPending = originalShifts;
@@ -1354,7 +1365,7 @@ void Backend::runDiagnostics() {
     std::sort(values.begin(), values.end());
     const bool inputPass = inputSelftest();
     QSettings diagnostic("data/startup-diagnostics.ini", QSettings::IniFormat);
-    diagnostic.setValue("version", "0.1.0.11");
+    diagnostic.setValue("version", "0.1.0.12");
     diagnostic.setValue("editor_input_mode", "Custom");
     diagnostic.setValue("system_ime", "NEVER_ENABLED");
     diagnostic.setValue("ime_enabled", imeEnabled());
@@ -1372,7 +1383,7 @@ void Backend::runDiagnostics() {
     diagnostic.setValue("mapped_syllables", unsigned(m_decoder.mappedSyllables()));
     diagnostic.setValue("pointer_bytes", int(sizeof(void *)));
     diagnostic.sync();
-    m_decoder.setCode(previous.toLatin1().constData(), m_mode != "full");
+    m_decoder.setCode(previous.toLatin1().constData(), true);
     m_code = previous;
     m_page = previousPage;
     m_highlight = previousHighlight;

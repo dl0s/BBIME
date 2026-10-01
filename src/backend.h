@@ -71,6 +71,7 @@ public:
     QString settingsStatus() const { return m_settingsStatus; }
     Q_INVOKABLE void attachEditor(QObject *editor);
     Q_INVOKABLE bool handleKey(QObject *event);
+    Q_INVOKABLE bool handleNativeKey(QObject *editor, QObject *event);
     Q_INVOKABLE bool choose(int slot);
     Q_INVOKABLE bool chooseCandidate(int index);
     Q_INVOKABLE void cycleSymbols();
@@ -149,7 +150,7 @@ private:
     QHash<int, ShiftAction> m_shiftPending;
     QTimer m_saveTimer, m_metricsTimer, m_layoutTimer;
     QMap<QString, QRectF> m_layout;
-    QString m_mode, m_code, m_status, m_latency, m_lastChineseMode, m_settingsStatus;
+    QString m_mode, m_code, m_status, m_latency, m_settingsStatus;
     int m_page, m_highlight, m_selectionAnchor, m_selectionCursor, m_symbolGroup, m_symbolCycleStart;
     bool m_imeEnabled, m_ready, m_active, m_loading, m_editing, m_testing, m_symbolsVisible;
     bool m_cursorCodePoints;

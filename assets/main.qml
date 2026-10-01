@@ -56,23 +56,11 @@ Page {
                 enabled: backend.imeEnabled
                 onClicked: backend.cycleSymbols()
             }
-            Button {
+            ImeToggle {
                 id: imeToggle
-                objectName: "imeToggle"
-                text: backend.imeEnabled ? (backend.mode === "english" ? "EN" : "中") : ""
-                imageSource: backend.imeEnabled ? "" : "asset:///tools.png"
-                topMargin: 0
-                bottomMargin: 0
-                accessibility.name: backend.imeEnabled ?
-                    (backend.mode === "english" ? "英文输入，显示菜单并暂停输入" : "中文输入，显示菜单并暂停输入") :
-                    "隐藏菜单，启用应用输入法"
-                preferredWidth: 76
-                minWidth: 76
-                maxWidth: 76
-                preferredHeight: 64
-                minHeight: 64
-                maxHeight: 64
-                onClicked: backend.toggleIme()
+                inputEnabled: backend.imeEnabled
+                inputMode: backend.mode
+                onToggleRequested: backend.toggleIme()
                 attachedObjects: [
                     LayoutUpdateHandler {
                         onLayoutFrameChanged: backend.recordLayout("ime_toggle", layoutFrame.x, layoutFrame.y, layoutFrame.width, layoutFrame.height)
@@ -92,7 +80,6 @@ Page {
             topMargin: 4
             bottomMargin: 4
             Option { text: "自然码"; value: "natural"; selected: true }
-            Option { text: "全拼"; value: "full" }
             Option { text: "English"; value: "english" }
             onCreationCompleted: {
                 selectedValue = backend.mode;
@@ -111,6 +98,8 @@ Page {
             id: editor
             objectName: "editor"
             inputMode: TextAreaInputMode.Custom
+            builtInShortcutsEnabled: false
+            input.flags: TextInputFlag.VirtualKeyboardOff
             inputRoute.primaryKeyTarget: true
             textFormat: TextFormat.Plain
             hintText: "测试文本"
@@ -343,7 +332,6 @@ Page {
                         SegmentedControl {
                             id: settingsStartMode
                             Option { text: "自然码"; value: "natural"; selected: true }
-                            Option { text: "全拼"; value: "full" }
                             Option { text: "English"; value: "english" }
                             onCreationCompleted: selectedValue = backend.defaultMode
                             onSelectedValueChanged: {

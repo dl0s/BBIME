@@ -35,13 +35,12 @@ static void profileTest() {
     check(parsed.values() == valid, "profile complete round trip");
     bbime::ModuleProfile::Values values = valid;
     values["input/startMode"] = "english";
-    values["input/chineseMode"] = "full";
     values["input/shiftCursor"] = "false";
     check(bbime::ModuleProfile::parse(values, parsed) && parsed.startMode == "english" &&
-          parsed.chineseMode == "full" && !parsed.shiftCursor, "profile preferences applied");
+          !parsed.shiftCursor, "profile preferences applied");
     const bbime::ModuleProfile::Values before = parsed.values();
     const char *badKeys[] = {"profile/version", "profile/engine", "input/startMode",
-        "input/chineseMode", "input/shiftCandidates", "input/shiftCursor",
+        "input/shiftCandidates", "input/shiftCursor",
         "input/chinesePunctuation"};
     for (size_t i = 0; i < sizeof(badKeys) / sizeof(badKeys[0]); ++i) {
         values = valid;
@@ -53,7 +52,7 @@ static void profileTest() {
         check(!bbime::ModuleProfile::parse(values, parsed), "missing field rejected");
     }
     const char *forbidden[] = {"local/learnSelections", "dictionary/path",
-        "input/imeEnabled", "input/composition", "unknown/key"};
+        "input/imeEnabled", "input/composition", "input/chineseMode", "unknown/key"};
     for (size_t i = 0; i < sizeof(forbidden) / sizeof(forbidden[0]); ++i) {
         values = valid;
         values[forbidden[i]] = "true";
@@ -61,7 +60,31 @@ static void profileTest() {
     }
     values = valid;
     values["input/startMode"] = "full";
-    check(!bbime::ModuleProfile::parse(values, parsed), "inconsistent Chinese modes rejected");
+    check(!bbime::ModuleProfile::parse(values, parsed), "removed full mode rejected");
+    check(parsed.values() == before, "removed mode preserves previous profile");
+    values = valid;
+    values["profile/version"] = "1";
+    values["input/startMode"] = "full";
+    values["input/chineseMode"] = "full";
+    check(!bbime::ModuleProfile::parse(values, parsed), "shared v1 profile rejected");
+    check(bbime::ModuleProfile::migrateLegacy(values, parsed) &&
+        parsed.startMode == "natural" && parsed.values() == valid,
+        "known local v1 full migrates to natural and schema v2");
+    values["input/startMode"] = "english";
+    values["input/shiftCursor"] = "false";
+    check(bbime::ModuleProfile::migrateLegacy(values, parsed) &&
+        parsed.startMode == "english" && !parsed.shiftCursor,
+        "local v1 migration preserves English and preferences");
+    const bbime::ModuleProfile::Values migrated = parsed.values();
+    values["input/startMode"] = "natural";
+    check(!bbime::ModuleProfile::migrateLegacy(values, parsed) &&
+        parsed.values() == migrated, "inconsistent legacy profile rejected atomically");
+    values["input/startMode"] = "english";
+    values["unknown/key"] = "true";
+    check(!bbime::ModuleProfile::migrateLegacy(values, parsed), "legacy unknown field rejected");
+    values.erase("unknown/key");
+    values["profile/version"] = "999";
+    check(!bbime::ModuleProfile::migrateLegacy(values, parsed), "unknown legacy version rejected");
     const char *badBools[] = {"TRUE", "1", "", " true", "@Variant(foo)"};
     for (size_t i = 0; i < sizeof(badBools) / sizeof(badBools[0]); ++i) {
         values = valid;

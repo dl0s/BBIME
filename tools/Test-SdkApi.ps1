@@ -1,8 +1,13 @@
 param(
-    [string]$SdkRoot = 'C:\Users\dove1\Documents\BBarmin\sdk'
+    [string]$SdkRoot = '',
+    [string]$OutputPath = ''
 )
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
+. (Join-Path $PSScriptRoot 'Sdk-Environment.ps1')
+$SdkRoot = Get-BBIMESdkRoot -SdkRoot $SdkRoot
+if (-not $OutputPath) { $OutputPath = Join-Path $root 'research/sdk-api-evidence.json' }
+elseif (-not [IO.Path]::IsPathRooted($OutputPath)) { $OutputPath = Join-Path $root $OutputPath }
 $hostRoot = Join-Path $SdkRoot 'host_10_3_1_12\win32\x86'
 $targetRoot = Join-Path $SdkRoot 'target_10_3_1_995\qnx6'
 $qcc = Join-Path $hostRoot 'usr\bin\qcc.exe'
@@ -47,8 +52,9 @@ try {
         binarySha256 = (Get-FileHash -LiteralPath $output -Algorithm SHA256).Hash
         elf = $elf
     }
+    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $OutputPath) | Out-Null
     $evidence | ConvertTo-Json -Depth 4 |
-        Set-Content -LiteralPath (Join-Path $root 'research\sdk-api-evidence.json') -Encoding UTF8
+        Set-Content -LiteralPath $OutputPath -Encoding UTF8
     Write-Output 'PASS: ARM compile/link and symbol checks. Not deployed or executed.'
 } finally {
     $env:PATH = $savedPath

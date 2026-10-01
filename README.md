@@ -1,14 +1,21 @@
 # BBIME
 
-Q10 原生应用内的自然码双拼测试，当前源码版本 `0.1.0.11`。
+Q10 原生应用内的自然码/英文输入模块与测试应用，当前源码版本 `0.1.0.12`。
 使用 Cascades 原生文本编辑控件和 libgooglepinyin 词库引擎。
 不是系统级跨应用输入法，不修改系统键盘、输入服务、词库或权限。
 现提供可随各自应用嵌入的最小原生模块，接入与所有权契约见
-[模块说明](C:/Users/dove1/Documents/BBIME/module/README.md)。
+[模块说明](module/README.md)。
+
+`0.1.0.12` 删除公开全拼/系统模式，提供统一的右上角 `ImeToggle` 组件：
+中/EN ↔ 菜单图标，点击只改变启用状态，暂停保留语言；Alt+Enter 单独切换自然码/英文。
+接入规范、固定快照、唯一提交入口及验收顺序见 [标准接入流程](module/INTEGRATION_WORKFLOW.md)。
+已只读复核 BBFile、BBnote 接入；BBnote 在本轮外部工作流程中已同步共享按钮和 0.1.0.12，
+其合并记录及当前包验收证据仍需对齐，
+详见 [两款宿主检查](research/HOST_INTEGRATION_REVIEW_2026-10-01.md)。
 
 ## 风险收敛与模块化
 
-`0.1.0.11` 延续此前未完成的阶段 A/B：加固解码器固定容量池，
+当前版本继续阶段 A/B 的风险收敛：加固解码器固定容量池，
 保留固定失败串、邻近输入、正常输入恢复和 10,000 次随机回归；
 使用单一 `ImeService`、每字段 `InputSession`、原生 TextArea/TextField
 选区适配、带修订标识的候选及 Sym 组件。
@@ -24,8 +31,8 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/Test-PhaseAB.ps1
 ```
 
 加入 `-Device` 会执行现有 Q10 上的新建合成 ARM 核心测试，不安装 BAR或读取真实正文。
-最新验收结果见 `research/phase-ab-validation-0.1.0.11.json`；
-手机 UI、焦点、硬件键、普通宿主接入和共享权限仍须分别取得运行证据。
+当前本地验证见 `research/phase-ab-validation-0.1.0.12.json`；
+新版手机 UI、焦点、硬件键、两款宿主升级和共享权限仍须分别取得运行证据。
 
 ## 操作
 
@@ -47,14 +54,13 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/Test-PhaseAB.ps1
 | Alt/Shift+退格 | 取消编码 |
 | Enter | 有编码时输出原始字母，否则换行 |
 | Shift+Enter | 确认高亮项并换行 |
-| Alt+Enter | 在当前中文方案与 English 之间切换 |
+| Alt+Enter | 在自然码与 English 之间切换 |
 | 屏幕取消按钮 | 取消编码并返回编辑框 |
 | 右上角状态/菜单按钮 | 输入启用时显示“中 / EN”，暂停时显示菜单图标；点击只切换菜单栏与输入开关 |
 | 菜单显示期间 | 不输入文字/编码，不执行自建选词、Sym 或 Shift；不切到系统输入法 |
 | Sym 实体键 / 屏幕 Sym | 首次打开符号网格；每次推进一组，一轮结束后关闭并返回原输入状态 |
 | 符号网格 | 中文、English、数学三组，各 26 项，按 Q10 三行字母键排列；触屏或对应字母键选择 |
 | 符号弹窗内退格 / Escape | 关闭弹窗，保留原编码和正文 |
-| 顶部“全拼” | 使用同一解码引擎比较全拼 |
 | 菜单“自检” | 在临时文本框测试解码、提交、重复键和选区替换 |
 
 零声母包括 `aa/a`、`oo/o`、`ee/e`、`ai`、`an`、`ao`、`ou`、
@@ -87,17 +93,24 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/Test-PhaseAB.ps1
 首版 `0.1.0.1` 缺少 `QtQuick 1.0` 导入，运行时报
 `Connections is not a type`，以退出码 2 结束。
 `0.1.0.2` 已补导入、覆盖安装，手机确认界面加载及两轮自检成功，进程持续存活。
-详细证据见 [测试记录](C:/Users/dove1/Documents/BBIME/research/APP_TEST_REPORT.md)。
+详细证据见 [测试记录](research/APP_TEST_REPORT.md)。
 
 ## 构建与安装
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\dove1\Documents\BBIME\tools\Test-Decoder.ps1
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\dove1\Documents\BBIME\build.ps1 -Package
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\dove1\Documents\BBIME\tools\Deploy-Q10.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\Test-Decoder.ps1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File build.ps1 -Package
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools\Deploy-Q10.ps1
 ```
 
-构建沿用本机 BBarmin SDK 和 BB10 `4.6.3,gcc_ntoarmv7le_cpp`，
+在项目根目录执行上述命令。构建和 SDK API 检查共用 `tools/Sdk-Environment.ps1`，
+依次读取显式 `-SdkRoot`、用户级 `INTROOP_SDK_ROOT`、进程级同名变量。
+当前用户变量指向 `C:\bbdevtools`；修改用户变量后无需重启已运行的应用。
+`tools/Test-PhaseAB.ps1` 同样使用该入口，并将解析后的 SDK 目录传给构建脚本。
+SDK API 检查和阶段验证支持 `-OutputPath`，可将新验证记录另存以保留历史证据。
+BAR 包装单独解析兼容 Java 7/8，可用 `-JavaBin` 或 `INTROOP_JAVA_BIN` 指定；
+默认发现已安装的 Momentics JRE，不固定其版本目录，不将包装 JRE 当作编译器 SDK。
+构建使用 BB10 `4.6.3,gcc_ntoarmv7le_cpp`，
 检查 ARM ELF 使用 `libcpp.so.4` 而非 GNU `libstdc++`。
 安装只使用现有 Q10Manager SSH 配置和固定主机记录，核对 BAR 回读哈希和 PPS 安装结果。
 安装后从手机图标启动。无需电脑在线或 SSH 参与每次输入。
@@ -105,10 +118,11 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\dove1\Documents
 语法检查可以使用现有官方 SDK 解析脚本：
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\dove1\Documents\BBarmin\bb10-native\verify_qml_syntax.ps1 -Paths C:\Users\dove1\Documents\BBIME\assets\main.qml
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ..\BBarmin\bb10-native\verify_qml_syntax.ps1 -Paths assets\main.qml
 ```
 
 语法检查不检查 QML 类型导入和设备运行状态；必须另查启动日志。
+阶段验证默认定位项目旁的上述 QML 脚本，其他布局可使用 `-QmlVerifierScript` 指定。
 手机私有 `logs/log` 包含启动阶段和测试结果，不写入输入正文。
 
 ## 数据与限制
@@ -125,13 +139,16 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\dove1\Documents
 读取方应用也需要共享目录权限及模块接入；同名 QSettings 不会跨沙箱自动共享。
 仅交换版本化的行为偏好，不含个人学习授权、正文、按键、光标、候选或菜单开关。
 默认不发布、不自动跟随共享文件；未知字段、版本及非法值整体拒绝。
+当前共享结构为 v2，删除 `input/chineseMode`，启动模式仅 natural/english。
+私有已知 v1 配置读取时将全拼迁移为自然码，英文、行为偏好和本地学习授权保留；
+下一次保存/发布写 v2。共享 v1 不自动迁移，也不读取其他应用的本地授权。
 
 基础词库仍来自包内；个人词库仍每应用私有。本版没有多应用共写词库，
 不能调用未审计的上游同步入口来冒充已经支持词库共享。
 解码器只允许本进程一个 owner，并要求调用方在一个输入线程串行使用。
 自检不再更新真实词频，关闭学习也不删除已有学习。
 完整审查和接入边界见
-[模块可靠性与共享报告](C:/Users/dove1/Documents/BBIME/research/MODULE_RELIABILITY_AND_SHARING.md)。
+[模块可靠性与共享报告](research/MODULE_RELIABILITY_AND_SHARING.md)。
 
 ### 输入数据与编辑限制
 
@@ -143,14 +160,14 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\Users\dove1\Documents
 没有输入活动计时或停顿恢复菜单；右上角保留 76 px 宽的状态/菜单按钮。
 输入启用时显示“中 / EN”，暂停时显示菜单图标，点击始终只切换菜单栏和输入开关。
 原独立中英文按钮已合并显示，中英文切换使用 Alt+Enter 或顶部方案选择。
-全程使用 TextArea Custom，不切到 Text 或系统输入法；“系统”方案入口已删除。
+接入字段全程使用 Custom + VirtualKeyboardOff，不切到系统输入法；公开全拼和系统方案已删除。
 显示菜单时应用不处理文字按下/释放事件，Custom 编辑框也不进行原生键盘输入，
 不执行选词、应用 Sym、Shift 光标/候选操作或 Alt+Enter。
 中英、取消、Sym、方案选择和候选触屏入口同步禁用，后端也有关闭保护，
 不能用模式切换绕过总开关。复制、清空和自检仍是普通菜单操作。
 通过原生手势展开操作菜单同样暂停自建输入法，收起菜单不会自动重新启用。
 切换取消未提交编码和符号弹窗，清除按键状态，但保留正文、光标和选区。
-自然码、全拼、English 方案在暂停期间保持原值，恢复时不重新选择模式。
+自然码、English 在暂停期间保持原值，恢复时不重新选择模式。
 顶部取消、Sym、状态/菜单按钮常驻，和候选滑动区域位于不同的行，
 不会覆盖候选或随候选一起滚动。
 候选只保留 72 px 高的单行横向列表，最多展示全部 40 项；文本不再人为截为 3/7 字。
@@ -182,7 +199,7 @@ Alt/Sym 也仅保存实体键按下计数，不保存原始键值或字符。
 `0.1.0.7` 已观察到词库通过、光标自检失败，旧逻辑因此错误停用全部中文输入。
 新版词库可用性只由载入和解码自检决定；交互自检失败仍记录 FAIL 并显示诊断提示，
 不会将无关的光标测试失败改报为“词库自检失败”或停用已通过检查的解码器。
-键位与菜单策略的依据见 [交互研究](C:/Users/dove1/Documents/BBIME/research/KEYBOARD_INTERACTION.md)。
+键位与菜单策略的依据见 [交互研究](research/KEYBOARD_INTERACTION.md)。
 
 ## 来源
 

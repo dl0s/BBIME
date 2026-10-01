@@ -12,6 +12,7 @@ $BBIMEIncludeDirectories = @(
     (Join-Path $BBIMEModuleRoot 'vendor/libgooglepinyin-0.1.2/include')
 )
 $BBIMEAssets = @('assets/CandidateStrip.qml', 'assets/NativeSymbolPanel.qml',
+    'assets/ImeToggle.qml', 'assets/ime-menu.png',
     'assets/cancel.png', 'assets/dict_pinyin.dat') |
     ForEach-Object { Join-Path $BBIMEModuleRoot $_ }
 $BBIMELicenseAssets = @('vendor/libgooglepinyin-0.1.2/LICENSE',
